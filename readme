@@ -7,13 +7,13 @@ Si deseas colaborar en nuestro proyecto, sigue estos pasos:
    git clone https://url-del-proyecto.git
    ```
 
-2. **Crea una Rama Independiente:**
-   ```bash
+2. 
+```bash
+   git branch nombre-de-tu-rama
    git switch nombre-de-tu-rama
    ```
 
-3. **Haz tus Cambios y Commits:**
-   Realiza tus modificaciones en tu rama independiente y haz commits de forma regular.
+3. Realiza tus modificaciones en tu rama independiente y haz commits de forma regular.
 
 4. 
    ```bash
