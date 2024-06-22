@@ -9,28 +9,17 @@ Si deseas colaborar en nuestro proyecto, sigue estos pasos:
 
 2. **Crea una Rama Independiente:**
    ```bash
-   git checkout -b nombre-de-tu-rama
+   git switch nombre-de-tu-rama
    ```
 
 3. **Haz tus Cambios y Commits:**
    Realiza tus modificaciones en tu rama independiente y haz commits de forma regular.
 
-4. **Sube tu Rama al Repositorio Remoto:**
+4. 
    ```bash
    git push origin nombre-de-tu-rama
    ```
 
-5. **Crea una Pull Request:**
-   Ve al repositorio en GitHub y crea una Pull Request desde tu rama hacia la rama `dev`.
+5.Ve al repositorio en GitHub y crea una Pull Request desde tu rama hacia la rama `dev`.
 
-6. **Mantén el Main Funcional:**
-   Asegúrate de que la rama `main` siempre contenga una versión funcional del proyecto.
-
-7. **Utiliza Git Rebase:**
-   Para mantener un historial lineal y facilitar la reversión de cambios:
-   ```bash
-   git checkout dev
-   git pull origin dev
-   git rebase nombre-de-tu-rama
-   git push origin dev
-   ```
+6. Solo mergeamos a main, cuando hacemos deploy.
