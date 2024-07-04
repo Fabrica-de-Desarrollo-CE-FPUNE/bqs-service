@@ -8,7 +8,7 @@ Si deseas colaborar en nuestro proyecto, sigue estos pasos:
    ```
 
 2. 
-```bash
+``` bash
    git branch nombre-de-tu-rama
    git switch nombre-de-tu-rama
    ```
