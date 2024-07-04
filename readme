@@ -40,6 +40,7 @@ Para empezar con BQS-Service, sigue estos pasos:
 ## Ejemplo de Descripción de Pull Request
 
 Aquí tienes una plantilla que puedes usar para la descripción de tu pull request:
+Observacion: Este repositirio usa rebase en vez de merge.
 
 ```
 ### link al issue
