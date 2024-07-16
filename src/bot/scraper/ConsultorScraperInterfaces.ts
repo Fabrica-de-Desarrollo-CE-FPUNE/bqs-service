@@ -1,5 +1,8 @@
-export interface IConsultorScraper {
-    init():Promise<void>;
-    logIn(cedula:string, contrasenia:string):Promise<void>;
-    extraerPaginaActual():Promise<string|null>;
+export interface IConsultorScraperBase {
+    init():Promise<void>; 
+    extractPageContent():Promise<string|null>;
+    reset():Promise<void>; 
+}
+export interface IConsultorScraperLogin{
+    logIn():Promise<void>;
 }
