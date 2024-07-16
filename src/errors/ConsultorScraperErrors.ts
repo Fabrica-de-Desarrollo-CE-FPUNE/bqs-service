@@ -6,6 +6,7 @@ export class ScraperError extends Error {
 }
 
 export class ErrorDeLogin extends ScraperError{
+
     constructor(message:string = 'Error al Logearse'){
         super(message);
         this.name = 'ErrorOnLogin';
