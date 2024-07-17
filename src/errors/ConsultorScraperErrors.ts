@@ -1,35 +1,27 @@
-export class ScraperError extends Error {
-    constructor(message: string){
-        super(message);
-        this.name = 'ScraperError';
-    }
+
+export enum ScraperErrorType {
+    INITIALIZATION_ERROR, 
+    PAGE_EXTRACTION_ERROR, 
+    GOING_TO_LOGIN_ERROR, 
+    INVALID_AUTH_STUDENT_ERROR
+
 }
-
-export class ErrorDeLogin extends ScraperError{
-
-    constructor(message:string = 'Error al Logearse'){
-        super(message);
-        this.name = 'ErrorOnLogin';
-    }
+export interface ScraperErrorMessage {
+    message:string, 
+    type:ScraperErrorType, 
+    reason?:string
 }
+export class ScraperError extends Error{
 
-export class ErrorDeInicializacion extends ScraperError {
-    constructor(message:string = 'Error al inicializarze'){
+    private constructor(message: string, public type:ScraperErrorType, public reason?:string){
         super(message);
-        this.name = 'InitializationError';
     }
-}
+    public static NewError(parameters:ScraperErrorMessage){
+        return new ScraperError(
+                parameters.message, 
+                parameters.type, 
+                parameters.reason
+        );
+    }
 
-export class ErrorCredencialesNulas extends ScraperError {
-    constructor(message:string = 'Error al pasar la credencial de login al scraper'){
-        super(message);
-        this.name = 'CredentialError';
-    }
-}
-
-export class ErrorDeExtraccionContenido extends ScraperError {
-    constructor(message:string = 'Error al extraer el contenido'){
-        super(message);
-        this.name = 'ExtractionError';
-    }
 }

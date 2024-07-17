@@ -1,4 +1,4 @@
 
-export default interface ErrorConStatus extends Error {
+export default interface ErrorConStatus extends Error{
     status?:number
 }
