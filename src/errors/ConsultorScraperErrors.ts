@@ -3,7 +3,8 @@ export enum ScraperErrorType {
     INITIALIZATION_ERROR, 
     PAGE_EXTRACTION_ERROR, 
     GOING_TO_LOGIN_ERROR, 
-    INVALID_AUTH_STUDENT_ERROR
+    INVALID_AUTH_STUDENT_ERROR, 
+    UNEXPECTED_LOGIN_ERROR
 
 }
 export interface ScraperErrorMessage {
