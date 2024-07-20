@@ -2,7 +2,7 @@ import { Alumno_credencial_login } from "./../src/types/ConsultorInfoTipos/Consu
 import { ConsultorScraperPuppeteer } from "./../src/bot/scraper/ConsultorScraperImp";
 import puppeteer, { Browser } from "puppeteer";
 
-describe("Test ConsultorScraperPuppeteer", () => {
+describe("ConsultoScraperErrores", () => {
   it("deberia inicializar la clase correctamente", async () => {
     let credenciales: Alumno_credencial_login = {
       cedula: "",
