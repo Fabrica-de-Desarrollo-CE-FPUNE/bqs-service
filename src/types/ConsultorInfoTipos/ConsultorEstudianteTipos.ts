@@ -1,7 +1,8 @@
 export interface info_estudiante{
     nombre:string, 
     apellido:string, 
-    cedula:string
+    cedula:string, 
+    cedula_nombre_apellido:string
 }
 
 export interface info_contacto{
