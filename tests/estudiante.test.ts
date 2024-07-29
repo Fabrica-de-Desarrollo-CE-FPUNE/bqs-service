@@ -25,7 +25,8 @@ describe('get /api/dev/estudiante', () => {
           {
             nombre:'Michael',
             apellido:'Jackson',
-            cedula:'6161000'
+            cedula:'6161000', 
+            cedula_nombre_apellido:'*'
           }
         );
     });
