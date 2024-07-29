@@ -42,7 +42,8 @@ export class DeveloperController {
             const data: info_estudiante = {
                 nombre: 'Michael',
                 apellido: 'Jackson',
-                cedula: '6161000'
+                cedula: '6161000', 
+                cedula_nombre_apellido:'*'
             };
 
             res.status(StatusCodes.OK).json(data);

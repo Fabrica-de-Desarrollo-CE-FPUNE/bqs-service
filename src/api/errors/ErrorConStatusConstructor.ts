@@ -1,4 +1,4 @@
-import ErrorConStatus from "../../types/errorConStatus";
+import ErrorConStatus from "../../errors/ErrorConStatus";
 
 /**
  * Clase base para errores personalizados con un código de estado HTTP.

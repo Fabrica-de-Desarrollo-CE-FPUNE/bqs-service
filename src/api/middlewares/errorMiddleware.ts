@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from "express";
-import ErrorConStatus from "../../types/errorConStatus";
-import { StatusCodes } from "http-status-codes";
+import ErrorConStatus from '../../errors/ErrorConStatus'
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * Middleware de manejo de errores.
