@@ -1,11 +1,47 @@
 import { info_estudiante, info_contacto, info_tiempo_rendimiento, info_inscripciones_asistencia, info_ultimos_pagos, info_resultado_parcial, info_habilitacion_actual, info_resultado_evaluacion_final, info_calificaciones, info_materia_pendiente, info_extension, info_horario_clase, info_horario_docente, info_libros_reservas, info_libros_prestamo, info_extra } from "../../types/ConsultorInfoTipos/ConsultorEstudianteTipos";
-import { ConsultorParserInterface } from "./ConsultorParserInterfaces";
-import cheerio, { CheerioAPI } from 'cheerio';
-export class ConsultoParserImp implements ConsultorParserInterface{
+import { IConsultorParserInterface, ITableContentPreProcessor, TableContent, TableContentObjects } from "./ConsultorParserInterfaces";
+import cheerio, { CheerioAPI, Element } from 'cheerio';
+
+export class ConsultorTableContentPreProcesor implements ITableContentPreProcessor{
+    private $:CheerioAPI;
+    constructor(htmlContent:string){
+        this.$ = cheerio.load(htmlContent);
+    }
+
+    private extractConsultorTableContent(table: Element, tableIndex:number): TableContent{
+        const headers: string[] = [];
+        const rows: string[][] = [];
+
+        this.$(table).find("tr").each((rowIndex, row) => {
+            const cells: string[] = [];
+            this.$(row).find("th, td").each((_, cell) => {
+                cells.push(this.$(cell).text().trim());
+            });
+            if (rowIndex === 0) {
+              headers.push(...cells);
+            } else {
+              rows.push(cells);
+            }
+          });
+          return { headers, rows };
+
+    }
+    public get_TableConsultorObjects(): TableContentObjects {
+        const tablesobjs: TableContentObjects = {};
+        this.$('table').each((index, table) => {
+            const tableContent = this.extractConsultorTableContent(table, index);
+            tablesobjs[`table${index + 1}`] = tableContent;
+        });
+        return tablesobjs;
+    }
+
+}
+export class ConsultoParserImp implements IConsultorParserInterface{
     private $:CheerioAPI;
     public constructor(htmlinput:string){
         this.$ = cheerio.load(htmlinput);
     }
+
     get_info_estudiante(): info_estudiante {
         const h3Text = this.$('div.col-sm-7 > h3').text();
         // todo: transformar el texto en sus partes individuales: cedula,nombre, apellido
@@ -65,10 +101,33 @@ export class ConsultoParserImp implements ConsultorParserInterface{
         }
         return result;
     }
+
+    private extractInfoAsistenciasRow(tr: Element):info_inscripciones_asistencia {
+        const tds = this.$(tr).find('td');
+        return {
+            materia: this.$(tds[0]).text().trim(),
+            fecha_inscripto: this.$(tds[1]).text().trim(),
+            validez: this.$(tds[2]).text().trim(),
+            grupo: this.$(tds[3]).text().trim(),
+            porc_asistencias: this.$(tds[4]).text().trim()
+        };
+    }
     get_info_inscipciones_asistencia(): info_inscripciones_asistencia[] {
-        throw new Error("Method not implemented.");
+        const info_asistencias: info_inscripciones_asistencia[] = [];
+
+        this.$('table.table-condensed.table-striped tr').each((index, tr) => {
+            if (index > 0) {
+                info_asistencias.push(this.extractInfoAsistenciasRow(tr));
+            }
+        });
+        return info_asistencias;
+
     }
     get_info_ultimos_pagos(): info_ultimos_pagos[] {
+
+        const info_pagos: info_ultimos_pagos[] = [];
+
+        
         throw new Error("Method not implemented.");
     }
     get_info_resultados_parciales(): info_resultado_parcial[] {
@@ -106,3 +165,8 @@ export class ConsultoParserImp implements ConsultorParserInterface{
     }
 
 }
+
+
+
+
+
