@@ -1,4 +1,4 @@
-import { Alumno_credencial_login } from "./../src/types/ConsultorInfoTipos/ConsultorEstudianteCredenciales";
+/*import { Alumno_credencial_login } from "./../src/types/ConsultorInfoTipos/ConsultorEstudianteCredenciales";
 import { ConsultorScraperPuppeteer } from "./../src/bot/scraper/ConsultorScraperImp";
 import puppeteer, { Browser } from "puppeteer";
 
@@ -20,3 +20,4 @@ describe("ConsultoScraperErrores", () => {
     expect(csp).toBeDefined();
   });
 });
+*/

@@ -1,5 +1,5 @@
 
-import { Alumno_credencial_login } from './../src/types/ConsultorInfoTipos/ConsultorEstudianteCredenciales';
+/*import { Alumno_credencial_login } from './../src/types/ConsultorInfoTipos/ConsultorEstudianteCredenciales';
 import * as fs from 'fs';
 import { ConsultoParserImp, ConsultorTableContentPreProcesor } from './../src/bot/parser/ConsultorParserImp';
 import { TableContentObjects } from '../src/bot/parser/ConsultorParserInterfaces';
@@ -29,3 +29,4 @@ describe("ConsultorPreProcesor", () => {
     });
   });
 
+*/

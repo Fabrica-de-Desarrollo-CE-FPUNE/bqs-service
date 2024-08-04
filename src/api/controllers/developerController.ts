@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { info_estudiante } from "../../types/ConsultorInfoTipos/ConsultorEstudianteTipos";
+import { info_estudiante } from "../../types/ConsultorEstudiante.types";
 import { EstudianteError } from '../errors/EstudianteError';
 
 /**

@@ -1,4 +1,4 @@
-import { Alumno_credencial_login } from '../../types/ConsultorInfoTipos/ConsultorEstudianteCredenciales';
+import { Alumno_credencial_login } from '../../types/ConsultorEstudianteCredenciales.types';
 import { IConsultorScraperBase, IConsultorScraperLogin } from './ConsultorScraperInterfaces';
 import puppeteer, { Browser, HTTPResponse, Page } from 'puppeteer';
 import { ScraperError, ScraperErrorType } from './../../errors/ConsultorScraperErrors';

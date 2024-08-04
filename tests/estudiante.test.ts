@@ -37,7 +37,7 @@ describe('get /api/dev/estudiante', () => {
     it('caso 2: con query, debe fallar y emitir el status 404 NOT_FOUND.', async () => {
       const response = await request(app).get('/api/dev/estudiante/').query({ falla1: true });
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
-      console.log(response.body);
+      //console.log(response.body);
     });
 
     /**
@@ -46,7 +46,7 @@ describe('get /api/dev/estudiante', () => {
     it('caso 3: con query, debe fallar y emitir el status 503 SERVICE_UNAVAILABLE.', async () => {
       const response = await request(app).get('/api/dev/estudiante/').query({ falla2: true });
       expect(response.status).toBe(StatusCodes.SERVICE_UNAVAILABLE);
-      console.log(response.body);
+     // console.log(response.body);
     });
 
 });
