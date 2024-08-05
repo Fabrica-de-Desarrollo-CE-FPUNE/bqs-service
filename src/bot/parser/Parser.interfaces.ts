@@ -34,4 +34,5 @@ export interface IEstudianteInfoTableParser {
     get_info_horario_docente(): info_horario_docente[];
     get_info_libros_reservas(): info_libros_reservas[];
     get_info_libros_prestamos(): info_libros_prestamo[];
+    parse():void;
 }

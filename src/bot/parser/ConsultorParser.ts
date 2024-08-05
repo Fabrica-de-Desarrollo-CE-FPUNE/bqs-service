@@ -1,7 +1,7 @@
 import cheerio, { CheerioAPI } from "cheerio";
 import { info_estudiante, info_contacto, info_tiempo_rendimiento, info_calificaciones, info_extension, info_habilitacion_actual, info_horario_clase, info_horario_docente, info_inscripciones_asistencia, info_libros_prestamo, info_libros_reservas, info_materia_pendiente, info_resultado_evaluacion_final, info_resultado_parcial, info_ultimos_pagos } from "../../types/ConsultorEstudiante.types";
 import { IBasicEstudianteInfoParser, IEstudianteInfoTableParser } from "./Parser.interfaces";
-
+import { TableContent, TableContentObjects } from "../processors/processors.types";
 
 export class ConsultorBasicEstudianteInfoParser implements IBasicEstudianteInfoParser{
     private selector: CheerioAPI;
@@ -72,8 +72,88 @@ export class ConsultorBasicEstudianteInfoParser implements IBasicEstudianteInfoP
 
 export class ConsultorTableEstudianteTableInfoParser implements IEstudianteInfoTableParser {
 
+    private tablecontents: TableContentObjects;
+    private inscripciones: info_inscripciones_asistencia[];  
+    private table_map = {
+        info_inscripciones_asistencia: 'table1', 
+        info_ultimos_pagos: 'table2', 
+        info_resultado_parcial: 'table3', 
+        info_habilitacion_actual: 'table4', 
+        info_resultado_evaluacion_final: 'table5', 
+        info_calificaciones: 'table6', 
+        info_materia_pendiente: 'table7', 
+        info_extension: 'table8', 
+        info_horario_clase: 'table9', 
+        info_horario_docente: 'table10', 
+        info_libro_reservas: 'table11', 
+        info_libro_prestamo: 'table12'
+        
+    }
+
+   
+    constructor(contents: TableContentObjects){
+        this.tablecontents = contents;
+        this.inscripciones = [];
+    }
+ 
+  
+    private load_asistencias_info(rows:string[][]){
+        for (let i = 0; i < rows.length; i++) {
+            let inscriptos : info_inscripciones_asistencia = {
+                materia: rows[i][0], 
+                fecha_inscripto: rows[i][1], 
+                validez: rows[i][2], 
+                grupo: rows[i][3],
+                porc_asistencias: rows[i][4]
+            }
+            this.inscripciones.push(inscriptos);
+        }
+    }
+
+    private handleBykeyCases(key: string, rows:string[][]){
+        switch(key){
+            case this.table_map.info_inscripciones_asistencia:
+                this.load_asistencias_info(rows);
+                break;
+            case this.table_map.info_ultimos_pagos:
+                break;
+            case this.table_map.info_resultado_parcial:  
+                break;
+            case this.table_map.info_habilitacion_actual:
+                break; 
+            case this.table_map.info_resultado_evaluacion_final: 
+                break;
+            case this.table_map.info_calificaciones: 
+                break;
+            case this.table_map.info_materia_pendiente: 
+                break;
+            case this.table_map.info_extension: 
+                break;
+            case this.table_map.info_horario_clase: 
+                break;
+            case this.table_map.info_horario_docente: 
+                break;
+            case this.table_map.info_libro_reservas: 
+                break;
+            case this.table_map.info_libro_prestamo:
+                break;
+            default:
+                throw new Error('fatal error, no case detected');
+        }
+    }
+
+    parse():void{
+        for(const key in this.tablecontents){
+            if(this.tablecontents.hasOwnProperty(key)){
+                const tablecontent:TableContent = this.tablecontents[key];
+                this.handleBykeyCases(key, tablecontent.rows);
+            }
+        }
+    }
+
+
     get_info_inscipciones_asistencia(): info_inscripciones_asistencia[] {
-        throw new Error("Method not implemented.");
+       return this.inscripciones;
     }
     get_info_ultimos_pagos(): info_ultimos_pagos[] {
         throw new Error("Method not implemented.");
@@ -108,8 +188,4 @@ export class ConsultorTableEstudianteTableInfoParser implements IEstudianteInfoT
     get_info_libros_prestamos(): info_libros_prestamo[] {
         throw new Error("Method not implemented.");
     }
-
-
-
-
 }
