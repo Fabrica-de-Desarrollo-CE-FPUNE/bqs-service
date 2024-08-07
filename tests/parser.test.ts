@@ -56,5 +56,20 @@ describe("ConsultorPreProcesor", () => {
         }
         const expected_result = JSON.parse(readFile(resources+"consultor_asistencias_test.json"));
         expect(resultObj).toStrictEqual(expected_result);
-    })
+    });
+
+    it("debe devolver los ultimos pagos", async ()=>{
+
+        const html_data = readFile(resources+"consultor_data.html");
+        let parser = new ConsultorTableEstudianteTableInfoParser(await new ConsultorTableProcessor(html_data).process());
+        parser.parse();
+        
+        const estudiante_ultimos_pagos =  parser.get_info_ultimos_pagos();
+
+        console.log(estudiante_ultimos_pagos);
+
+
+
+    });
+
   });
