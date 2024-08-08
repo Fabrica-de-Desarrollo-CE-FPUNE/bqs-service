@@ -1,4 +1,5 @@
-import { Alumno_credencial_login } from "./../src/types/ConsultorInfoTipos/ConsultorEstudianteCredenciales";
+
+import { Alumno_credencial_login } from "../src/types/ConsultorEstudianteCredenciales.types";
 import { ConsultorScraperPuppeteer } from "./../src/bot/scraper/ConsultorScraperImp";
 import puppeteer, { Browser } from "puppeteer";
 

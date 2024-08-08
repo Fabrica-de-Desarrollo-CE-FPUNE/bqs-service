@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { info_estudiante } from "../../types/ConsultorInfoTipos/ConsultorEstudianteTipos";
+import { info_estudiante } from "../../types/ConsultorEstudiante.types";
 import { EstudianteError } from '../errors/EstudianteError';
 
 /**
@@ -42,7 +42,8 @@ export class DeveloperController {
             const data: info_estudiante = {
                 nombre: 'Michael',
                 apellido: 'Jackson',
-                cedula: '6161000'
+                cedula: '6161000', 
+                cedula_nombre_apellido:'*'
             };
 
             res.status(StatusCodes.OK).json(data);

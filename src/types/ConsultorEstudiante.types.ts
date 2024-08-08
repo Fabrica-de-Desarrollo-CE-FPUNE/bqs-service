@@ -1,7 +1,8 @@
 export interface info_estudiante{
     nombre:string, 
     apellido:string, 
-    cedula:string
+    cedula:string, 
+    cedula_nombre_apellido:string
 }
 
 export interface info_contacto{
@@ -63,7 +64,6 @@ export interface info_resultado_evaluacion_final{
 }
 
 export interface info_calificaciones {
-    carrera:string, 
     materia:string, 
     semestre:string, 
     fecha:string, 
@@ -72,7 +72,6 @@ export interface info_calificaciones {
 }
 
 export interface info_materia_pendiente{
-    carrera:string, 
     materia:string, 
     semestre:string, 
     correlatividad:string
@@ -114,12 +113,6 @@ export interface info_libros_prestamo {
     devolver:string, 
     estado:string
 }
-
-export interface info_extra {
-    caracter_legal:string, 
-    emision:string
-}
-
 
 
 

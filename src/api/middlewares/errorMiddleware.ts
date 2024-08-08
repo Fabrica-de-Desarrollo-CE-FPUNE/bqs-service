@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from "express";
-import ErrorConStatus from "../../types/errorConStatus";
-import { StatusCodes } from "http-status-codes";
+import ErrorConStatus from '../../errors/ErrorConStatus'
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * Middleware de manejo de errores.
@@ -34,7 +34,7 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
   const errorStatus: ErrorConStatus = error as ErrorConStatus;
 
   // Registrar el stack trace del error en la consola
-  console.error(errorStatus.stack);
+ // console.error(errorStatus.stack);
 
   // Enviar respuesta HTTP con el mensaje de error y el código de estado
   res.status(errorStatus.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
