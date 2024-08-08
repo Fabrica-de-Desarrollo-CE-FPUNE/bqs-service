@@ -58,18 +58,28 @@ describe("ConsultorPreProcesor", () => {
         expect(resultObj).toStrictEqual(expected_result);
     });
 
-    it("debe devolver los ultimos pagos", async ()=>{
+    it("debe validar todos los metodos", async ()=>{
 
         const html_data = readFile(resources+"consultor_data.html");
         let parser = new ConsultorTableEstudianteTableInfoParser(await new ConsultorTableProcessor(html_data).process());
         parser.parse();
-        
-        const estudiante_ultimos_pagos =  parser.get_info_ultimos_pagos();
 
-        console.log(estudiante_ultimos_pagos);
-
-
-
+        const result = {
+            estudiante_inscripciones : parser.get_info_inscipciones_asistencia(),
+             estudiante_ultimos_pagos :  parser.get_info_ultimos_pagos(),
+             estudiante_resultado_parciales : parser.get_info_resultados_parciales(),
+             estudiante_habilitaciones : parser.get_info_habilitaciones_actuales(),
+             estudiante_finales : parser.get_info_resultados_evaluaciones_finales(),
+             estudiante_calificaciones : parser.get_info_calificaciones(),
+             estudiante_materia_pendientes : parser.get_info_materia_pendiente(),
+             estudiante_extension : parser.get_info_extension(),
+             estudiante_horario_clase : parser.get_info_horario_clase(),
+             estudiante_horario_docente : parser.get_info_horario_docente(),
+             estudiante_libros_reservas : parser.get_info_libros_reservas(),
+             estudiante_libros_prestamos : parser.get_info_libros_prestamos(),
+        }
+        const expected_result = JSON.parse(readFile(resources+"consultor_resultado_todo_json.json"));
+        expect(result).toEqual(expected_result);
     });
 
   });
