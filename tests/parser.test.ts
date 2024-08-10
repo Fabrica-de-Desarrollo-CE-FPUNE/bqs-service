@@ -29,7 +29,7 @@ describe("ConsultorPreProcesor", () => {
         const stringcontent = readFile(resources+"consultor_data.html");
         let processor: ConsultorTableProcessor = new ConsultorTableProcessor(stringcontent);
         let parser : ConsultorBasicEstudianteInfoParser = new ConsultorBasicEstudianteInfoParser(stringcontent);
-        const result: TableContentObjects = await processor.process();
+        const result: TableContentObjects = await  processor.process();
        const expected_result = JSON.parse(readFile(resources+"consultor_raw_data_test.json"));
         const jsonO ={
             InfoEstudiante: {
