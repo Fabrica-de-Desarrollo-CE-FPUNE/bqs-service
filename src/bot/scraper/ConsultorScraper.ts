@@ -40,15 +40,13 @@ export class ConsultorScraper implements IConsultorScaper{
                 });
             }
             const cedula_selector: string = 'input[name="usuario"]';
-            const contrasenia_selector: string = 'input[name="clave"]';
-            const login_button_selector: string = 'button[type=submit]';
+            const contrasenia_selector:string = 'input[name="clave"]';
+            const login_button_selector:string = 'button[type="submit"]';
 
             await page.type(cedula_selector, (this.acceso?.cedula as string));
             await page.type(contrasenia_selector, (this.acceso?.contrasenia as string));
-            await page.click(login_button_selector);
-            await page.waitForNavigation({
-                waitUntil:"networkidle2"
-            });
+            await Promise.all([page.click(login_button_selector),
+            page.waitForNavigation({waitUntil:'networkidle2'})]);
             if(page.url() === this.urls.error_page){
                 throw ScraperError.NewError({
                     message: "cedula/password incorrectos", 
