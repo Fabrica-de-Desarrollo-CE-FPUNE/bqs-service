@@ -1,5 +1,5 @@
 import puppeteer, { Browser, HTTPResponse, Page } from "puppeteer";
-import { IConsultorScaper } from "./ConsultorScraperInterfaces";
+import { IConsultorScaper } from "./Scraper.interfaces";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { ScraperError, ScraperErrorType } from "../../errors/ConsultorScraperErrors";
 import { StatusCodes } from "http-status-codes";
