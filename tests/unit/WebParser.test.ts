@@ -29,8 +29,10 @@ describe("Tests del webparser del consultor", ()=> {
         let asistencias = {
             info_asistencia: parser.get_info_inscipciones_asistencia()
         }
-        utils.write_file(`${resources}/asistencias_info_estudiante.json`, JSON.stringify(asistencias, null, 2));
+        let asistencias_esperada = utils.parse_json(`${resources}/asistencias_info_estudiante.json`);
+        expect(asistencias).toEqual(asistencias_esperada);
 
     });
+  
 }
 );
