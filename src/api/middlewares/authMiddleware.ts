@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
 const SECRET_KEY: string  = "la super contraseña que debería ser anonima y ubicada como variable de entorno"+
@@ -8,7 +9,7 @@ const SECRET_KEY: string  = "la super contraseña que debería ser anonima y ubi
 export function authenticateToken(req: Request, res: Response, next: NextFunction) {
     const token = req.headers['authorization'];
     if (!token) {
-      return res.status(401).json({ error: 'Token de autenticación requerido' });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token de autenticación requerido' });
     }
     jwt.verify(token.split(' ')[1], SECRET_KEY, (err: any, decoded) => {
       if (err) {
