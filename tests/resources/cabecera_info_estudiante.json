@@ -1,0 +1,24 @@
+{
+  "info_": {
+    "nombre": "*",
+    "apellido": "*",
+    "cedula": "*",
+    "cedula_nombre_apellido": "6273668 RODOLFO ELIAS OJEDA ALMADA"
+  },
+  "info_contacto": {
+    "email": "METALL65ELI@GMAIL.COM",
+    "telefono_particular": "0982072014",
+    "celular": "0973-108501"
+  },
+  "info_rendimiento": {
+    "carrera": "INGENIERIA DE SISTEMAS (2015).",
+    "fecha_ingreso": "01/02/2022.",
+    "fecha_estimada_egreso": "31/12/2030.",
+    "promedio": "3.25.",
+    "total_materias_aprobada": "28.",
+    "total_materias_reprobadas": "4.",
+    "porcentaje_materias_reprobadas": "6.67 %.",
+    "status_arancel_cero": "Beneficiario/a de la ley 6628/2020 en el presente  periodo lectivo:  Sí",
+    "foto_estudiante": "imagen/6273668.jpg"
+  }
+}

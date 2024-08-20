@@ -16,12 +16,10 @@ import { info_estudiante,
     info_libros_reservas
  } from "../../types/ConsultorEstudiante.types";
 
-export interface IBasicEstudianteInfoParser {
+export interface IConsultorWebParser {
     get_info_estudiante():info_estudiante;
     get_info_contacto():info_contacto;
     get_info_tiempo_rendimiento():info_tiempo_rendimiento;
-}
-export interface IEstudianteInfoTableParser {
     get_info_inscipciones_asistencia(): info_inscripciones_asistencia[];
     get_info_ultimos_pagos():info_ultimos_pagos[];
     get_info_resultados_parciales(): info_resultado_parcial[];
@@ -34,5 +32,13 @@ export interface IEstudianteInfoTableParser {
     get_info_horario_docente(): info_horario_docente[];
     get_info_libros_reservas(): info_libros_reservas[];
     get_info_libros_prestamos(): info_libros_prestamo[];
-    parse():void;
+    parse():Promise<void>;
+}
+
+export interface TableContent {
+    headers: string[];
+    rows: string[][];
+}
+export interface TableContentObjects {
+    [key: string]:TableContent;
 }
