@@ -4,8 +4,9 @@ export enum ScraperErrorType {
     PAGE_EXTRACTION_ERROR, 
     GOING_TO_LOGIN_ERROR, 
     INVALID_AUTH_STUDENT_ERROR, 
-    UNEXPECTED_LOGIN_ERROR
-
+    UNEXPECTED_LOGIN_ERROR, 
+    INTERNAL_PROCESSING_ERROR, 
+    UNEXPECTED_ERROR
 }
 export interface ScraperErrorMessage {
     message:string, 
