@@ -1,0 +1,34 @@
+{
+  "info_habilitaciones": [
+    {
+      "materia": "7311 REDES DE COMPUTADORAS II. Sem.: 5",
+      "bonificacion": "28.6",
+      "vencimiento": "31/12/2024",
+      "periodo": "202401"
+    },
+    {
+      "materia": "7312 BASES DE DATOS II. Sem.: 5",
+      "bonificacion": "25.8505",
+      "vencimiento": "31/12/2024",
+      "periodo": "202401"
+    },
+    {
+      "materia": "7313 FISICA IV. Sem.: 5",
+      "bonificacion": "35.433",
+      "vencimiento": "31/12/2024",
+      "periodo": "202401"
+    },
+    {
+      "materia": "7314 INVESTIGACION OPERATIVA. Sem.: 5",
+      "bonificacion": "27.6",
+      "vencimiento": "31/12/2024",
+      "periodo": "202401"
+    },
+    {
+      "materia": "7316 ADMINISTRACION. Sem.: 5",
+      "bonificacion": "26.55",
+      "vencimiento": "31/12/2024",
+      "periodo": "202401"
+    }
+  ]
+}

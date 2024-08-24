@@ -1,0 +1,52 @@
+{
+  "info_parciales": [
+    {
+      "materia": "7321 SISTEMAS DISTRIBUIDOS. Sem.: 6",
+      "primera_parcial": "",
+      "segunda_parcial": "",
+      "trabajo_practico": "",
+      "trabajo_laboratorio": "",
+      "evaluacion": "K 10-20-0-10-60"
+    },
+    {
+      "materia": "7322 SIMULACION DE SISTEMAS ESTOCASTICOS. Sem.: 6",
+      "primera_parcial": "",
+      "segunda_parcial": "",
+      "trabajo_practico": "",
+      "trabajo_laboratorio": "",
+      "evaluacion": "I 15-20-5-0-60"
+    },
+    {
+      "materia": "7323 INGENIERIA DE SOFTWARE II. Sem.: 6",
+      "primera_parcial": "",
+      "segunda_parcial": "",
+      "trabajo_practico": "",
+      "trabajo_laboratorio": "",
+      "evaluacion": "I 15-20-5-0-60"
+    },
+    {
+      "materia": "7324 INTELIGENCIA ARTIFICIAL I. Sem.: 6",
+      "primera_parcial": "",
+      "segunda_parcial": "",
+      "trabajo_practico": "",
+      "trabajo_laboratorio": "",
+      "evaluacion": "J 10-20-5-5-60"
+    },
+    {
+      "materia": "7325 LENGUAJE DE PROGRAMACION III. Sem.: 6",
+      "primera_parcial": "",
+      "segunda_parcial": "",
+      "trabajo_practico": "",
+      "trabajo_laboratorio": "",
+      "evaluacion": "I 15-20-5-0-60"
+    },
+    {
+      "materia": "7326 ECONOMIA Y FINANZAS. Sem.: 6",
+      "primera_parcial": "",
+      "segunda_parcial": "",
+      "trabajo_practico": "",
+      "trabajo_laboratorio": "",
+      "evaluacion": "I 15-20-5-0-60"
+    }
+  ]
+}

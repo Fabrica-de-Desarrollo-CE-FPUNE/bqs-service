@@ -1,0 +1,33 @@
+{
+  "info_extension": [
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "actividad": "CURSOS EXTRACURRICULARES",
+      "tipo_actividad": "Programas de capacitacion a la comunidad",
+      "maxima": "20",
+      "cantidad": "1",
+      "horas": "20"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "actividad": "TRABAJOS DE CAMPO",
+      "tipo_actividad": "Censos, entrevistas, encuestas",
+      "maxima": "16",
+      "cantidad": "1",
+      "horas": "12"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "actividad": "DEPORTES",
+      "tipo_actividad": "Juegos Internos",
+      "maxima": "10",
+      "cantidad": "2",
+      "horas": "10"
+    },
+    {
+      "carrera": "TOTAL",
+      "actividad": "4",
+      "tipo_actividad": "42"
+    }
+  ]
+}
