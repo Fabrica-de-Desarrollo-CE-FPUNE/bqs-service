@@ -4,6 +4,6 @@
  * @throws {ScraperError} cuando se produce un error de algun tipo en el proceso de extraccion de la pagina de detalles.
  * @since v1.0.0
  */
-export interface IConsultorScaper{
+export interface IConsultorWebScraper{
   getConsultorDetallesPage(): Promise<string>;
 }
