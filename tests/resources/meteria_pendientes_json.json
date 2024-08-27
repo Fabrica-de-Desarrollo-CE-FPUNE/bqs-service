@@ -1,0 +1,229 @@
+{
+  "info_materia_pendiente": [
+    {
+      "materia": "7311 REDES DE COMPUTADORAS II",
+      "semestre": "5",
+      "correlatividad": "7221 REDES DE COMPUTADORAS I INGENIERIA DE SISTEMAS (2015) (4)"
+    },
+    {
+      "materia": "7312 BASES DE DATOS II",
+      "semestre": "5",
+      "correlatividad": "7222 BASE DE DATOS I INGENIERIA DE SISTEMAS (2015) (4)  -  7227 INGENIERIA DE SOFTWARE I INGENIERIA DE SISTEMAS (2015) (4)"
+    },
+    {
+      "materia": "7313 FISICA IV",
+      "semestre": "5",
+      "correlatividad": "7223 FISICA III INGENIERIA DE SISTEMAS (2015) (4)"
+    },
+    {
+      "materia": "7314 INVESTIGACION OPERATIVA",
+      "semestre": "5",
+      "correlatividad": "7217 PROBABILIDAD Y ESTADÍSTICAS II INGENIERIA DE SISTEMAS (2015) (3)  -  7225 COMPILADORES INGENIERIA DE SISTEMAS (2015) (4)"
+    },
+    {
+      "materia": "7316 ADMINISTRACION",
+      "semestre": "5",
+      "correlatividad": "7226 CONTABILIDAD INGENIERIA DE SISTEMAS (2015) (4)"
+    },
+    {
+      "materia": "7321 SISTEMAS DISTRIBUIDOS",
+      "semestre": "6",
+      "correlatividad": "7311 REDES DE COMPUTADORAS II INGENIERIA DE SISTEMAS (2015) (5)"
+    },
+    {
+      "materia": "7322 SIMULACION DE SISTEMAS ESTOCASTICOS",
+      "semestre": "6",
+      "correlatividad": "7314 INVESTIGACION OPERATIVA INGENIERIA DE SISTEMAS (2015) (5)"
+    },
+    {
+      "materia": "7323 INGENIERIA DE SOFTWARE II",
+      "semestre": "6",
+      "correlatividad": "7312 BASES DE DATOS II INGENIERIA DE SISTEMAS (2015) (5)  -  7315 LENGUAJE DE PROGRAMACION II INGENIERIA DE SISTEMAS (2015) (5)"
+    },
+    {
+      "materia": "7324 INTELIGENCIA ARTIFICIAL I",
+      "semestre": "6",
+      "correlatividad": "7314 INVESTIGACION OPERATIVA INGENIERIA DE SISTEMAS (2015) (5)"
+    },
+    {
+      "materia": "7325 LENGUAJE DE PROGRAMACION III",
+      "semestre": "6",
+      "correlatividad": "7315 LENGUAJE DE PROGRAMACION II INGENIERIA DE SISTEMAS (2015) (5)"
+    },
+    {
+      "materia": "7326 ECONOMIA Y FINANZAS",
+      "semestre": "6",
+      "correlatividad": "7316 ADMINISTRACION INGENIERIA DE SISTEMAS (2015) (5)"
+    },
+    {
+      "materia": "7411 INGENIERIA DE SOFTWARE III",
+      "semestre": "7",
+      "correlatividad": "7321 SISTEMAS DISTRIBUIDOS INGENIERIA DE SISTEMAS (2015) (6)  -  7322 SIMULACION DE SISTEMAS ESTOCASTICOS INGENIERIA DE SISTEMAS (2015) (6)  -  7323 INGENIERIA DE SOFTWARE II INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7412 AUDITORIA Y PERITAJE DE SISTEMAS INFORMATICOS",
+      "semestre": "7",
+      "correlatividad": "7323 INGENIERIA DE SOFTWARE II INGENIERIA DE SISTEMAS (2015) (6)"
+    },
+    {
+      "materia": "7413 INTELIGENCIA ARTIFICIAL II",
+      "semestre": "7",
+      "correlatividad": "7324 INTELIGENCIA ARTIFICIAL I INGENIERIA DE SISTEMAS (2015) (6)"
+    },
+    {
+      "materia": "7414 ETICA Y ASPECTOS LEGALES DE LA INGENIERIA",
+      "semestre": "7",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7415 ADMINISTRACION DE SISTEMAS INFORMATICOS - Enf.: TIC",
+      "semestre": "7",
+      "correlatividad": "7111 COMUNICACION ORAL Y ESCRITA INGENIERIA DE SISTEMAS (2015) (1)  -  7112 ALGORITMICA Y ESTRUCTURA DE DATOS I INGENIERIA DE SISTEMAS (2015) (1)  -  7113 MATEMATICA DISCRETA INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7416 INTERACCION HOMBRE - MAQUINA - Enf.: TIC",
+      "semestre": "7",
+      "correlatividad": "7111 COMUNICACION ORAL Y ESCRITA INGENIERIA DE SISTEMAS (2015) (1)  -  7112 ALGORITMICA Y ESTRUCTURA DE DATOS I INGENIERIA DE SISTEMAS (2015) (1)  -  7113 MATEMATICA DISCRETA INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7417 APLICACIONES PARA AMBIENTE WEB - Enf.: TIC",
+      "semestre": "7",
+      "correlatividad": "7111 COMUNICACION ORAL Y ESCRITA INGENIERIA DE SISTEMAS (2015) (1)  -  7112 ALGORITMICA Y ESTRUCTURA DE DATOS I INGENIERIA DE SISTEMAS (2015) (1)  -  7113 MATEMATICA DISCRETA INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7418 MICROCONTROLADORES Y DISEÑO CON MICROCONTROLADORES - Enf.: Sistemas empotrados",
+      "semestre": "7",
+      "correlatividad": "7111 COMUNICACION ORAL Y ESCRITA INGENIERIA DE SISTEMAS (2015) (1)  -  7112 ALGORITMICA Y ESTRUCTURA DE DATOS I INGENIERIA DE SISTEMAS (2015) (1)  -  7113 MATEMATICA DISCRETA INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7419 SISTEMAS OPERATIVOS Y PROGRAMACION CONCURRENTE - Enf.: Sistemas empotrados",
+      "semestre": "7",
+      "correlatividad": "7111 COMUNICACION ORAL Y ESCRITA INGENIERIA DE SISTEMAS (2015) (1)  -  7112 ALGORITMICA Y ESTRUCTURA DE DATOS I INGENIERIA DE SISTEMAS (2015) (1)  -  7113 MATEMATICA DISCRETA INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7420 INTRODUCCION A LA ELECTRONICA PARA SISTEMAS EMPOTRADOS - Enf.: Sistemas empotrados",
+      "semestre": "7",
+      "correlatividad": "7111 COMUNICACION ORAL Y ESCRITA INGENIERIA DE SISTEMAS (2015) (1)  -  7112 ALGORITMICA Y ESTRUCTURA DE DATOS I INGENIERIA DE SISTEMAS (2015) (1)  -  7113 MATEMATICA DISCRETA INGENIERIA DE SISTEMAS ("
+    },
+    {
+      "materia": "7421 GESTION EMPRESARIAL TIC",
+      "semestre": "8",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7422 SEGURIDAD INFORMATICA",
+      "semestre": "8",
+      "correlatividad": "7412 AUDITORIA Y PERITAJE DE SISTEMAS INFORMATICOS INGENIERIA DE SISTEMAS (2015) (7)"
+    },
+    {
+      "materia": "7423 APLICACIONES PARA DISPOSITIVOS MOVILES - Enf.: TIC",
+      "semestre": "8",
+      "correlatividad": "7416 INTERACCION HOMBRE - MAQUINA INGENIERIA DE SISTEMAS (2015) (7)  -  7417 APLICACIONES PARA AMBIENTE WEB INGENIERIA DE SISTEMAS (2015) (7)"
+    },
+    {
+      "materia": "7424 TECNOLOGIAS EMERGENTES - Enf.: TIC",
+      "semestre": "8",
+      "correlatividad": "7415 ADMINISTRACION DE SISTEMAS INFORMATICOS INGENIERIA DE SISTEMAS (2015) (7)"
+    },
+    {
+      "materia": "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE - Enf.: TIC",
+      "semestre": "8",
+      "correlatividad": "7417 APLICACIONES PARA AMBIENTE WEB INGENIERIA DE SISTEMAS (2015) (7)"
+    },
+    {
+      "materia": "7426 PASANTIA PROFESIONAL SUPERVISADA",
+      "semestre": "8",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7431 CONTROL EN SISTEMAS EMPOTRADOS - Enf.: Sistemas empotrados",
+      "semestre": "8",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7432 TIEMPO REAL EN SISTEMAS EMPOTRADOS - Enf.: Sistemas empotrados",
+      "semestre": "8",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7433 DISEÑO AVANZADO DE SISTEMAS DIGITALES Y CODISEÑO DE HARDWARE Y SOFTWARE - Enf.: Sistemas empotrados",
+      "semestre": "8",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7511 GESTIÓN DEL CONOCIMIENTO Y GOBIERNO ELECTRÓNICO - Enf.: TIC",
+      "semestre": "9",
+      "correlatividad": "7415 ADMINISTRACION DE SISTEMAS INFORMATICOS INGENIERIA DE SISTEMAS (2015) (7)"
+    },
+    {
+      "materia": "7512 GESTIÓN DE CENTRO DE PROCESOS DE DATOS - Enf.: TIC",
+      "semestre": "9",
+      "correlatividad": "7424 TECNOLOGIAS EMERGENTES INGENIERIA DE SISTEMAS (2015) (8)"
+    },
+    {
+      "materia": "7513 SOFTWARE DE GESTIÓN INTEGRADA - Enf.: TIC",
+      "semestre": "9",
+      "correlatividad": "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE INGENIERIA DE SISTEMAS (2015) (8)"
+    },
+    {
+      "materia": "7514 TRABAJO FINAL DE GRADO I",
+      "semestre": "9",
+      "correlatividad": "7426 PASANTIA PROFESIONAL SUPERVISADA INGENIERIA DE SISTEMAS (2015) (8)"
+    },
+    {
+      "materia": "7515 BUSES Y COMUNICACIONES EN SISTEMAS EMPOTRADOS - Enf.: Sistemas empotrados",
+      "semestre": "9",
+      "correlatividad": "7433 DISEÑO AVANZADO DE SISTEMAS DIGITALES Y CODISEÑO DE HARDWARE Y SOFTWARE INGENIERIA DE SISTEMAS (2015) (8)"
+    },
+    {
+      "materia": "7516 PROCESADO DIGITAL DE SEÑALES Y HARDWARE PARA PDS - Enf.: Sistemas empotrados",
+      "semestre": "9",
+      "correlatividad": "7432 TIEMPO REAL EN SISTEMAS EMPOTRADOS INGENIERIA DE SISTEMAS (2015) (8)"
+    },
+    {
+      "materia": "7517 SENSORES Y ACTUADORES - Enf.: Sistemas empotrados",
+      "semestre": "9",
+      "correlatividad": "7431 CONTROL EN SISTEMAS EMPOTRADOS INGENIERIA DE SISTEMAS (2015) (8)"
+    },
+    {
+      "materia": "7521 INTELIGENCIA DE NEGOCIO - Enf.: TIC",
+      "semestre": "10",
+      "correlatividad": "7413 INTELIGENCIA ARTIFICIAL II INGENIERIA DE SISTEMAS (2015) (7)  -  7511 GESTIÓN DEL CONOCIMIENTO Y GOBIERNO ELECTRÓNICO INGENIERIA DE SISTEMAS (2015) (9)"
+    },
+    {
+      "materia": "7522 PROCESAMIENTO DIGITAL DE IMÁGENES - Enf.: TIC",
+      "semestre": "10",
+      "correlatividad": "7413 INTELIGENCIA ARTIFICIAL II INGENIERIA DE SISTEMAS (2015) (7)"
+    },
+    {
+      "materia": "7523 DISEÑO, ADMINISTRACIÓN Y SEGURIDAD EN REDES DE COMPUTADORAS - Enf.: TIC",
+      "semestre": "10",
+      "correlatividad": "7512 GESTIÓN DE CENTRO DE PROCESOS DE DATOS INGENIERIA DE SISTEMAS (2015) (9)"
+    },
+    {
+      "materia": "7524 TRABAJO FINAL DE GRADO II",
+      "semestre": "10",
+      "correlatividad": ""
+    },
+    {
+      "materia": "7525 DISEÑO DE SISTEMAS INTEGRADOS ON-CHIP. DISEÑO BASADO EN MODELOS - Enf.: Sistemas empotrados",
+      "semestre": "10",
+      "correlatividad": "7515 BUSES Y COMUNICACIONES EN SISTEMAS EMPOTRADOS INGENIERIA DE SISTEMAS (2015) (9)"
+    },
+    {
+      "materia": "7526 SOFTWARE DE COMUNICACIÓN EN AMBIENTES EMPOTRADOS. FIABILIDAD EN SISTEMAS EMPOTRADOS - Enf.: Sistemas empotrados",
+      "semestre": "10",
+      "correlatividad": "7515 BUSES Y COMUNICACIONES EN SISTEMAS EMPOTRADOS INGENIERIA DE SISTEMAS (2015) (9)  -  7516 PROCESADO DIGITAL DE SEÑALES Y HARDWARE PARA PDS INGENIERIA DE SISTEMAS (2015) (9)"
+    },
+    {
+      "materia": "7527 INTELIGENCIA EMPOTRADA. SISTEMAS UBÍCUOS - Enf.: Sistemas empotrados",
+      "semestre": "10",
+      "correlatividad": "7413 INTELIGENCIA ARTIFICIAL II INGENIERIA DE SISTEMAS (2015) (7)  -  7517 SENSORES Y ACTUADORES INGENIERIA DE SISTEMAS (2015) (9)"
+    },
+    {
+      "materia": "7A11 ACTIVIDADES DE EXTENSIÓN",
+      "semestre": "",
+      "correlatividad": ""
+    }
+  ]
+}

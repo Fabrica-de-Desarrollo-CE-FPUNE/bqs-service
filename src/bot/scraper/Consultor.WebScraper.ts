@@ -1,11 +1,11 @@
 import puppeteer, { Browser, HTTPResponse, Page } from "puppeteer";
-import { IConsultorScaper } from "./Scraper.interfaces";
+import { IConsultorWebScraper } from "./WebScraper.Interfaces";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { ScraperError, ScraperErrorType } from "../../errors/ConsultorScraperErrors";
 import { StatusCodes } from "http-status-codes";
 
 
-export class ConsultorScraper implements IConsultorScaper{
+export class ConsultorWebScraper implements IConsultorWebScraper{
 
     private acceso: Alumno_credencial_login | null; 
     private urls = {

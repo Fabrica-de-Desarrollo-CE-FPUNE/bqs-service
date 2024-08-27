@@ -1,9 +1,7 @@
 import { Router } from 'express';
 import { Alumno_credencial_login } from '../types/ConsultorEstudianteCredenciales.types';
-import { ConsultorTableProcessor } from '../bot/processors/ConsultorTableProcessor';
-import { ConsultorBasicEstudianteInfoParser, ConsultorTableEstudianteTableInfoParser } from '../bot/parser/ConsultorParser';
-import { ConsultorService } from '../core/ConsultorService';
-import { ConsultorScraper } from '../bot/scraper/ConsultorScraper';
+import { ConsultorDataService } from '../core/ConsultorService';
+import { StatusCodes } from 'http-status-codes';
 const router = Router();
 
 router.get('/info/', async (req, res) => {
@@ -16,20 +14,13 @@ router.get('/info/', async (req, res) => {
       });
       return;
     }
-    const credenciales: Alumno_credencial_login = {
+    const credenciales:Alumno_credencial_login = {
       cedula: user as string, 
       contrasenia: pass as string
     };
-    const html = await new ConsultorScraper(credenciales).getConsultorDetallesPage();
-    const processor = new ConsultorTableProcessor(html);
-    const contents = await processor.process();
-    const basicParser = new ConsultorBasicEstudianteInfoParser(html);
-    const tableparser = new ConsultorTableEstudianteTableInfoParser(contents);
-    tableparser.parse();
-    const servicelayer= new ConsultorService(basicParser, tableparser);
-    const result = await servicelayer.getAll_Consultor_Info();
-    return res.status(200).send(result);
-
+    const consultorService = new ConsultorDataService();
+    const result = await consultorService.getAll_Consultor_Info(credenciales);
+    return res.status(StatusCodes.OK).send(result);
 });
 
 export { router };
