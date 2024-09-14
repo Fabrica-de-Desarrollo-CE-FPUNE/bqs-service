@@ -23,8 +23,6 @@ export class ScraperError extends Error{
     }
 
 }
-
-
 export class ScraperErrorFactory {
 
     public static InvalidUserError(): ScraperError{

@@ -1,7 +1,7 @@
 import { Page } from "puppeteer";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { IConsultorWebScraper } from "./WebScraper.Interfaces";
-import { ScraperError, ScraperErrorFactory, ScraperErrorType } from "../../errors/ConsultorScraperErrors";
+import { ScraperError, ScraperErrorFactory } from "../../errors/ConsultorScraperErrors";
 import { PuppeteerManager } from './PuppeteerManager';
 
 

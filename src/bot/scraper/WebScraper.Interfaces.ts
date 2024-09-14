@@ -5,5 +5,5 @@
  * @since v1.0.0
  */
 export interface IConsultorWebScraper{
-  getConsultorDetallesPage(): Promise<string>;
+  getConsultorData(): Promise<string>;
 }
