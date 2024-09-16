@@ -15,7 +15,7 @@ export class ConsultorDataService implements IConsultorDataProvider{
 
     public async getAll_Consultor_Info(credencial: Alumno_credencial_login): Promise<vista_info_consultor> {
         const scraper = new ConsultorWebScraper(credencial);
-        const consultor_pagina = await scraper.getConsultorDetallesPage();
+        const consultor_pagina = await scraper.getConsultorData();
         const parser = new ConsultorWebParser(consultor_pagina);
         parser.parse();
 

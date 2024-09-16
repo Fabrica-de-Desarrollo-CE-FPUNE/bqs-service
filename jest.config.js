@@ -9,7 +9,8 @@ module.exports = {
       }
     },
     transform: {
-      '^.+\\.(ts|tsx)$': 'ts-jest'
+      '^.+\\.(ts|tsx)$': 'ts-jest',
+      "^.+\\.(js)$": "babel-jest"
     },
     moduleNameMapper: {
       '^@src/(.*)$': '<rootDir>/src/$1'
