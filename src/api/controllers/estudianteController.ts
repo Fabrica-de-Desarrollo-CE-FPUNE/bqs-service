@@ -30,9 +30,6 @@ export class EstudianteController {
                     case ScraperErrorType.INVALID_AUTH_STUDENT_ERROR:
                         next(EstudianteError.notValidRequestEstudiante());
                         break;
-                    case ScraperErrorType.UNEXPECTED_LOGIN_ERROR: 
-                        next(EstudianteError.notServiceEstudiante());
-                        break;
                     case ScraperErrorType.UNEXPECTED_ERROR: 
                         next(EstudianteError.notServiceEstudiante());
                         break;
