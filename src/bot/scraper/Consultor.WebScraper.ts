@@ -19,7 +19,7 @@ export class ConsultorWebScraper implements IConsultorWebScraper{
     }
 
 
-    public async getConsultorDetallesPage(): Promise<string> {
+    public async getConsultorData(): Promise<string> {
         try{
             const pup_browser_options = {
                 headless: true
@@ -32,13 +32,13 @@ export class ConsultorWebScraper implements IConsultorWebScraper{
                     waitUntil: "networkidle2"
                 }
             ) as HTTPResponse;
-            if(login_response.status() != StatusCodes.OK){
+          /*  if(login_response.status() != StatusCodes.OK){
                 throw ScraperError.NewError({
                     message: `Error de pagina inesperado`, 
                     type: ScraperErrorType.UNEXPECTED_LOGIN_ERROR, 
                     reason: `codigo de error de pagina: ${login_response.status()}`
                 });
-            }
+            }*/
             const cedula_selector: string = 'input[name="usuario"]';
             const contrasenia_selector:string = 'input[name="clave"]';
             const login_button_selector:string = 'button[type="submit"]';
