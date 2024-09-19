@@ -9,38 +9,18 @@ import ErrorConStatusConstructor from "./ErrorConStatusConstructor";
  */
 export class EstudianteError {
 
-    /**
-     * Genera un error de tipo "No encontrado" para información de estudiantes.
-     * @returns Un objeto ErrorWithStatus con el mensaje y el código de estado 404.
-     */
-    public static notFoundEstudianteInfo(): ErrorConStatusConstructor {
-        return new ErrorConStatusConstructor('No encontramos la información del estudiante.', StatusCodes.NOT_FOUND);
+    public static BAD_BODY_FORMAT = "BODY_ERR-1";
+    public static NOT_BODY_SENT = "BODY_ERR-2";
+
+
+    public static newError(message: string, errorCode?: string, status?: number): ErrorConStatusConstructor{
+        return new ErrorConStatusConstructor(message, status, errorCode);
     }
 
-    /**
-     * Genera un error de tipo "Servicio no disponible" para estudiantes.
-     * @returns Un objeto ErrorWithStatus con el mensaje y el código de estado 503.
-     */
-    public static notServiceEstudiante(): ErrorConStatusConstructor {
-        return new ErrorConStatusConstructor('Servicio de estudiante no disponible.', StatusCodes.SERVICE_UNAVAILABLE);
+    public static InvalidBodyFormRequest(): ErrorConStatusConstructor {
+        return new ErrorConStatusConstructor('El body esta mal formado', StatusCodes.BAD_REQUEST,EstudianteError.BAD_BODY_FORMAT);
     }
-
-    /**
-     * Genera un error de tipo "Datos no enviados correctamente" para la obtencion de los datos del estudiantes
-     * @returns Un objeto ErrorWithStatus con el mensaje y el código de estado 400.
-     */
-    public static notValidRequestEstudiante(): ErrorConStatusConstructor{
-        return new ErrorConStatusConstructor('La cedula/pass no fueron enviados Correctamente', StatusCodes.BAD_REQUEST);
+    public static NotBodyFormSent(): ErrorConStatusConstructor{
+        return new ErrorConStatusConstructor('No se ha enviado un bodyform', StatusCodes.BAD_REQUEST, EstudianteError.BAD_BODY_FORMAT);
     }
-
-    
-    /**
-     * Genera un error de tipo "el cuerpo de la request es invalidad" al momento de hacer la request al server.
-     * @returns Un objeto ErrorWithStatus con el mensaje y el código de estado 400.
-     */
-
-    public static notValidBodyEstudiante(): ErrorConStatusConstructor{
-        return new ErrorConStatusConstructor('El cuerpo de la request no es valida', StatusCodes.BAD_REQUEST);
-    }
-
 }

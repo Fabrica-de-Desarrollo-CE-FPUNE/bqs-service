@@ -32,11 +32,11 @@ export class DeveloperController {
             const { falla1, falla2 } = req.query;
 
             if (falla1) {
-                throw EstudianteError.notFoundEstudianteInfo();
+               // throw EstudianteError.notFoundEstudianteInfo();
             }
 
             if (falla2) {
-                throw EstudianteError.notServiceEstudiante();
+               // throw EstudianteError.notServiceEstudiante();
             }
 
             const data: info_estudiante = {

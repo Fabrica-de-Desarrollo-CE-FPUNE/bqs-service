@@ -32,14 +32,11 @@ import { StatusCodes } from 'http-status-codes';
 export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction): void => {
   // Transformación del error tipo any a ErrorConStatus
   const errorStatus: ErrorConStatus = error as ErrorConStatus;
-
-  // Registrar el stack trace del error en la consola
- // console.error(errorStatus.stack);
-
   // Enviar respuesta HTTP con el mensaje de error y el código de estado
-  res.status(errorStatus.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
+  res.status(errorStatus.status || StatusCodes.BAD_REQUEST).json({
     error: {
       message: errorStatus.message,
+      errorCode: errorStatus.errorCode
     },
   });
 };
