@@ -21,6 +21,6 @@ export class EstudianteError {
         return new ErrorConStatusConstructor('El body esta mal formado', StatusCodes.BAD_REQUEST,EstudianteError.BAD_BODY_FORMAT);
     }
     public static NotBodyFormSent(): ErrorConStatusConstructor{
-        return new ErrorConStatusConstructor('No se ha enviado un bodyform', StatusCodes.BAD_REQUEST, EstudianteError.BAD_BODY_FORMAT);
+        return new ErrorConStatusConstructor('No se ha enviado un bodyform', StatusCodes.BAD_REQUEST, EstudianteError.NOT_BODY_SENT);
     }
 }
