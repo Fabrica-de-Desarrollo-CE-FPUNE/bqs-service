@@ -17,7 +17,7 @@ export class PuppeteerManager {
 
     public async initialize(options?: PuppeteerLaunchOptions): Promise<void>{
         if(!options){
-            this.options = {headless: true};
+            this.options = {headless: true, timeout:0};
         }
         this.options = options as PuppeteerLaunchOptions;
         if(!this.browser){
