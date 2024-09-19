@@ -9,7 +9,7 @@ export class EstudianteController {
 
     public getInfoEstudiante = async (req:Request, res:Response, next:NextFunction) : Promise<void> => {
         try {
-            if(!req.body){
+            if(req.body.constructor === Object && Object.keys(req.body).length === 0){
                throw EstudianteError.NotBodyFormSent();
             }
             const {cedula, pass} = req.body;
