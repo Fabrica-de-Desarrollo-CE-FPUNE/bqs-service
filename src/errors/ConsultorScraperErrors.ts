@@ -1,6 +1,5 @@
 
 export enum ScraperErrorType {
-    INITIALIZATION_ERROR, 
     INVALID_AUTH_STUDENT_ERROR, 
     UNEXPECTED_ERROR
 }
@@ -29,14 +28,6 @@ export class ScraperErrorFactory {
       return ScraperError.NewError({
             message: "cedula/password incorrectos", 
             type: ScraperErrorType.INVALID_AUTH_STUDENT_ERROR
-        });
-    }
-
-    public static InitializationError(): ScraperError{
-        return ScraperError.NewError({
-            message: "Failed to load api link, check env file", 
-            type: ScraperErrorType.INITIALIZATION_ERROR,
-            reason: "api_* variables expected a string, got undefined"
         });
     }
 

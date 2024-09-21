@@ -17,10 +17,6 @@ export class ConsultorJsonWebScraper implements IConsultorWebScraper{
         this.api_link = process.env.CONSULTOR_API_LINK as string;
         this.api_success = process.env.CONSULTOR_API_SUCCESS as string; 
         this.api_error = process.env.CONSULTOR_API_ERROR as string;
-       if(!this.api_link || !this.api_error || !this.api_success){
-            throw ScraperErrorFactory.InitializationError();
-       }
-
     }
     public async getConsultorData(): Promise<string> {
         try{

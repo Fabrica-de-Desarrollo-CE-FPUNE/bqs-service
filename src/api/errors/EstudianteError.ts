@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import ErrorConStatusConstructor from "./ErrorConStatusConstructor";
+import { ApiRequestErrorCodes } from "./ApiErrorCodes";
 
 /**
  * Clase para errores específicos de estudiantes, extendiendo ErrorConStatus.
@@ -8,20 +9,23 @@ import ErrorConStatusConstructor from "./ErrorConStatusConstructor";
  * @version 1.0.0
  */
 export class EstudianteError {
-
-    /**
-     * Genera un error de tipo "No encontrado" para información de estudiantes.
-     * @returns Un objeto ErrorWithStatus con el mensaje y el código de estado 404.
-     */
-    public static notFoundEstudianteInfo(): ErrorConStatusConstructor {
-        return new ErrorConStatusConstructor('No encontramos la información del estudiante.', StatusCodes.NOT_FOUND);
+    public static newError(message: string, errorCode?: string, status?: number): ErrorConStatusConstructor{
+        return new ErrorConStatusConstructor(message, status, errorCode);
     }
 
     /**
-     * Genera un error de tipo "Servicio no disponible" para estudiantes.
-     * @returns Un objeto ErrorWithStatus con el mensaje y el código de estado 503.
+     * se usa cuando el formato del body es incorrecto
+     * 
+     * @returns ErrorConStatusConstructor
      */
-    public static notServiceEstudiante(): ErrorConStatusConstructor {
-        return new ErrorConStatusConstructor('Servicio de estudiante no disponible.', StatusCodes.SERVICE_UNAVAILABLE);
+    public static InvalidBodyFormRequest(): ErrorConStatusConstructor {
+        return new ErrorConStatusConstructor('El body esta mal formado', StatusCodes.BAD_REQUEST,ApiRequestErrorCodes.BAD_BODY_FORMAT);
+    }
+    /**
+     * se usa cuando el body es un objeto vacio, es decir no se envio un body
+     * @returns ErrorConStatusConstructor
+     */
+    public static NotBodyFormSent(): ErrorConStatusConstructor{
+        return new ErrorConStatusConstructor('No se ha enviado un bodyform', StatusCodes.BAD_REQUEST, ApiRequestErrorCodes.NOT_BODY_SENT);
     }
 }
