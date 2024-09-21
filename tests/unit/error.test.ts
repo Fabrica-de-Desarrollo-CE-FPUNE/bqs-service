@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express, { NextFunction, Request, Response, Router } from 'express';
-import { errorHandler } from '../src/api/middlewares/errorMiddleware';
-import ErrorConStatus from '../src/errors/ErrorConStatus';
+import { errorHandler } from '../../src/api/middlewares/errorMiddleware';
+import ErrorConStatus from '../../src/errors/ErrorConStatus';
 import { StatusCodes } from 'http-status-codes';
 
 // Middleware de prueba que fuerza un error

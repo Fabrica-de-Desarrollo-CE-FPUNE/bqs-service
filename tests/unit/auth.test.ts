@@ -1,8 +1,8 @@
 import express from 'express';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
-import { authenticateToken } from '../src/api/middlewares/authMiddleware';
-import { firmarToken } from '../src/api/utils/tokenUtil';
+import { authenticateToken } from '../../src/api/middlewares/authMiddleware';
+import { firmarToken } from '../../src/api/utils/tokenUtil';
 import { StatusCodes } from 'http-status-codes';
 
 // Clave secreta para pruebas
