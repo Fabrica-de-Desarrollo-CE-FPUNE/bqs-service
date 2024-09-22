@@ -1,0 +1,228 @@
+{
+  "info_calificaciones": [
+    {
+      "materia": "7111 COMUNICACION ORAL Y ESCRITA",
+      "semestre": "1",
+      "fecha": "10/06/2022",
+      "nota": "Tres",
+      "acta": "5782"
+    },
+    {
+      "materia": "7112 ALGORITMICA Y ESTRUCTURA DE DATOS I",
+      "semestre": "1",
+      "fecha": "21/06/2022",
+      "nota": "Cuatro",
+      "acta": "5848"
+    },
+    {
+      "materia": "7113 MATEMATICA DISCRETA",
+      "semestre": "1",
+      "fecha": "16/06/2022",
+      "nota": "Dos",
+      "acta": "5783"
+    },
+    {
+      "materia": "7114 ALGEBRA LINEAL",
+      "semestre": "1",
+      "fecha": "29/06/2022",
+      "nota": "Tres",
+      "acta": "5851"
+    },
+    {
+      "materia": "7115 EMPRENDEDURISMO Y LIDERAZGO",
+      "semestre": "1",
+      "fecha": "01/07/2022",
+      "nota": "Cuatro",
+      "acta": "5852"
+    },
+    {
+      "materia": "7116 GEOMETRIA ANALITICA",
+      "semestre": "1",
+      "fecha": "22/06/2022",
+      "nota": "Dos",
+      "acta": "5853"
+    },
+    {
+      "materia": "7121 IDIOMAS I",
+      "semestre": "2",
+      "fecha": "24/11/2022",
+      "nota": "Cinco",
+      "acta": "6000"
+    },
+    {
+      "materia": "7122 ALGORITMICA Y ESTRUCTURA DE DATOS II",
+      "semestre": "2",
+      "fecha": "01/12/2022",
+      "nota": "Cuatro",
+      "acta": "6068"
+    },
+    {
+      "materia": "7123 FISICA I",
+      "semestre": "2",
+      "fecha": "23/06/2023",
+      "nota": "Uno",
+      "acta": "6272"
+    },
+    {
+      "materia": "7123 FISICA I",
+      "semestre": "2",
+      "fecha": "16/11/2023",
+      "nota": "Uno",
+      "acta": "6411"
+    },
+    {
+      "materia": "7123 FISICA I",
+      "semestre": "2",
+      "fecha": "13/06/2024",
+      "nota": "Cuatro",
+      "acta": "6619"
+    },
+    {
+      "materia": "7124 CALCULO I",
+      "semestre": "2",
+      "fecha": "14/11/2022",
+      "nota": "Uno",
+      "acta": "6003"
+    },
+    {
+      "materia": "7124 CALCULO I",
+      "semestre": "2",
+      "fecha": "06/06/2023",
+      "nota": "Uno",
+      "acta": "6205"
+    },
+    {
+      "materia": "7124 CALCULO I",
+      "semestre": "2",
+      "fecha": "20/06/2023",
+      "nota": "Dos",
+      "acta": "6273"
+    },
+    {
+      "materia": "7125 SISTEMAS OPERATIVOS",
+      "semestre": "2",
+      "fecha": "20/06/2023",
+      "nota": "Dos",
+      "acta": "6275"
+    },
+    {
+      "materia": "7126 ARQUITECTURA DE COMPUTADORAS I",
+      "semestre": "2",
+      "fecha": "21/06/2023",
+      "nota": "Dos",
+      "acta": "6276"
+    },
+    {
+      "materia": "7127 PROBABILIDAD Y ESTADISTICA I",
+      "semestre": "2",
+      "fecha": "05/06/2023",
+      "nota": "Dos",
+      "acta": "6209"
+    },
+    {
+      "materia": "7211 IDIOMAS II",
+      "semestre": "3",
+      "fecha": "15/06/2023",
+      "nota": "Cinco",
+      "acta": "6210"
+    },
+    {
+      "materia": "7212 LENGUAJES FORMALES Y AUTÓMATAS",
+      "semestre": "3",
+      "fecha": "09/06/2023",
+      "nota": "Cinco",
+      "acta": "6211"
+    },
+    {
+      "materia": "7213 FÍSICA II",
+      "semestre": "3",
+      "fecha": "19/06/2024",
+      "nota": "Cuatro",
+      "acta": "6697"
+    },
+    {
+      "materia": "7214 CÁLCULO II",
+      "semestre": "3",
+      "fecha": "17/11/2023",
+      "nota": "Tres",
+      "acta": "6420"
+    },
+    {
+      "materia": "7215 LENGUAJE DE PROGRAMACIÓN I",
+      "semestre": "3",
+      "fecha": "08/06/2023",
+      "nota": "Cinco",
+      "acta": "6214"
+    },
+    {
+      "materia": "7216 ARQUITECTURA DE COMPUTADORAS II",
+      "semestre": "3",
+      "fecha": "29/11/2023",
+      "nota": "Cuatro",
+      "acta": "6491"
+    },
+    {
+      "materia": "7217 PROBABILIDAD Y ESTADÍSTICAS II",
+      "semestre": "3",
+      "fecha": "14/11/2023",
+      "nota": "Cuatro",
+      "acta": "6423"
+    },
+    {
+      "materia": "7221 REDES DE COMPUTADORAS I",
+      "semestre": "4",
+      "fecha": "05/06/2024",
+      "nota": "Tres",
+      "acta": "6632"
+    },
+    {
+      "materia": "7222 BASE DE DATOS I",
+      "semestre": "4",
+      "fecha": "18/06/2024",
+      "nota": "Dos",
+      "acta": "6703"
+    },
+    {
+      "materia": "7223 FISICA III",
+      "semestre": "4",
+      "fecha": "27/06/2024",
+      "nota": "Cuatro",
+      "acta": "6704"
+    },
+    {
+      "materia": "7224 CALCULO III",
+      "semestre": "4",
+      "fecha": "27/11/2023",
+      "nota": "Cuatro",
+      "acta": "6496"
+    },
+    {
+      "materia": "7225 COMPILADORES",
+      "semestre": "4",
+      "fecha": "23/11/2023",
+      "nota": "Cinco",
+      "acta": "6428"
+    },
+    {
+      "materia": "7226 CONTABILIDAD",
+      "semestre": "4",
+      "fecha": "20/11/2023",
+      "nota": "Cuatro",
+      "acta": "6429"
+    },
+    {
+      "materia": "7227 INGENIERIA DE SOFTWARE I",
+      "semestre": "4",
+      "fecha": "01/12/2023",
+      "nota": "Cuatro",
+      "acta": "6499"
+    },
+    {
+      "materia": "7315 LENGUAJE DE PROGRAMACION II",
+      "semestre": "5",
+      "fecha": "03/06/2024",
+      "nota": "Cinco",
+      "acta": "6643"
+    }
+  ]
+}

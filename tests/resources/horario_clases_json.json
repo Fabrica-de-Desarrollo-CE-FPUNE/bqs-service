@@ -1,0 +1,52 @@
+{
+  "info_extension": [
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "materia": "7325 LENGUAJE DE PROGRAMACION III",
+      "grupo": "1",
+      "dia": "Lunes",
+      "horario": "13:10:00 - 17:10:00",
+      "programa_estudio": "http://www.fpune.edu.py/web/docs/programas/7325.pdf"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "materia": "7323 INGENIERIA DE SOFTWARE II",
+      "grupo": "1",
+      "dia": "Martes",
+      "horario": "08:00:00 - 12:00:00",
+      "programa_estudio": "http://www.fpune.edu.py/web/docs/programas/7323.pdf"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "materia": "7322 SIMULACION DE SISTEMAS ESTOCASTICOS",
+      "grupo": "1",
+      "dia": "Miercoles",
+      "horario": "14:00:00 - 18:00:00",
+      "programa_estudio": "http://www.fpune.edu.py/web/docs/programas/7322.pdf"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "materia": "7321 SISTEMAS DISTRIBUIDOS",
+      "grupo": "1",
+      "dia": "Jueves",
+      "horario": "15:00:00 - 20:00:00",
+      "programa_estudio": "http://www.fpune.edu.py/web/docs/programas/7321.pdf"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "materia": "7324 INTELIGENCIA ARTIFICIAL I",
+      "grupo": "1",
+      "dia": "Viernes",
+      "horario": "08:00:00 - 12:00:00",
+      "programa_estudio": "http://www.fpune.edu.py/web/docs/programas/7324.pdf"
+    },
+    {
+      "carrera": "INGENIERIA DE SISTEMAS (2015)",
+      "materia": "7326 ECONOMIA Y FINANZAS",
+      "grupo": "1",
+      "dia": "Viernes",
+      "horario": "13:30:00 - 17:30:00",
+      "programa_estudio": "http://www.fpune.edu.py/web/docs/programas/7326.pdf"
+    }
+  ]
+}
