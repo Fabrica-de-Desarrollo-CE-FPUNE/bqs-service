@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import bodyParser from 'body-parser';
 import estudianteRouter from './routers/EstudianteRouter';
+
 import { PuppeteerManager } from '../bot/scraper/PuppeteerManager';
 import logger from '../log/logger';
 import UnknownRouter from './routers/UnknownRoutes';
