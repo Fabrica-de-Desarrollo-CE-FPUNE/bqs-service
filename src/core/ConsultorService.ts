@@ -12,6 +12,7 @@ import { ConsultorWebParser } from "../bot/parser/Consultor.WebParser";
 import { IConsultorWebParser } from "../bot/parser/WebParser.Interfaces";
 import { ScraperError, ScraperErrorType } from "../errors/ConsultorScraperErrors";
 import { ConsultorErrorFactory, ConsultorServiceError } from "./ConsultorServiceError";
+import logger from "../log/logger";
 
 
 
@@ -70,7 +71,6 @@ export class ConsultorDataService implements IConsultorDataProvider{
     }
 
     private handleScraperError(error: ScraperError): ConsultorServiceError{
-        //aniadir logger aqui
         switch(error.type){
             case ScraperErrorType.INVALID_AUTH_STUDENT_ERROR: 
                 return ConsultorErrorFactory.InvalidCredentialError();
@@ -82,17 +82,18 @@ export class ConsultorDataService implements IConsultorDataProvider{
 
     }
     private handleUnkownError(error: Error): ConsultorServiceError{
-        // aniadir logger aqui
         return ConsultorErrorFactory.InternalError();
 
     }
 
     public async getAll_Consultor_Info(credencial: Alumno_credencial_login): Promise<vista_info_consultor> {
         try {
-            //todo: en el futuro pasar por constructor estas clases, para reducir acoplamiento
+          logger.debug('composing the scraper and parser');
           const scraper = new ConsultorWebScraper(credencial);
+          logger.debug('asking for data to the university server')
           const consultor_pagina = await scraper.getConsultorData();
           const parser = new ConsultorWebParser(consultor_pagina);
+          logger.debug('parsing the response of the university server');
           parser.parse();
           const result = this.getVistaInfo(parser);
           return result;
