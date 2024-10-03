@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import { EstudianteController } from "../controllers/estudianteController";
-import { errorHandler } from "../middlewares/errorMiddleware";
+import { EstudianteController } from "../controllers/EstudianteController";
+import { errorHandler } from "../middlewares/ErrorMiddleware";
 
 
 const estudianteRouter:Router = Router();

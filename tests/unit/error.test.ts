@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express, { NextFunction, Request, Response, Router } from 'express';
-import { errorHandler } from '../../src/api/middlewares/errorMiddleware';
+import { errorHandler } from '../../src/api/middlewares/ErrorMiddleware';
 import ErrorConStatus from '../../src/errors/ErrorConStatus';
 import { StatusCodes } from 'http-status-codes';
 

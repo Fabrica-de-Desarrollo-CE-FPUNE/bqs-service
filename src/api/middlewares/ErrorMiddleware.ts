@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import ErrorConStatus from '../../errors/ErrorConStatus'
 import { StatusCodes } from 'http-status-codes';
+import logger from "../../log/logger";
 
 /**
  * Middleware de manejo de errores.
@@ -30,9 +31,9 @@ import { StatusCodes } from 'http-status-codes';
  * @autor David Delvalle Rojas
  */
 export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction): void => {
-  // Transformación del error tipo any a ErrorConStatus
   const errorStatus: ErrorConStatus = error as ErrorConStatus;
-  // Enviar respuesta HTTP con el mensaje de error y el código de estado
+  logger.warn(`An error for a request has been handled, ${errorStatus.message} | ${errorStatus.name}`)
+  logger.warn(`Informing back the client with the error response`);
   res.status(errorStatus.status || StatusCodes.BAD_REQUEST).json({
     error: {
       message: errorStatus.message,
