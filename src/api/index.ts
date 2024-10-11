@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import estudianteRouter from './routers/EstudianteRouter';
 
 import { PuppeteerManager } from '../bot/scraper/PuppeteerManager';
@@ -10,7 +11,7 @@ import logger from '../log/logger';
 import UnknownRouter from './routers/UnknownRoutes';
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(cors()) //Falta configurar a donde ir, de esta manera permita que cualquiera lo consuma
 app.use(bodyParser.json());
 app.use('/api',estudianteRouter);
 app.use(UnknownRouter);
