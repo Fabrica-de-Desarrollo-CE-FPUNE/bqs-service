@@ -12,7 +12,7 @@ export class Materia {
     materia: string
 
     @ManyToMany(()=>Periodo, (periodo)=>periodo.id)
-    @JoinTable()
+    @JoinTable({name:'materias_periodos'})
     periodos: Periodo[]
 
     @OneToMany(()=>Inscripcion, (inscripcion)=>inscripcion.materia)
