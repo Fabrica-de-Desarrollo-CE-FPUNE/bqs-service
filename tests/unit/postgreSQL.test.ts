@@ -1,10 +1,12 @@
-import { FindOperator, Not } from 'typeorm';
+import { Not } from 'typeorm';
 import { AppDataSource } from '../../src/postgre/data-source';
 import { Inscripcion } from '../../src/postgre/entity/Inscripcion';
 import { Materia } from '../../src/postgre/entity/Materia';
 import { Periodo } from '../../src/postgre/entity/Periodo';
 import { Usuario } from '../../src/postgre/entity/Usuario';
 import dayjs from 'dayjs';
+import { Escala } from '../../src/postgre/entity/Escala';
+import { EscalaBase } from '../../src/postgre/entity/EscalaBase';
 
 
 describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
@@ -13,6 +15,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
     const periodoRepository = AppDataSource.getRepository(Periodo);
     const usuarioRepository = AppDataSource.getRepository(Usuario);
     const inscripcionRepository = AppDataSource.getRepository(Inscripcion);
+    const escalaRepository = AppDataSource.getRepository(Escala);
     const usuarioDeRepository = new Usuario();
 
     it('Conexión y creación de las tablas de base de datos y...', async () => {
@@ -29,7 +32,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
 
         const usuarioNuevoDataRaw = await AppDataSource.createQueryBuilder()
         .insert().into(Usuario).values({
-            nombreCompleto: 'Do aliquip veniam cupidatat',
+            nombre: 'Do aliquip veniam cupidatat',
             cedulaIdentidad: '3213132'
         }).execute();
         console.log(usuarioNuevoDataRaw); 
@@ -41,7 +44,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
 
         const usuarioUpdateDataRaw = await AppDataSource.createQueryBuilder()
         .update(Usuario).set({
-            nombreCompleto:'Salame',
+            nombre:'Salame',
             cedulaIdentidad:'6161000',
             celular:'0981911911'
         }).where(
@@ -56,11 +59,11 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
         const usuarioNuevoDataRaw = await AppDataSource.createQueryBuilder()
         .insert().into(Usuario).values([
             {
-                nombreCompleto: 'Incididunt dolor in cillum',
+                nombre: 'Incididunt dolor in cillum',
                 cedulaIdentidad: '123456'
             },
             {
-                nombreCompleto: 'Nisi veniam cupidatat aliquip',
+                nombre: 'Nisi veniam cupidatat aliquip',
                 cedulaIdentidad: '321421'
             }
         ]).execute();
@@ -87,10 +90,10 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
         const usuariosDataRaw = await AppDataSource.createQueryBuilder()
         /**
          * Teniendo en cuenta el alias en .from(Usuario,'alias') podes hacer
-         * .select("alias.id, alias.nombreCompleto")
+         * .select("alias.id, alias.nombre")
          * o bien .select('alias') para tener todos los elementos
          */
-        .select("alias.id, alias.nombreCompleto")
+        .select("alias.id, alias.nombre")
         .from(Usuario,'alias').execute();
 
         console.log(usuariosDataRaw);
@@ -102,7 +105,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
     it('-> [REPOSITORY]: insertar alumno/usuario...', async()=>{
 
         usuarioDeRepository.cedulaIdentidad = '6363333';
-        usuarioDeRepository.nombreCompleto = 'Nisi ullamco mollit.';
+        usuarioDeRepository.nombre = 'Nisi ullamco mollit.';
         
         await usuarioRepository.insert(usuarioDeRepository);
 
@@ -138,7 +141,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
 
     });
     
-    it('-> [REPOSITORY]: crear materia y generar una relación con un periodo... ', async ()=>{
+    it('-> [REPOSITORY]: crear materia, periodo, escala, inscripcion y relacionarlos... ', async ()=>{
 
         const periodo = new Periodo();
         const diaPrueba = dayjs('2024-10-21');
@@ -148,25 +151,52 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
         //Verificar si se guardó con éxito
         expect(periodo.id).toStrictEqual(1);
 
+        // Creación escala
+        const escala = new Escala();
+        escala.nombre='I 15-20-5-0-60';
 
+        const puntaje = new EscalaBase();
+        
+        puntaje.primeraParcial=15;
+        puntaje.segundaParcial=20;
+        puntaje.trabajoPractico=5;
+        // puntaje.trabajoLaboratorio dejamos asi pq por default puse que todos sean 0
+        await escalaRepository.save(escala)
+        // Verificamos si se creó correctamente
+        expect(escala.id).toStrictEqual(1);
+
+        // Creacion materia
         const materia = new Materia();
         materia.id = 1; // Acá hacemos de esta manera, es decir escrita porque el consultor ya tiene ids de base
-        materia.materia='Castellano';
+        materia.nombre='Castellano';
+        await materiaRepository.save(materia);
+
+        // Creación inscripción 
+        const inscripcion = new Inscripcion();
+        // Como ya esta guardado la información de materias, es solo asignarlo directamente
+        inscripcion.materia = materia; 
         /**
          * Procedemos al guardado relacional...
          * Una gran ventaja que tiene es que es capaz de sobreescribir información,
          * si tuvieramos por ejemplo ya un conjunto de periodos, podemos utilizar
-         * materia.periodos = [...periodosQueYaTeniamos, periodo] 
+         * inscripcion.periodos = [...periodosQueYaTeniamos, periodo] 
          * de tal forma agregar uno más
          */
-        materia.periodos = [periodo];
-        
-        await materiaRepository.save(materia);
+        inscripcion.periodos = [periodo];
+        inscripcion.escala = escala;
+        /**
+         * Hasta ahí todo bien, tenemos tambien similares de examenes finales y examenes parciales
+         * pero estos son relaciones muchos muchos(examenes finales) o bien la clave foranea lo tiene la otra tabla
+         * (examenes parciales).
+         * Toca guardar la inscripcion
+         */
+        await inscripcionRepository.save(inscripcion);
         // Verificamos por parte su existencia
-        expect(materia).toMatchObject({id:1});
-        expect(materia.periodos).not.toEqual(null);
-        expect(materia.periodos[0]).not.toEqual(null);
-        expect(materia.periodos[0]).toMatchObject({id:1});
+        expect(inscripcion).toMatchObject({id:1});
+        
+        expect(inscripcion.periodos).not.toEqual(null);
+        expect(inscripcion.periodos[0]).not.toEqual(null);
+        expect(inscripcion.periodos[0]).toMatchObject({id:1})
 
     });
 
@@ -174,10 +204,10 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
 
         // Para tener una busqueda´i
         const usuario = await usuarioRepository.findOneBy({
-            nombreCompleto: Not('')
+            nombre: Not('')
         })
         const materia = await materiaRepository.findOneBy({
-            materia: Not('')
+            nombre: Not('')
         });
 
         const inscripcion:Inscripcion = new Inscripcion();
