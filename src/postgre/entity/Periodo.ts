@@ -1,15 +1,20 @@
-import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, ManyToMany } from 'typeorm';
+import { Inscripcion } from './Inscripcion';
 
 @Entity()
 export class Periodo {
 
     @PrimaryGeneratedColumn()
-    id:number
+    id:number;
 
     @Column("date",{nullable:false})
-    fechaInscripcion: Date
+    fechaInscripcion: Date;
 
     @Column("date",{nullable:false})
-    fechaVigencia: Date
+    fechaVigencia: Date;
+
+
+    @ManyToMany(()=>Inscripcion, (inscripcion)=>inscripcion.periodos)
+    inscripciones:Inscripcion[];
 
 }
