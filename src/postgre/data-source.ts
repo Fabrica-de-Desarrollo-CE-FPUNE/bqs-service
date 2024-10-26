@@ -4,6 +4,9 @@ import { Usuario } from "./entity/Usuario"
 import { Materia } from "./entity/Materia"
 import { Inscripcion } from "./entity/Inscripcion"
 import { Periodo } from "./entity/Periodo"
+import { Escala } from "./entity/Escala"
+import { ResultadoParcial } from "./entity/ResultadoParcial"
+import { ExamenFinal } from "./entity/ExamenFinal"
 
 export const AppDataSource = new DataSource({
     cache:true,
@@ -15,7 +18,7 @@ export const AppDataSource = new DataSource({
     database: "control-extension-db",
     synchronize: true,
     logging: false,
-    entities: [Usuario, Materia, Periodo, Inscripcion],
+    entities: [Usuario, Materia, Periodo, Inscripcion, Escala, ResultadoParcial, ExamenFinal],
     migrations: [],
     subscribers: [],
 })
