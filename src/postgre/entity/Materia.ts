@@ -1,21 +1,11 @@
-import { Entity, Column, PrimaryColumn, ManyToMany, JoinTable, OneToMany } from "typeorm"
-import { Periodo } from "./Periodo"
+import { Entity, OneToMany } from "typeorm"
 import { Inscripcion } from "./Inscripcion"
+import { Base } from "./Base"
 
 @Entity()
-export class Materia {
-
-    @PrimaryColumn()
-    id: number
-
-    @Column("varchar", { length: 30 })
-    materia: string
-
-    @ManyToMany(()=>Periodo, (periodo)=>periodo.id)
-    @JoinTable({name:'materias_periodos'})
-    periodos: Periodo[]
+export class Materia extends Base {
 
     @OneToMany(()=>Inscripcion, (inscripcion)=>inscripcion.materia)
     inscripciones:Inscripcion[]
-    
+
 }
