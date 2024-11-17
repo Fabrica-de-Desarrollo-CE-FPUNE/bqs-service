@@ -131,3 +131,5 @@ dist
 
 coverage/
 nbproject/
+
+.idea/
