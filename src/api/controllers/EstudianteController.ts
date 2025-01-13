@@ -5,8 +5,11 @@ import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenci
 import { StatusCodes } from "http-status-codes";
 import { ConsultorServiceError } from "../../core/ConsultorServiceError";
 import logger from "../../log/logger";
+import { AlumnoController } from "../../postgre/controller/AlumnoController";
 
 export class EstudianteController {
+
+    private alumnoController = new AlumnoController();
 
     public getInfoEstudiante = async (req:Request, res:Response, next:NextFunction) : Promise<void> => {
         try {
@@ -27,8 +30,10 @@ export class EstudianteController {
             logger.debug('calling the core service for consultor data');
             const consultor_servicio: ConsultorDataService = new ConsultorDataService();
             const estudiante_data = await consultor_servicio.getAll_Consultor_Info(credenciales);
+            this.alumnoController.guardarAlumnoData(estudiante_data);
+
             logger.debug('returning the core service data to the client request');
-            res.status(StatusCodes.OK).send(estudiante_data);
+            res.status(StatusCodes.OK).send(await this.alumnoController.extraerAlumnoData(cedula));
         } catch (error) {
             if(error instanceof ConsultorServiceError){
                 next(EstudianteError.newError(error.message, error.errorCode));
