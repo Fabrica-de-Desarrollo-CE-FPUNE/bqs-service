@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 app.get('/protected', authenticateToken, (req, res) => {
-    res.status(200).json({ mensaje: 'Acceso concedido', usuario: req.body.usuario });
+    res.status(200).json({ mensaje: 'Acceso concedido', usuario: req.usuario });
 });
 
 // Rutas para firmar tokens y probar la autenticación

@@ -2,6 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
+declare module 'express-serve-static-core' {
+  interface Request {
+    usuario?: any; // Cambiar 'any' por un tipo más específico si tienes un modelo de usuario
+  }
+}
+
 const SECRET_KEY: string  = "la super contraseña que debería ser anonima y ubicada como variable de entorno"+
 " pero que siento que es muy inseguro igual y prefiero hacer que sea dinamico";
 
@@ -9,13 +15,16 @@ const SECRET_KEY: string  = "la super contraseña que debería ser anonima y ubi
 export function authenticateToken(req: Request, res: Response, next: NextFunction) {
     const token = req.headers['authorization'];
     if (!token) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token de autenticación requerido' });
+      res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token de autenticación requerido' });
+      return;
     }
     jwt.verify(token.split(' ')[1], SECRET_KEY, (err: any, decoded) => {
       if (err) {
-        return res.status(403).json({ error: 'Token de autenticación inválido' });
+        res.status(403).json({ error: 'Token de autenticación inválido' });
+        return;
       }
-      req.body.usuario = decoded; // Los datos del usuario decodificados se adjuntan a req.body.usuario
+      req.usuario = decoded; // Los datos del usuario decodificados se adjuntan a req.body.usuario
       next();
     });
+    
   }
