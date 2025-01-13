@@ -5,8 +5,16 @@ export abstract class Base {
     @PrimaryGeneratedColumn({comment:'Id y Clave Primaria de la tabla en cuestión.'})
     public id:number;
 
-    @Column({type:'varchar', length:35, nullable:false,
+    @Column({type:'varchar', length:80, nullable:false,
         comment:'Se debe nombrar obligatoriamente para la tabla en cuestión.'
     })
     public nombre:string;
+
+    constructor(base?: {id?:number,nombre:string}){
+        if(base) {
+            this.nombre = base.nombre;
+            if(base.id)
+                this.id = base.id;
+        }
+    }
 }
