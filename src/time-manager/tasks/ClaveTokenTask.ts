@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { ClaveTokenUtil } from "../api/utils/ClaveTokenUtil";
-import { TaskBase } from "./TaksBase";
+import { ClaveTokenUtil } from "../../api/utils/ClaveTokenUtil";
+import { TaskBase } from "../TaksBase";
 
 export class ClaveTokenTask extends TaskBase {
     
