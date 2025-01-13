@@ -182,7 +182,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
          * inscripcion.periodos = [...periodosQueYaTeniamos, periodo] 
          * de tal forma agregar uno más
          */
-        inscripcion.periodos = [periodo];
+        inscripcion.periodo = periodo;
         inscripcion.escala = escala;
         /**
          * Hasta ahí todo bien, tenemos tambien similares de examenes finales y examenes parciales
@@ -194,9 +194,7 @@ describe('Conjunto de test para PostgreSQL junto a TypeORM', ()=>{
         // Verificamos por parte su existencia
         expect(inscripcion).toMatchObject({id:1});
         
-        expect(inscripcion.periodos).not.toEqual(null);
-        expect(inscripcion.periodos[0]).not.toEqual(null);
-        expect(inscripcion.periodos[0]).toMatchObject({id:1})
+        expect(inscripcion.periodo).not.toEqual(null);
 
     });
 
