@@ -1,15 +1,13 @@
 import { generate } from "generate-password";
+import logger from "../../log/logger";
 export class ClaveTokenUtil {
     private static instance: ClaveTokenUtil;
     private  clave: string = '';
-
-
 
   // Método estático para obtener la instancia única
   public static getInstance(): ClaveTokenUtil {
     if (!ClaveTokenUtil.instance) {
       ClaveTokenUtil.instance = new ClaveTokenUtil();
-      ClaveTokenUtil.instance.generarClave()
     }
     return ClaveTokenUtil.instance;
   }
@@ -21,8 +19,11 @@ export class ClaveTokenUtil {
         uppercase:true,
         lowercase:true,
         symbols:true,
-        numbers:true
-    })
+        numbers:true,
+        strict:true,
+        exclude:"`';:.,"
+    });
+    logger.debug(`Nueva clave generada ${this.clave}`)
   }
   public getClave() {
     return this.clave;
