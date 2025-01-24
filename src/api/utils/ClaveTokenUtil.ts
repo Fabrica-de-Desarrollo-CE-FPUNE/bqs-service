@@ -23,7 +23,9 @@ export class ClaveTokenUtil {
         strict:true,
         exclude:"`';:.,"
     });
-    logger.debug(`Nueva clave generada ${this.clave}`)
+
+    // Borrar en producción
+    logger.warn(`Nueva clave generada ${this.clave}`)
   }
   public getClave() {
     return this.clave;
