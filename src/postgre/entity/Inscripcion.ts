@@ -1,5 +1,5 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Usuario } from "./Usuario";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Perfil } from './Perfil';
 import { Materia } from "./Materia";
 import { ResultadoParcial } from "./ResultadoParcial";
 import { Periodo } from "./Periodo";
@@ -19,8 +19,8 @@ export class Inscripcion {
     @Column("char", {nullable:false})
     public grupo:string
 
-    @ManyToOne(()=>Usuario, (usuario)=>usuario.inscripciones)
-    public usuario: Usuario;
+    @ManyToOne(()=>Perfil, (perfil)=>perfil.inscripciones)
+    public perfil: Perfil;
 
     @ManyToOne(()=>Materia, (materia)=>materia.inscripciones, {eager:true})
     public materia: Materia;
