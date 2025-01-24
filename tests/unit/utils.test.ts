@@ -1,4 +1,4 @@
-import { getMateria } from "../../src/utils/dataUtil";
+import { compararHash, getMateria, hashearString } from "../../src/utils/dataUtil";
 
 describe('Conjunto de test para los utils', ()=>{
     
@@ -10,4 +10,10 @@ describe('Conjunto de test para los utils', ()=>{
             semestre:8
         })
     });
+
+    it('Prueba de hasheo y comparacion', async ()=>{
+        const pass = "mi contraseña secreta";
+        const hashpass = await hashearString(pass);
+        expect(await compararHash(hashpass, pass)).toBeTruthy();
+    })
 })
