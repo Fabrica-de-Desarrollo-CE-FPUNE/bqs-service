@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.6",
+    "argon2": "^0.41.1",
     "babel-jest": "^29.7.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
