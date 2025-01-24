@@ -1,3 +1,5 @@
+import * as argon2 from "argon2";
+
 /**
  * Procesa una cadena que representa una materia y extrae información estructurada de ella.
  * 
@@ -31,34 +33,36 @@
  * // Salida: { id: 7425, nombre: "PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.", semestre: undefined }
  */
 
+
+
 export const getMateria = (nombre: string) => {
-    /**
-     * Esta expresión regular permite separar en un array directamente usando el nombre de la
-     * materia respectiva, por ejemplo:
-     * "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE. Sem.: 8"
-     * se transformará en
-     * ["7425", "PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.", "Sem.: 8"]
-     */
-    const expSemestre = /^(\d+)\s+(.+?)\.\s+(Sem\.: \d+)$/;
+  /**
+   * Esta expresión regular permite separar en un array directamente usando el nombre de la
+   * materia respectiva, por ejemplo:
+   * "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE. Sem.: 8"
+   * se transformará en
+   * ["7425", "PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.", "Sem.: 8"]
+   */
+  const expSemestre = /^(\d+)\s+(.+?)\.\s+(Sem\.: \d+)$/;
 
-    /**
-     * Esta expresión regular hace lo mismo que la anterior, pero para aquellas materias
-     * que no poseen "Sem.: X".
-     */
-    const expSimple = /^(\d+)\s+(.+?)\.$/;
+  /**
+   * Esta expresión regular hace lo mismo que la anterior, pero para aquellas materias
+   * que no poseen "Sem.: X".
+   */
+  const expSimple = /^(\d+)\s+(.+?)\.$/;
 
-    const match = nombre.match(expSemestre) || nombre.match(expSimple);
-    if (!match) {
-        throw new Error(
-            'Error: el string ingresado no contiene información procesable para extraer datos de materias.'
-        );
-    }
+  const match = nombre.match(expSemestre) || nombre.match(expSimple);
+  if (!match) {
+    throw new Error(
+      'Error: el string ingresado no contiene información procesable para extraer datos de materias.'
+    );
+  }
 
-    return {
-        id: Number(match[1]),
-        nombre: match[2].trim(),
-        semestre: match[3] ? Number(match[3].replace('Sem.: ', '')) : undefined,
-    };
+  return {
+    id: Number(match[1]),
+    nombre: match[2].trim(),
+    semestre: match[3] ? Number(match[3].replace('Sem.: ', '')) : undefined,
+  };
 };
 
 
@@ -95,8 +99,8 @@ export const getMateria = (nombre: string) => {
  * }
  */
 export const parseFechaDDMMYYYY = (fecha: string): Date => {
-    const [day, month, year] = fecha.split("/").map(Number);
-    return new Date(year, month - 1, day); // Ajuste del mes (0-indexado)
+  const [day, month, year] = fecha.split("/").map(Number);
+  return new Date(year, month - 1, day); // Ajuste del mes (0-indexado)
 };
 
 /**
@@ -123,10 +127,10 @@ export const parseFechaDDMMYYYY = (fecha: string): Date => {
  * console.log(fechaFormateada); // Ejemplo: "11/01/2025" (dependiendo de la fecha actual)
  */
 export const formatearFecha = (fecha: Date): string => {
-    const day = fecha.getDate().toString().padStart(2, "0"); // Día con dos dígitos
-    const month = (fecha.getMonth() + 1).toString().padStart(2, "0"); // Mes con dos dígitos
-    const year = fecha.getFullYear(); // Año completo
-    return `${day}/${month}/${year}`;
+  const day = fecha.getDate().toString().padStart(2, "0"); // Día con dos dígitos
+  const month = (fecha.getMonth() + 1).toString().padStart(2, "0"); // Mes con dos dígitos
+  const year = fecha.getFullYear(); // Año completo
+  return `${day}/${month}/${year}`;
 };
 
 
@@ -184,21 +188,49 @@ export const formatearFecha = (fecha: Date): string => {
  * }
  */
 export const getEscala = (escala: string) => {
-    const regexEscala = /\d+-(?=\d)/g; // Expresión regular para encontrar números seguidos de un guion
-    const extraer = escala.match(regexEscala);
-  
-    if (extraer) {
-      const transformar = extraer.map(num => Number(num.replace('-', '')));
-      return {
-        primeraParcial: transformar[0],
-        segundaParcial: transformar[1],
-        trabajoPractico: transformar[2] ?? 0,
-        trabajoLaboratorio: transformar[3] ?? 0
-      };
-    } else {
-      throw new Error(
-        'Error en la extracción de la escala: el string no contiene el tipo de información procesable'
-      );
-    }
-  };
-  
+  const regexEscala = /\d+-(?=\d)/g; // Expresión regular para encontrar números seguidos de un guion
+  const extraer = escala.match(regexEscala);
+
+  if (extraer) {
+    const transformar = extraer.map(num => Number(num.replace('-', '')));
+    return {
+      primeraParcial: transformar[0],
+      segundaParcial: transformar[1],
+      trabajoPractico: transformar[2] ?? 0,
+      trabajoLaboratorio: transformar[3] ?? 0
+    };
+  } else {
+    throw new Error(
+      'Error en la extracción de la escala: el string no contiene el tipo de información procesable'
+    );
+  }
+};
+/**
+ * Encripta un string utilizando el algoritmo Argon2.
+ * 
+ * @param {string} value - El valor que deseas encriptar.
+ * @returns {Promise<string>} - El hash generado a partir del valor proporcionado.
+ * 
+ * @example
+ * const hash = await hashearString("miClaveSegura123");
+ * console.log(hash); // Salida: $argon2id$v=19$m=65536,t=3,p=1$...
+ */
+export const hashearString = async (value: string): Promise<string> => {
+  const hash = await argon2.hash(value);
+  return hash;
+};
+
+/**
+ * Compara un hash con una clave proporcionada para verificar si coinciden.
+ * 
+ * @param {string} hash - El hash previamente generado con el que deseas comparar.
+ * @param {string} clave - La clave original que deseas validar contra el hash.
+ * @returns {Promise<boolean>} - `true` si la clave coincide con el hash, `false` en caso contrario.
+ * 
+ * @example
+ * const isValid = await compararHash("$argon2id$v=19$m=65536,t=3,p=1$...", "miClaveSegura123");
+ * console.log(isValid); // Salida: true o false
+ */
+export const compararHash = async (hash: string, clave: string): Promise<boolean> => {
+  return await argon2.verify(hash, clave);
+};
