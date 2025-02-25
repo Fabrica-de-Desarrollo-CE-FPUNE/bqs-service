@@ -9,14 +9,15 @@ import { ResultadoParcial } from "./entity/ResultadoParcial"
 import { ExamenFinal } from "./entity/ExamenFinal"
 import * as dotenv from "dotenv"
 import { Usuario } from "./entity/Usuario"
+import { Facultad } from "./entity/Facultad"
+import { MateriaCarrera } from "./entity/MateriaCarrera"
+import { Carrera } from "./entity/Carrera"
+import { Libro } from "./entity/Libro"
 
 dotenv.config({path:'.env'});
 
 export const AppDataSource = new DataSource({
-    cache:{
-        alwaysEnabled:true,
-        duration:60000,
-    },
+    
     type: "postgres",
     host: process.env.HOST,
     port: Number(process.env.PORT_DB),
@@ -25,7 +26,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB,
     synchronize: true, // Borra toda la base de datos cada que arranca, cuidado con este en produccion
     logging: false,
-    entities: [Usuario, Perfil, Materia, Periodo, Inscripcion, Escala, ResultadoParcial, ExamenFinal],
+    entities: [Usuario, Facultad, Libro, Materia, Carrera, MateriaCarrera, Perfil, Periodo, Inscripcion, Escala, ResultadoParcial, ExamenFinal],
     migrations: [],
     subscribers: [],
 });
