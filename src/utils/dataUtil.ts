@@ -2,66 +2,61 @@ import * as argon2 from "argon2";
 
 /**
  * Procesa una cadena que representa una materia y extrae información estructurada de ella.
- * 
+ *
  * Esta función toma un string con formato específico (incluyendo un identificador, nombre y
  * opcionalmente el semestre) y lo descompone en un objeto que contiene el ID de la materia,
  * su nombre y el semestre si está presente.
- * 
+ *
  * @param nombre - Una cadena que describe la materia. Ejemplo de formatos esperados:
  *                 - "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE. Sem.: 8"
  *                 - "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE."
- * 
+ *                 - "7111 COMUNICACION ORAL Y ESCRITA"
+ *
  * @returns Un objeto con la información extraída de la materia:
  *          - `id` (número): El identificador numérico de la materia.
  *          - `nombre` (string): El nombre de la materia.
  *          - `semestre` (número | undefined): El semestre de la materia, si está presente.
- * 
+ *
  * @throws {Error} Si la cadena proporcionada no contiene información procesable, lanza
  *                 un error con el mensaje:
  *                 "Error: el string ingresado no contiene información procesable para extraer datos de materias."
- * 
+ *
  * @example
  * // Ejemplo 1: Materia con semestre
  * const materia = getMateria("7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE. Sem.: 8");
  * console.log(materia);
  * // Salida: { id: 7425, nombre: "PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.", semestre: 8 }
- * 
+ *
  * @example
  * // Ejemplo 2: Materia sin semestre
  * const materia = getMateria("7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.");
  * console.log(materia);
  * // Salida: { id: 7425, nombre: "PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.", semestre: undefined }
+ *
+ * @example
+ * // Ejemplo 3: Materia sin punto ni semestre
+ * const materia = getMateria("7111 COMUNICACION ORAL Y ESCRITA");
+ * console.log(materia);
+ * // Salida: { id: 7111, nombre: "COMUNICACION ORAL Y ESCRITA", semestre: undefined }
  */
-
-
 
 export const getMateria = (nombre: string) => {
   /**
-   * Esta expresión regular permite separar en un array directamente usando el nombre de la
-   * materia respectiva, por ejemplo:
-   * "7425 PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE. Sem.: 8"
-   * se transformará en
-   * ["7425", "PRUEBA (TESTING) Y MANTENIMIENTO DE SOFTWARE.", "Sem.: 8"]
+   * Esta expresión regular permite capturar el ID, nombre de la materia, y el semestre opcional.
+   * Es flexible para manejar casos con y sin punto final o "Sem.: X".
    */
-  const expSemestre = /^(\d+)\s+(.+?)\.\s+(Sem\.: \d+)$/;
+  const expGeneral = /^(\d+)\s+(.+?)(?:\.\s+Sem\.: (\d+))?\.?$/;
 
-  /**
-   * Esta expresión regular hace lo mismo que la anterior, pero para aquellas materias
-   * que no poseen "Sem.: X".
-   */
-  const expSimple = /^(\d+)\s+(.+?)\.$/;
-
-  const match = nombre.match(expSemestre) || nombre.match(expSimple);
+  const match = nombre.match(expGeneral);
   if (!match) {
     throw new Error(
-      'Error: el string ingresado no contiene información procesable para extraer datos de materias.'
+      `El string ingresado "${nombre}" no contiene información procesable para extraer datos de materias.`
     );
   }
-
   return {
     id: Number(match[1]),
     nombre: match[2].trim(),
-    semestre: match[3] ? Number(match[3].replace('Sem.: ', '')) : undefined,
+    semestre: match[3] ? Number(match[3]) : undefined,
   };
 };
 
