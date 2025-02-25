@@ -1,22 +1,30 @@
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Usuario } from "../entity/Usuario";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
-import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
+import { EntityControllerInterface } from './EntityControllerInterface';
 
-export class UsuarioController {
+export class UsuarioController implements EntityControllerInterface<Usuario> {
     private usuarioRepositorio: Repository<Usuario>;
 
     constructor() {
         this.usuarioRepositorio = AppDataSource.getRepository(Usuario);
     }
 
-    public async getUsuario (cedula:string) {
-        logger.debug(`buscando usuario con cedula ${cedula}`)
-        return await this.usuarioRepositorio.findOne({
-            where: {
-                cedula
+    gestionar = async (data: Usuario) => {
+        return this.get(data).then(async value => {
+            if(!value) {
+                return this.setOrUpdate(data);
             }
+            return value;
+        })
+    }
+
+    get = async  (data: Usuario) => {
+        const where = data as unknown as FindOptionsWhere<Usuario>;
+        logger.debug(`buscando usuario con cedula ${where.cedula}`)
+        return await this.usuarioRepositorio.findOne({
+            where
         }).then((value)=>{
             if(!value){
                 logger.warn('no se encontró al usuario')
@@ -26,29 +34,15 @@ export class UsuarioController {
             return value;
         })
     }
+    getAll: (data?: Usuario | undefined) => Promise<Usuario[]>;
 
-    public async addUsuario (cedula:string, contrasenia:string) {
-        logger.debug(`intentando agregar usuario con cedula ${cedula}`)
-        const nuevoUsuario = new Usuario();
-        await nuevoUsuario.init({cedula, contrasenia});
-        logger.info(`la contra hasheada es ${nuevoUsuario.password}`)
-        return await this.usuarioRepositorio.save(nuevoUsuario);
-    }
-
-    public async gestionarUsuario(credencial: Alumno_credencial_login) {
-        return await this.usuarioRepositorio.findOne({
-            where: {
-                cedula: credencial.cedula
-            }
-        }).then(async value => {
-            if (!value) {
-                logger.warn(`No se encontró el usuario con cédula ${credencial.cedula}, intentando crear uno`);
-                return await this.usuarioRepositorio.save(new Usuario(credencial)).then(value => {
-                    logger.info(`Guardando usuario con id ${value.id}`);
-                    return value;
-                });
-            }
+    setOrUpdate = async (data: Usuario) => {
+        logger.debug(`intentando agregar usuario con cedula ${data.cedula}`);
+        logger.info(`la contra hasheada es ${data.password}`)
+        return await this.usuarioRepositorio.save(data).then(value => {
+            logger.info(`Guardando usuario con id ${value.id}`);
             return value;
         });
     }
+
 }

@@ -9,6 +9,7 @@ import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenci
 import { firmarToken } from "../utils/TokenUtil";
 import { AlumnoController } from "../../postgre/controller/AlumnoController";
 import { compararHash } from "../../utils/dataUtil";
+import { Usuario } from "../../postgre/entity/Usuario";
 
 export class AuthController {
 
@@ -32,14 +33,16 @@ export class AuthController {
                 cedula: cedula, 
                 contrasenia: pass
             }
-
-            const usuario = await this.usuarioController.getUsuario(cedula);
+            const usuarioTemp = new Usuario();
+            usuarioTemp.cedula = credenciales.cedula;
+            const usuario = await this.usuarioController.get(usuarioTemp);
 
             if(!usuario) {
                 logger.debug('calling the core service for consultor data');
                 const consultor_servicio: ConsultorDataService = new ConsultorDataService();
                 const estudiante_data = await consultor_servicio.getAll_Consultor_Info(credenciales);
-                const usuario = await this.usuarioController.addUsuario(cedula, pass);
+                await usuarioTemp.init(credenciales);
+                const usuario = await this.usuarioController.setOrUpdate(usuarioTemp);
                 this.alumnoController.guardarAlumnoData(usuario, estudiante_data);
             } else if(!(await compararHash(usuario.password, pass))){
                 throw EstudianteError.Unauthorized()

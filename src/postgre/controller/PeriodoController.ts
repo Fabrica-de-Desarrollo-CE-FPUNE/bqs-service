@@ -1,33 +1,65 @@
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Periodo } from "../entity/Periodo";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
-import { info_inscripciones_asistencia } from "../../types/ConsultorEstudiante.types";
-import { parseFechaDDMMYYYY } from "../../utils/dataUtil";
 
 export class PeriodoController {
+
     private periodoRepositorio: Repository<Periodo>;
 
     constructor() {
         this.periodoRepositorio = AppDataSource.getRepository(Periodo);
     }
+    gestionar = async (data: Periodo) => {
+        return await this.get(data).then(async value => {
+            if(!value){
+                return await this.setOrUpdate(data);
+            }
+            return value;
+        })
+    }
 
-    public async gestionarPeriodo(inscripcion: info_inscripciones_asistencia) {
-        return await this.periodoRepositorio.findOne({
+    get = async (data: Periodo) => {
+
+        const {nombre} = data as unknown as FindOptionsWhere<Periodo>;
+        
+        return this.periodoRepositorio.findOne({
             where: {
-                fechaInscripcion: parseFechaDDMMYYYY(inscripcion.fecha_inscripto),
-                fechaVigencia: parseFechaDDMMYYYY(inscripcion.validez)
+                nombre
             }
-        }).then(async value => {
-            if (!value) {
-                logger.warn(`No se encontró el periodo con inscripcion ${inscripcion.fecha_inscripto}`);
-                const nuevoPeriodo = new Periodo(inscripcion);
-                return await this.periodoRepositorio.save(nuevoPeriodo).then(value => {
-                    logger.info(`Guardando periodo con id ${value.id}`);
-                    return value;
-                });
+        }).then(value => {
+            if(!value){
+                logger.warn(`No se encontró el periodo ${nombre}.`);
+            } else {
+                logger.info(`Se encontró el periodo con id ${value.id}`)
             }
+            return value;
+        })
+    }
+    getAll = async (data?: Periodo ) => {
+        const where = data as unknown as FindOptionsWhere<Periodo>;
+        return this.periodoRepositorio.find({
+            where
+        }).then(value => {
+            if(!value.length){
+                logger.warn(`No se encontró los Periodoes con los datos requeridos.`);
+            } else {
+                logger.info(`Se encontraron ${value.length} Periodoes.`);
+            }
+            return value;
+        })
+    };
+    setOrUpdate = async (data: Periodo) => {
+        if(data.id){
+            logger.debug(`Intentando actualizar periodo con ID ${data.id}`);
+        } else {
+            logger.debug(`Intentando agregar periodo`);
+        }
+
+        return this.periodoRepositorio.save(data).then(value => {
+            logger.info(`Guardando carrera con id ${value.id}`);
             return value;
         });
     }
 }
+

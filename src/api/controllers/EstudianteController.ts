@@ -5,13 +5,13 @@ import { StatusCodes } from "http-status-codes";
 import { ConsultorServiceError } from "../../core/ConsultorServiceError";
 import logger from "../../log/logger";
 import { PerfilController } from "../../postgre/controller/PerfilController";
-import { MateriaController } from "../../postgre/controller/MateriaController";
 import { InscripcionController } from "../../postgre/controller/InscripcionController";
+import { Perfil } from "../../postgre/entity/Perfil";
+import { Inscripcion } from "../../postgre/entity/Inscripcion";
 
 export class EstudianteController {
 
     private perfilController = new PerfilController();
-    private materiaController = new MateriaController();
     private inscripcionController = new InscripcionController();
 
     
@@ -20,7 +20,7 @@ export class EstudianteController {
         try {
             logger.debug("intentando extraer el perfil del estudiante")
             const usuario = req.body.usuario as Alumno_credencial_login;
-            const perfil = await this.perfilController.getPerfil(usuario.cedula);
+            const perfil = await this.perfilController.get(new Perfil({credencial:usuario}));
             if(!perfil) {
                 throw EstudianteError.NoDataFound();
             }
@@ -39,7 +39,9 @@ export class EstudianteController {
         try {
             logger.debug("intentando extraer las materias del estudiante")
             const usuario = req.body.usuario as Alumno_credencial_login;
-            const materias = await this.materiaController.getMaterias(usuario.cedula);
+            const inscripcionBusqueda = new Inscripcion();
+            inscripcionBusqueda.perfil = new Perfil({credencial:usuario});
+            const materias = await this.inscripcionController.getAll(inscripcionBusqueda);
             if(!materias.length) {
                 throw EstudianteError.NoDataFound();
             }
@@ -59,8 +61,11 @@ export class EstudianteController {
             logger.debug("intentando extraer los detalles de la materia del estudiante")
             const usuario = req.body.usuario as Alumno_credencial_login;
             const id = req.query.id as unknown as number;
-            logger.debug(`el id de la materia a buscar es ${id}`)
-            const materia = await this.inscripcionController.getInscripcionMateriaDetalles(usuario.cedula, id);
+            logger.debug(`el id de la materia a buscar es ${id}`);
+            const inscripcionBusqueda = new Inscripcion();
+            inscripcionBusqueda.perfil = new Perfil({credencial:usuario});
+            inscripcionBusqueda.materiaCarrera.materia.id = id;
+            const materia = await this.inscripcionController.get(inscripcionBusqueda);
             if(!materia) {
                 throw EstudianteError.NoDataFound();
             }
