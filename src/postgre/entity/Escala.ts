@@ -17,17 +17,16 @@ export class Escala extends Base {
     constructor(nombre?:string){
 
         if(nombre){
-            super({nombre});
+            super(nombre);
             const {primeraParcial, segundaParcial, trabajoLaboratorio, trabajoPractico} = getEscala(nombre);
             this.max = new EscalaBase();
             this.max.primeraParcial = primeraParcial;
             this.max.segundaParcial = segundaParcial;
             this.max.trabajoLaboratorio = trabajoLaboratorio;
             this.max.trabajoPractico = trabajoPractico;
+            return;
 
-        } else {
-            super();
         }
-
+        super();
     }
 }

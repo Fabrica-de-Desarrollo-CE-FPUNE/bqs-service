@@ -6,6 +6,7 @@ import { Periodo } from "./Periodo";
 import { ExamenFinal } from "./ExamenFinal";
 import { Escala } from "./Escala";
 import { info_inscripciones_asistencia } from "../../types/ConsultorEstudiante.types";
+import { MateriaCarrera } from './MateriaCarrera';
 
 @Entity()
 export class Inscripcion {
@@ -19,13 +20,13 @@ export class Inscripcion {
     @Column("char", {nullable:false})
     public grupo:string
 
-    @ManyToOne(()=>Perfil, (perfil)=>perfil.inscripciones)
+    @ManyToOne(()=>Perfil, (perfil)=>perfil.inscripciones, {nullable:false})
     public perfil: Perfil;
 
-    @ManyToOne(()=>Materia, (materia)=>materia.inscripciones, {eager:true})
-    public materia: Materia;
+    @ManyToOne(()=>MateriaCarrera, (materiaCarrera)=>materiaCarrera.inscripciones, {eager:true, nullable:false})
+    public materiaCarrera: MateriaCarrera;
 
-    @ManyToOne(()=>Periodo, (periodo)=>periodo.inscripciones, {eager:true})
+    @ManyToOne(()=>Periodo, (periodo)=>periodo.inscripciones, {eager:true, nullable:false})
     public periodo:Periodo;
 
     // Por comodidad voy a hacer que sea bidireccional, tambien en ResultadoParcial, el otro tendra la clave fóranea
@@ -41,12 +42,9 @@ export class Inscripcion {
     escala:Escala;
 
     constructor(info?:info_inscripciones_asistencia){
-
         if(info){
-            
             this.porcentajeAsistencia = Number(info.porc_asistencias);
             this.grupo = info.grupo;
-            
         }
     }
 }

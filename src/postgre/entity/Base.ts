@@ -10,11 +10,10 @@ export abstract class Base {
     })
     public nombre:string;
 
-    constructor(base?: {id?:number,nombre:string}){
-        if(base) {
-            this.nombre = base.nombre;
-            if(base.id)
-                this.id = base.id;
+    constructor(nombre?:string){
+
+        if(nombre){
+            this.nombre = nombre;
         }
     }
 }

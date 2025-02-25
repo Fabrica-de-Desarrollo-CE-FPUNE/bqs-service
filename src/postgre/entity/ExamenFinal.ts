@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Inscripcion } from './Inscripcion';
 import { info_resultado_evaluacion_final } from '../../types/ConsultorEstudiante.types';
 import { parseFechaDDMMYYYY } from '../../utils/dataUtil';
+
 @Entity()
 export class ExamenFinal {
 
@@ -23,11 +24,9 @@ export class ExamenFinal {
     constructor(data?:info_resultado_evaluacion_final){
         if(data){
             const {fecha, nota, final} = data;
-
             this.fecha = parseFechaDDMMYYYY(fecha);
             this.nota = nota;
             this.final = Number(final.length?final:0);
-
         }
     }
 
