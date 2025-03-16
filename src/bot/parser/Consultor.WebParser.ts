@@ -18,6 +18,7 @@ import {
 
 import cheerio, { CheerioAPI, Element } from "cheerio";
 import {IConsultorWebParser, TableContent, TableContentObjects} from './WebParser.Interfaces'
+import logger from "../../log/logger";
 
 export class ConsultorWebParser implements IConsultorWebParser {
   private selector: CheerioAPI;
@@ -270,7 +271,8 @@ export class ConsultorWebParser implements IConsultorWebParser {
         );
         break;
       default:
-        throw new Error("fatal error, no case detected");
+        //throw new Error(`fatal error, no case ${key} detected`);
+        logger.error(`fatal error, no case ${key} detected`);
     }
   }
   private extractConsultorTables(table: Element): TableContent {
