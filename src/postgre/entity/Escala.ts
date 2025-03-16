@@ -10,7 +10,7 @@ export class Escala extends EscalaBase {
     @PrimaryGeneratedColumn()
     public id:number;
 
-    @Column({nullable:false, length:10})
+    @Column({nullable:false, length:20})
     public nombre:string
 
 
