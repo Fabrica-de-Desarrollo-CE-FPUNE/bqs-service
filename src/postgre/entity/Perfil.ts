@@ -12,13 +12,13 @@ import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenci
 export class Perfil extends Base {
 
     @Column("varchar", { length: 12 })
-    public cedulaIdentidad: string;
+    public cedula_de_identidad: string;
 
     @Column("varchar", { length: 15, nullable: true })
     public celular: string;
 
     @Column("varchar", { length: 15, nullable: true })
-    public telefonoParticular: string;
+    public telefono_particular: string;
 
     @Column("varchar", { length: 30, nullable: true })
     public email: string;
@@ -27,16 +27,16 @@ export class Perfil extends Base {
     public promedio: number;
 
     @Column("int", { nullable: false, default: 0 })
-    public materiasAprobadas: number;
+    public materias_aprobadas: number;
 
     @Column("int", { nullable: false, default: 0 })
-    public materiasReprobadas: number;
+    public materias_reprobadas: number;
 
     @OneToMany(() => Inscripcion, (inscripcion) => inscripcion.perfil)
     public inscripciones: Inscripcion[];
 
     @OneToOne(() => Usuario, (usuario) => usuario.perfil)
-    @JoinColumn()
+    @JoinColumn({name:'usuario_id'})
     public usuario: Usuario;
 
     @OneToMany(() => Libro, (libro) => libro.perfilPrestamo)
@@ -46,6 +46,7 @@ export class Perfil extends Base {
     public librosReservas: Libro[];
 
     @ManyToOne(() => Carrera, (carrera) => carrera.perfiles)
+    @JoinColumn({name:'carrera_id'})
     public carrera: Carrera
 
     constructor(data?: {
@@ -78,21 +79,21 @@ export class Perfil extends Base {
                 super(
                     usuarioSeparado.filter((v, i) => i !== 0).join(' ').trim()
                 );
-                this.cedulaIdentidad = usuarioSeparado[0]; // Con el ejemplo ya se sabe que es la cédula.
+                this.cedula_de_identidad = usuarioSeparado[0]; // Con el ejemplo ya se sabe que es la cédula.
                 this.celular = info_contacto.celular;
                 this.email = info_contacto.email;
-                this.telefonoParticular = info_contacto.telefono_particular;
+                this.telefono_particular = info_contacto.telefono_particular;
 
                 if (vista_info_consultor) {
                     const { info_rendimiento } = vista_info_consultor;
-                    this.materiasAprobadas = Number(info_rendimiento.total_materias_aprobada);
-                    this.materiasReprobadas = Number(info_rendimiento.total_materias_reprobadas);
+                    this.materias_aprobadas = Number(info_rendimiento.total_materias_aprobada);
+                    this.materias_reprobadas = Number(info_rendimiento.total_materias_reprobadas);
                 }
                 return;
 
             } else if (credencial) {
                 super();
-                this.cedulaIdentidad = credencial.cedula;
+                this.cedula_de_identidad = credencial.cedula;
                 return;
             }
         }

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Materia } from "./Materia";
 import { Carrera } from "./Carrera";
 import { Inscripcion } from "./Inscripcion";
@@ -13,9 +13,11 @@ export class MateriaCarrera {
     public semestre:number;
 
     @ManyToOne(()=>Materia, (materia)=>materia.materiasCarreras, {eager:true})
+    @JoinColumn({name:'materia_id'})
     public materia:Materia;
 
     @ManyToOne(()=>Carrera, (carrera)=> carrera.materiasCarreras, {eager:true})
+    @JoinColumn({name:'carrera_id'})
     public carrera:Carrera;
 
     @OneToMany(()=>Inscripcion, (inscripcion)=>inscripcion.materiaCarrera)

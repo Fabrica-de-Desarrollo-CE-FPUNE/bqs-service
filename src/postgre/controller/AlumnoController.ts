@@ -71,7 +71,7 @@ export class AlumnoController {
             for (const inscripcion of info.info_inscripciones) {
                 const dataParciales = info.info_parciales.find(value => value.materia.includes(inscripcion.materia))!;
 
-                if (!periodo || formatearFecha(periodo.fechaInscripcion) !== inscripcion.fecha_inscripto) {
+                if (!periodo || formatearFecha(periodo.fecha_inscripcion) !== inscripcion.fecha_inscripto) {
                     periodo = await this.controllers.periodoController.gestionar(new Periodo(inscripcion));
                 }
 

@@ -15,18 +15,21 @@ export class Inscripcion {
     public id: number
 
     @Column('float')
-    public porcentajeAsistencia:number;
+    public porcentaje_asistencia:number;
 
     @Column("char", {nullable:false})
     public grupo:string
 
     @ManyToOne(()=>Perfil, (perfil)=>perfil.inscripciones, {nullable:false})
+    @JoinColumn({name:'perfil_id'})
     public perfil: Perfil;
 
     @ManyToOne(()=>MateriaCarrera, (materiaCarrera)=>materiaCarrera.inscripciones, {eager:true, nullable:false})
+    @JoinColumn({name:'materia_carrera_id'})
     public materiaCarrera: MateriaCarrera;
 
     @ManyToOne(()=>Periodo, (periodo)=>periodo.inscripciones, {eager:true, nullable:false})
+    @JoinColumn({name:'periodo_id'})
     public periodo:Periodo;
 
     // Por comodidad voy a hacer que sea bidireccional, tambien en ResultadoParcial, el otro tendra la clave fóranea
@@ -38,12 +41,12 @@ export class Inscripcion {
     examenesFinales: ExamenFinal[];
 
     @ManyToOne(()=>Escala, (escala)=>escala.inscripciones, {eager:true})
-    @JoinColumn()
+    @JoinColumn({name:'escala_id'})
     escala:Escala;
 
     constructor(info?:info_inscripciones_asistencia){
         if(info){
-            this.porcentajeAsistencia = Number(info.porc_asistencias);
+            this.porcentaje_asistencia = Number(info.porc_asistencias);
             this.grupo = info.grupo;
         }
     }

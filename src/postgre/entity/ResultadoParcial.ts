@@ -11,7 +11,7 @@ export class ResultadoParcial extends EscalaBase  {
 
     //Ahora podemos buscar indistintamente usando repository con esta clase y con la otra
     @OneToOne(()=>Inscripcion, (inscripcion)=>inscripcion.resultadoParcial)
-    @JoinColumn()
+    @JoinColumn({name:'inscripcion_id'})
     inscripcion:Inscripcion
 
     constructor(data?: info_resultado_parcial){

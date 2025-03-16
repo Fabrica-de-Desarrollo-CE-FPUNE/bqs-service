@@ -139,10 +139,10 @@ export const formatearFecha = (fecha: Date): string => {
  *                 Ejemplo: `"10-20-30-40"`, `"15-25-35"`, etc.
  * 
  * @returns Un objeto con los siguientes campos:
- * - `primeraParcial`: El primer valor numérico extraído (obligatorio).
- * - `segundaParcial`: El segundo valor numérico extraído (obligatorio).
- * - `trabajoPractico`: El tercer valor numérico extraído, o `0` si no está presente.
- * - `trabajoLaboratorio`: El cuarto valor numérico extraído, o `0` si no está presente.
+ * - `primera_parcial`: El primer valor numérico extraído (obligatorio).
+ * - `segunda_parcial`: El segundo valor numérico extraído (obligatorio).
+ * - `trabajo_practico`: El tercer valor numérico extraído, o `0` si no está presente.
+ * - `trabajo_laboratorio`: El cuarto valor numérico extraído, o `0` si no está presente.
  * 
  * @throws {Error} Si no se encuentran valores numéricos en el string de entrada, lanza un error indicando que
  * la escala no es procesable.
@@ -154,10 +154,10 @@ export const formatearFecha = (fecha: Date): string => {
  * console.log(resultado);
  * // Salida:
  * // {
- * //   primeraParcial: 10,
- * //   segundaParcial: 20,
- * //   trabajoPractico: 30,
- * //   trabajoLaboratorio: 40
+ * //   primera_parcial: 10,
+ * //   segunda_parcial: 20,
+ * //   trabajo_practico: 30,
+ * //   trabajo_laboratorio: 40
  * // }
  * 
  * @example
@@ -167,10 +167,10 @@ export const formatearFecha = (fecha: Date): string => {
  * console.log(resultado);
  * // Salida:
  * // {
- * //   primeraParcial: 15,
- * //   segundaParcial: 25,
- * //   trabajoPractico: 35,
- * //   trabajoLaboratorio: 0
+ * //   primera_parcial: 15,
+ * //   segunda_parcial: 25,
+ * //   trabajo_practico: 35,
+ * //   trabajo_laboratorio: 0
  * // }
  * 
  * @example
@@ -189,10 +189,10 @@ export const getEscala = (escala: string) => {
   if (extraer) {
     const transformar = extraer.map(num => Number(num.replace('-', '')));
     return {
-      primeraParcial: transformar[0],
-      segundaParcial: transformar[1],
-      trabajoPractico: transformar[2] ?? 0,
-      trabajoLaboratorio: transformar[3] ?? 0
+      primera_parcial: transformar[0],
+      segunda_parcial: transformar[1],
+      trabajo_practico: transformar[2] ?? 0,
+      trabajo_laboratorio: transformar[3] ?? 0
     };
   } else {
     throw new Error(

@@ -4,25 +4,25 @@ import { info_resultado_parcial } from "../../types/ConsultorEstudiante.types";
 export class EscalaBase {
     
     @Column('float')
-    public primeraParcial:number = 0;
+    public primera_parcial:number = 0;
 
     @Column('float')
-    public segundaParcial:number = 0;
+    public segunda_parcial:number = 0;
 
     @Column('float')
-    public trabajoPractico:number = 0;
+    public trabajo_practico:number = 0;
 
     @Column('float')
-    public trabajoLaboratorio:number = 0;
+    public trabajo_laboratorio:number = 0;
 
     constructor(data?:info_resultado_parcial){
         
         if(data) {
             const {primera_parcial, segunda_parcial, trabajo_laboratorio, trabajo_practico} = data;
-            this.primeraParcial = Number(primera_parcial);
-            this.segundaParcial = Number(segunda_parcial);
-            this.trabajoLaboratorio = Number(trabajo_laboratorio);
-            this.trabajoPractico = Number(trabajo_practico);
+            this.primera_parcial = Number(primera_parcial);
+            this.segunda_parcial = Number(segunda_parcial);
+            this.trabajo_laboratorio = Number(trabajo_laboratorio);
+            this.trabajo_practico = Number(trabajo_practico);
         }
     }
 

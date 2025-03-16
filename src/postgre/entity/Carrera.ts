@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToMany } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Base } from "./Base";
 import { Facultad } from "./Facultad";
 import { Perfil } from "./Perfil";
@@ -11,6 +11,7 @@ export class Carrera extends Base {
     public perfiles:Perfil[];
 
     @ManyToOne(()=>Facultad, (facultad)=>facultad.carreras)
+    @JoinColumn({name:'facultad_id'})
     public facultad:Facultad;
 
     @OneToMany(()=>MateriaCarrera, (materiaCarrera)=>materiaCarrera.carrera)

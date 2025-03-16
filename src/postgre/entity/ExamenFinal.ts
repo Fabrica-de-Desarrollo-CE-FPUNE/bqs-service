@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Inscripcion } from './Inscripcion';
 import { info_resultado_evaluacion_final } from '../../types/ConsultorEstudiante.types';
 import { parseFechaDDMMYYYY } from '../../utils/dataUtil';
@@ -19,6 +19,7 @@ export class ExamenFinal {
     nota:string;
 
     @ManyToOne(()=>Inscripcion,(inscripcion)=>inscripcion.examenesFinales)
+    @JoinColumn({name:'inscripcion_id'})
     inscripcion:Inscripcion;
 
     constructor(data?:info_resultado_evaluacion_final){

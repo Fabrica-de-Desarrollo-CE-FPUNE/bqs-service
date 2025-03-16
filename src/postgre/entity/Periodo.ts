@@ -9,10 +9,10 @@ export class Periodo extends Base{
 
 
     @Column("date",{nullable:false})
-    fechaInscripcion: Date;
+    fecha_inscripcion: Date;
 
     @Column("date",{nullable:false})
-    fechaVigencia: Date;
+    fecha_vigencia: Date;
 
 
     @OneToMany(()=>Inscripcion, (inscripcion)=>inscripcion.periodo)
@@ -24,8 +24,8 @@ export class Periodo extends Base{
         if(data){
             const {fecha_inscripto, validez} = data;
             super(`${fecha_inscripto}-${validez}`);
-            this.fechaInscripcion = parseFechaDDMMYYYY(data.fecha_inscripto);
-            this.fechaVigencia = parseFechaDDMMYYYY(data.validez);
+            this.fecha_inscripcion = parseFechaDDMMYYYY(data.fecha_inscripto);
+            this.fecha_vigencia = parseFechaDDMMYYYY(data.validez);
             return;
         }
         super();
