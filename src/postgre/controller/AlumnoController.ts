@@ -1,20 +1,24 @@
 
+import { log } from 'console';
 import logger from '../../log/logger';
-import { info_calificaciones } from '../../types/ConsultorEstudiante.types';
+import { info_calificaciones, info_extension } from '../../types/ConsultorEstudiante.types';
 import { vista_info_consultor } from '../../types/ConsultorEstudianteVistas.types';
 import { formatearFecha, getMateria } from '../../utils/dataUtil';
 import { Carrera } from '../entity/Carrera';
 import { Escala } from '../entity/Escala';
 import { ExamenFinal } from '../entity/ExamenFinal';
+import { Extension } from '../entity/Extension';
 import { Inscripcion } from '../entity/Inscripcion';
 import { Materia } from '../entity/Materia';
 import { MateriaCarrera } from '../entity/MateriaCarrera';
 import { Perfil } from '../entity/Perfil';
+import { PerfilExtension } from '../entity/PerfilExtension';
 import { Periodo } from '../entity/Periodo';
 import { ResultadoParcial } from '../entity/ResultadoParcial';
 import { Usuario } from '../entity/Usuario';
 import { CarreraController } from './CarreraController';
 import { EscalaController } from './EscalaController';
+import { ExtensionController } from './ExtensionController';
 import { FacultadController } from './FacultadController';
 import { FinalController } from './FinalController';
 import { InscripcionController } from './InscripcionController';
@@ -22,6 +26,7 @@ import { MateriaCarreraController } from './MateriaCarreraController';
 import { MateriaController } from './MateriaController';
 import { ParcialController } from './ParcialController';
 import { PerfilController } from './PerfilController';
+import { PerfilExtensionController } from './PerfilExtensionController';
 import { PeriodoController } from './PeriodoController';
 
 export class AlumnoController {
@@ -37,6 +42,8 @@ export class AlumnoController {
         parcialController: ParcialController,
         finalController: FinalController,
         materiaCarreraController: MateriaCarreraController,
+        extensionController: ExtensionController,
+        perfilExtensionController: PerfilExtensionController
     }
 
     constructor() {
@@ -51,11 +58,13 @@ export class AlumnoController {
             parcialController: new ParcialController(),
             finalController: new FinalController(),
             materiaCarreraController: new MateriaCarreraController(),
+            extensionController: new ExtensionController(),
+            perfilExtensionController: new PerfilExtensionController()
         };
     }
 
     public async guardarAlumnoData(usuario: Usuario, info: vista_info_consultor) {
-
+        log(info)
         try {
            // const facultad = (await this.controllers.facultadController.getAll())[0];
             const carreraTemp = new Carrera(info.info_rendimiento.carrera);
@@ -65,6 +74,7 @@ export class AlumnoController {
             this.guardarMateriasCursadas(carrera, info.info_calificaciones);
             let alumno = new Perfil({ vista_info_consultor: info });
             alumno = await this.controllers.perfilController.gestionar(alumno);
+            this.guardarExtension(alumno, info.info_extensiones);
 
             let periodo: undefined | Periodo;
 
@@ -101,13 +111,35 @@ export class AlumnoController {
                     await this.controllers.finalController.gestionar(finalTemp);
                 }
 
-
-
             }
         } catch (error) {
             console.error(error)
         }
 
+    }
+
+    private async guardarExtension(perfil:Perfil, extensiones:info_extension[]) {
+
+
+
+        for (const extension of extensiones) {
+            try {
+                log(extension)
+                const extensionNuevo = await this.controllers.extensionController.gestionar(new Extension(extension));
+                if(extensionNuevo){
+                    const {horas, cantidad} = extension;
+                    const perfilExtension = new PerfilExtension();
+                    perfilExtension.extension = extensionNuevo;
+                    perfilExtension.cantidad = cantidad?Number(cantidad):0;
+                    perfilExtension.horas = horas?Number(horas):0;
+                    perfilExtension.perfil = perfil;
+                    await this.controllers.perfilExtensionController.gestionar(perfilExtension);
+                }
+            } catch (error) {
+                logger.warn('Ocurrió un error y no se pudo registrar una extension', error);
+            }
+        }
+        
     }
 
     private async guardarMateriasCursadas(carrera: Carrera, info_calificaciones: info_calificaciones[]) {

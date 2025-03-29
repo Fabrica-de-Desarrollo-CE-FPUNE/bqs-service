@@ -13,6 +13,8 @@ import { Facultad } from "./entity/Facultad"
 import { MateriaCarrera } from "./entity/MateriaCarrera"
 import { Carrera } from "./entity/Carrera"
 import { Libro } from "./entity/Libro"
+import { Extension } from "./entity/Extension"
+import { PerfilExtension } from "./entity/PerfilExtension"
 
 dotenv.config({path:'.env'});
 
@@ -26,7 +28,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB,
     synchronize: true, // Borra toda la base de datos cada que arranca, cuidado con este en produccion
     logging: false,
-    entities: [Usuario, Facultad, Libro, Materia, Carrera, MateriaCarrera, Perfil, Periodo, Inscripcion, Escala, ResultadoParcial, ExamenFinal],
+    entities: [Usuario, Facultad, Libro, Materia, Carrera, MateriaCarrera, Extension, Perfil, Periodo, Inscripcion, Escala, ResultadoParcial, ExamenFinal, PerfilExtension],
     migrations: [],
     subscribers: [],
 });

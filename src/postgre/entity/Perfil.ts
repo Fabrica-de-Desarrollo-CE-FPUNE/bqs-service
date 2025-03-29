@@ -7,17 +7,18 @@ import { Usuario } from "./Usuario";
 import { Libro } from "./Libro";
 import { Carrera } from "./Carrera";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
+import { PerfilExtension } from "./PerfilExtension";
 
 @Entity()
 export class Perfil extends Base {
 
-    @Column("varchar", { length: 12 })
+    @Column("varchar", { length: 30 })
     public cedula_de_identidad: string;
 
-    @Column("varchar", { length: 15, nullable: true })
+    @Column("varchar", { length: 30, nullable: true })
     public celular: string;
 
-    @Column("varchar", { length: 15, nullable: true })
+    @Column("varchar", { length: 30, nullable: true })
     public telefono_particular: string;
 
     @Column("varchar", { length: 30, nullable: true })
@@ -47,7 +48,10 @@ export class Perfil extends Base {
 
     @ManyToOne(() => Carrera, (carrera) => carrera.perfiles)
     @JoinColumn({name:'carrera_id'})
-    public carrera: Carrera
+    public carrera: Carrera;
+
+    @OneToMany(()=>PerfilExtension, (perfilExtension)=>perfilExtension.perfil)
+    public perfilExtensiones:PerfilExtension[];
 
     constructor(data?: {
         vista_info_consultor?: vista_info_consultor,
