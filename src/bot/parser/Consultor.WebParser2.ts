@@ -65,13 +65,13 @@ export class ConsultorWebParser2 implements IConsultorWebParser {
             ['Total Materias Aprobadas...:', 'total_materias_aprobada'],
             ['Total Materias Reprobadas...:', 'total_materias_reprobadas'],
             ['Porcentaje Materias Reprobadas...:', 'porcentaje_materias_reprobadas'],
+            [/,\s*(?=[}\]])/g,''],
             [/},\s*\]/g, "}]"]
         ];
         let nuevoHtmlBody = htmlBody;
         for (let indexBuscar = 0; indexBuscar < correcciones.length; indexBuscar++) {
             nuevoHtmlBody = nuevoHtmlBody.replace(correcciones[indexBuscar][0], correcciones[indexBuscar][1] as unknown as string);
         }
-
         const json = JSON.parse(nuevoHtmlBody);
         return json;
     }
