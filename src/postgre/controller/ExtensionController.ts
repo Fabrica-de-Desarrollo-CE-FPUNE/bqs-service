@@ -2,26 +2,28 @@ import { FindOptionsWhere, Repository } from 'typeorm';
 import { Extension } from '../entity/Extension';
 import { EntityControllerInterface } from './EntityControllerInterface';
 import logger from '../../log/logger';
+import { AppDataSource } from '../data-source';
 export class ExtensionController implements EntityControllerInterface<Extension> {
 
     private extensionRepositorio: Repository<Extension>;
 
-    gestionar = async (data: Extension) => {
-        return await this.get(data).then(async value => {
-            if (!value) {
-                return await this.setOrUpdate(data).then(value => {
-                    return value;
-                });
-            }
-            return value;
-        });
+    constructor() {
+        this.extensionRepositorio = AppDataSource.getRepository(Extension);
+    }
+
+    gestionar = async (data: Extension): Promise<Extension> => {
+        const existente = await this.get(data);
+        return existente ?? await this.setOrUpdate(data);
     }
 
     get = async (data: Extension) => {
-        const { actividad } = data as unknown as FindOptionsWhere<Extension>;
-        logger.debug(`Buscando extension ${actividad}.`);
+        const where: FindOptionsWhere<Extension> = {
+            actividad: data.actividad,
+            tipo_actividad: data.tipo_actividad
+        };
+        logger.debug(`Buscando extension ${where.actividad}/${where.tipo_actividad}.`);
         return await this.extensionRepositorio.findOne({
-            where: { actividad }
+            where
         }).then(value => {
             if (!value) {
                 logger.warn(`No se encontró la extension con actividad ${data.actividad}.`);
@@ -57,5 +59,6 @@ export class ExtensionController implements EntityControllerInterface<Extension>
             return value;
         });
     }
+
 
 }

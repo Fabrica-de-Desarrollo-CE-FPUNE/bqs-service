@@ -1,5 +1,4 @@
 
-import { log } from 'console';
 import logger from '../../log/logger';
 import { info_calificaciones, info_extension } from '../../types/ConsultorEstudiante.types';
 import { vista_info_consultor } from '../../types/ConsultorEstudianteVistas.types';
@@ -64,7 +63,6 @@ export class AlumnoController {
     }
 
     public async guardarAlumnoData(usuario: Usuario, info: vista_info_consultor) {
-        log(info)
         try {
            // const facultad = (await this.controllers.facultadController.getAll())[0];
             const carreraTemp = new Carrera(info.info_rendimiento.carrera);
@@ -119,12 +117,11 @@ export class AlumnoController {
     }
 
     private async guardarExtension(perfil:Perfil, extensiones:info_extension[]) {
+        const extensionesCorregidas = [...extensiones];
+        extensionesCorregidas.pop();
 
-
-
-        for (const extension of extensiones) {
+        for (const extension of extensionesCorregidas) {
             try {
-                log(extension)
                 const extensionNuevo = await this.controllers.extensionController.gestionar(new Extension(extension));
                 if(extensionNuevo){
                     const {horas, cantidad} = extension;

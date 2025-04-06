@@ -2,10 +2,16 @@ import { FindOptionsWhere, Repository } from "typeorm";
 import { PerfilExtension } from "../entity/PerfilExtension";
 import { EntityControllerInterface } from "./EntityControllerInterface";
 import logger from "../../log/logger";
+import { AppDataSource } from "../data-source";
 
 export class PerfilExtensionController implements EntityControllerInterface<PerfilExtension> {
-    
+
     private extensionRepositorio: Repository<PerfilExtension>;
+
+    constructor() {
+        this.extensionRepositorio = AppDataSource.getRepository(PerfilExtension);
+    }
+
 
     gestionar = async (data: PerfilExtension) => {
         return await this.get(data).then(async value => {
@@ -22,7 +28,7 @@ export class PerfilExtensionController implements EntityControllerInterface<Perf
         const { perfil, extension } = data as unknown as FindOptionsWhere<PerfilExtension>;
         logger.debug(`Buscando PerfilExtension.`);
         return await this.extensionRepositorio.findOne({
-            where: {perfil, extension}
+            where: { perfil, extension }
         }).then(value => {
             if (!value) {
                 logger.warn(`No se encontró la PerfilExtension con actividad ${data.extension}.`);
@@ -49,7 +55,7 @@ export class PerfilExtensionController implements EntityControllerInterface<Perf
 
     setOrUpdate = async (data: PerfilExtension) => {
         if (data) {
-            logger.debug(`Intentando actualizar la PerfilExtension con ${data}`);
+            logger.debug(`Intentando actualizar la PerfilExtension con ${data.id}`);
         } else {
             logger.debug(`Intentando agregar la PerfilExtension ${data}`);
         }
