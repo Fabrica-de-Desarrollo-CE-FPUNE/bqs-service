@@ -3,7 +3,7 @@ import { UsuarioController } from "../../postgre/controller/UsuarioController";
 import { EstudianteError } from "../errors/EstudianteError";
 import logger from "../../log/logger";
 import { StatusCodes } from "http-status-codes";
-import { ConsultorDataService } from "../../core/ConsultorService";
+import { ConsultorDataService2 } from "../../core/ConsultorService2";
 import { ConsultorServiceError } from "../../core/ConsultorServiceError";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { firmarToken } from "../utils/TokenUtil";
@@ -39,7 +39,7 @@ export class AuthController {
 
             if(!usuario) {
                 logger.debug('calling the core service for consultor data');
-                const consultor_servicio: ConsultorDataService = new ConsultorDataService();
+                const consultor_servicio: ConsultorDataService2 = new ConsultorDataService2();
                 const estudiante_data = await consultor_servicio.getAll_Consultor_Info(credenciales);
                 await usuarioTemp.init(credenciales);
                 const usuario = await this.usuarioController.setOrUpdate(usuarioTemp);
