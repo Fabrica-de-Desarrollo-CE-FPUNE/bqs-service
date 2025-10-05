@@ -7,8 +7,8 @@ import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenci
 @Entity()
 export class Usuario {
 
-    @PrimaryGeneratedColumn()
-    id:number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string
 
     @Column('varchar', {nullable:false, length:12, unique:true})
     cedula:string;

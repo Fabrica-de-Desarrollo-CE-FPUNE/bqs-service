@@ -7,8 +7,8 @@ export class PeriodoController {
 
     private periodoRepositorio: Repository<Periodo>;
 
-    constructor() {
-        this.periodoRepositorio = AppDataSource.getRepository(Periodo);
+    constructor(tx = AppDataSource) {
+        this.periodoRepositorio = tx.getRepository(Periodo);
     }
     gestionar = async (data: Periodo) => {
         return await this.get(data).then(async value => {

@@ -8,8 +8,8 @@ export class MateriaController implements EntityControllerInterface<Materia>{
     
     private materiaRepositorio: Repository<Materia>;
 
-    constructor() {
-        this.materiaRepositorio = AppDataSource.getRepository(Materia);
+    constructor(tx = AppDataSource) {
+        this.materiaRepositorio = tx.getRepository(Materia);
     }
     gestionar = async (data: Materia) => {
         return await this.get(data).then(async value => {

@@ -8,8 +8,8 @@ export class CarreraController implements EntityControllerInterface<Carrera>{
 
     private carreraRepositorio: Repository<Carrera>;
 
-    constructor() {
-        this.carreraRepositorio = AppDataSource.getRepository(Carrera);
+    constructor(tx = AppDataSource) {
+        this.carreraRepositorio = tx.getRepository(Carrera);
     }
 
     gestionar =  async (carrera: Carrera) => {

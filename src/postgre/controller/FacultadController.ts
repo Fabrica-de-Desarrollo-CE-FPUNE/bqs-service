@@ -8,8 +8,8 @@ export class FacultadController implements EntityControllerInterface<Facultad> {
     
     private facultadRepositorio: Repository<Facultad>;
 
-    constructor() {
-        this.facultadRepositorio = AppDataSource.getRepository(Facultad);
+    constructor(tx = AppDataSource) {
+        this.facultadRepositorio = tx.getRepository(Facultad);
     }
     
     gestionar =  async (facultad: Facultad) => {

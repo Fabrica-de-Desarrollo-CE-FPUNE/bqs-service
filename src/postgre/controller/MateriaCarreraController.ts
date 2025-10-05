@@ -8,8 +8,8 @@ export class MateriaCarreraController implements EntityControllerInterface<Mater
 
     private materiaCarreraRepositorio: Repository<MateriaCarrera>;
 
-    constructor() {
-        this.materiaCarreraRepositorio =  AppDataSource.getRepository(MateriaCarrera);
+    constructor(tx = AppDataSource) {
+        this.materiaCarreraRepositorio =  tx.getRepository(MateriaCarrera);
     }
 
 

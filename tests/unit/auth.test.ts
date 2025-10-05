@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 import { authenticateToken } from '../../src/api/middlewares/AuthMiddleware';
 import { firmarToken } from '../../src/api/utils/TokenUtil';
 import { StatusCodes } from 'http-status-codes';
-import { ClaveTokenUtil } from '../../src/api/utils/ClaveTokenUtil';
+
+// Clave secreta para pruebas
+const TEST_SECRET_KEY = process.env.TEST_SECRET_KEY!;
 
 // Crear una aplicación Express para las pruebas
 const app = express();
@@ -23,10 +25,7 @@ app.post('/token', (req, res) => {
 });
 
 describe('Autenticación con JWT', () => {
-    beforeAll(() => {
-        const claveTokenUtil = ClaveTokenUtil.getInstance();
-        claveTokenUtil.generarClave();
-    });
+    
 
     test('debería permitir el acceso con un token válido', async () => {
         const token = firmarToken({ usuario: 'prueba' });
@@ -62,7 +61,7 @@ describe('Autenticación con JWT', () => {
             .send({ data });
         
         const token = response.body.token;
-        const decoded = jwt.verify(token, ClaveTokenUtil.getInstance().getClave());
+        const decoded = jwt.verify(token, TEST_SECRET_KEY);
         
         expect(decoded).toMatchObject(data);
     });

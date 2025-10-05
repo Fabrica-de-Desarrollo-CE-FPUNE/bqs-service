@@ -8,8 +8,8 @@ export class EscalaController implements EntityControllerInterface<Escala> {
 
     private escalaRepositorio: Repository<Escala>;
 
-    constructor() {
-        this.escalaRepositorio = AppDataSource.getRepository(Escala);
+    constructor(tx = AppDataSource) {
+        this.escalaRepositorio = tx.getRepository(Escala);
     }
 
     gestionar = async (data: Escala) => {

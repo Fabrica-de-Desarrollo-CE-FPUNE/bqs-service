@@ -8,8 +8,8 @@ export class InscripcionController implements EntityControllerInterface<Inscripc
     
     private inscripcionRepositorio: Repository<Inscripcion>;
 
-    constructor() {
-        this.inscripcionRepositorio = AppDataSource.getRepository(Inscripcion);
+    constructor(tx = AppDataSource) {
+        this.inscripcionRepositorio = tx.getRepository(Inscripcion);
     }
     
     gestionar = async (data: Inscripcion) => {

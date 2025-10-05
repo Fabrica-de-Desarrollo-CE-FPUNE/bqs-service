@@ -7,8 +7,8 @@ export class ExtensionController implements EntityControllerInterface<Extension>
 
     private extensionRepositorio: Repository<Extension>;
 
-    constructor() {
-        this.extensionRepositorio = AppDataSource.getRepository(Extension);
+    constructor(tx = AppDataSource) {
+        this.extensionRepositorio = tx.getRepository(Extension);
     }
 
     gestionar = async (data: Extension): Promise<Extension> => {

@@ -9,8 +9,8 @@ import { EntityControllerInterface } from "./EntityControllerInterface";
 export class ParcialController implements EntityControllerInterface<ResultadoParcial> {
     private parcialesRepositorio: Repository<ResultadoParcial>;
 
-    constructor() {
-        this.parcialesRepositorio = AppDataSource.getRepository(ResultadoParcial);
+    constructor(tx = AppDataSource) {
+        this.parcialesRepositorio = tx.getRepository(ResultadoParcial);
     }
 
     gestionar = async (data: ResultadoParcial) => {

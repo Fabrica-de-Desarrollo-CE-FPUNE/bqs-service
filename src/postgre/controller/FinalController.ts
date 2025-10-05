@@ -8,8 +8,8 @@ export class FinalController implements EntityControllerInterface<ExamenFinal> {
 
     private finalesRepositorio: Repository<ExamenFinal>;
 
-    constructor() {
-        this.finalesRepositorio = AppDataSource.getRepository(ExamenFinal);
+    constructor(tx = AppDataSource) {
+        this.finalesRepositorio = tx.getRepository(ExamenFinal);
     }
 
 

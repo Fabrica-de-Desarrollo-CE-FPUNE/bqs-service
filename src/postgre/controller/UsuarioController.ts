@@ -7,8 +7,8 @@ import { EntityControllerInterface } from './EntityControllerInterface';
 export class UsuarioController implements EntityControllerInterface<Usuario> {
     private usuarioRepositorio: Repository<Usuario>;
 
-    constructor() {
-        this.usuarioRepositorio = AppDataSource.getRepository(Usuario);
+    constructor(tx = AppDataSource) {
+        this.usuarioRepositorio = tx.getRepository(Usuario);
     }
 
     gestionar = async (data: Usuario) => {

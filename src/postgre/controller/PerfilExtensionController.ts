@@ -8,8 +8,8 @@ export class PerfilExtensionController implements EntityControllerInterface<Perf
 
     private extensionRepositorio: Repository<PerfilExtension>;
 
-    constructor() {
-        this.extensionRepositorio = AppDataSource.getRepository(PerfilExtension);
+    constructor(tx = AppDataSource) {
+        this.extensionRepositorio = tx.getRepository(PerfilExtension);
     }
 
 

@@ -8,8 +8,8 @@ export class PerfilController implements EntityControllerInterface<Perfil> {
     
     private perfilRepositorio: Repository<Perfil>;
 
-    constructor() {
-        this.perfilRepositorio = AppDataSource.getRepository(Perfil);
+    constructor(tx = AppDataSource) {
+        this.perfilRepositorio = tx.getRepository(Perfil);
     }
     
     gestionar = async (data: Perfil) => {

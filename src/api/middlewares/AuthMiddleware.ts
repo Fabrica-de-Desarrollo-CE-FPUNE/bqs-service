@@ -1,20 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { ClaveTokenUtil } from '../utils/ClaveTokenUtil';
 import { EstudianteError } from '../errors/EstudianteError';
-import { Alumno_credencial_login } from '../../types/ConsultorEstudianteCredenciales.types';
 import logger from '../../log/logger';
+import { Alumno_credencial_login } from '../../types/ConsultorEstudianteCredenciales.types';
+
+const SECRET_KEY: string  = process.env.SECRET_KEY!;
 
 // Middleware para autenticación con JWT
 export function authenticateToken(req: Request, res: Response, next: NextFunction) {
   try {
-    const claveTokenUtil = ClaveTokenUtil.getInstance();
     const token = req.headers.authorization;
     if (!token) {
       throw EstudianteError.Unauthorized();
     }
     logger.debug(`Token recibido: ${token}`);
-    jwt.verify(token.split(' ')[1], claveTokenUtil.getClave(), (err: any, decoded) => {
+    jwt.verify(token.split(' ')[1], SECRET_KEY, (err: any, decoded) => {
       if (err) {
         throw EstudianteError.Unauthorized();
       }
