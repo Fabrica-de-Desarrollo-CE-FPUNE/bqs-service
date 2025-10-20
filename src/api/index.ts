@@ -9,11 +9,12 @@ import estudianteRouter from './routers/EstudianteRouter';
 import { PuppeteerManager } from '../bot/scraper/PuppeteerManager';
 import logger from '../log/logger';
 import UnknownRouter from './routers/UnknownRoutes';
+import authorizationRouter from './routers/AuthorizationRouter';
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors()) //Falta configurar a donde ir, de esta manera permita que cualquiera lo consuma
 app.use(bodyParser.json());
-app.use('/api',estudianteRouter);
+app.use('/api', authorizationRouter, estudianteRouter);
 app.use(UnknownRouter);
 
 logger.debug(`the express server app is attempting to listen on port ${PORT}`);

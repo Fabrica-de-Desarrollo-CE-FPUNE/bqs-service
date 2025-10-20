@@ -14,4 +14,14 @@ export class ApiRequestErrorCodes{
      * se usa cuando se ha hecho una request a una url no manejada por las rutas
      */
     public static UNKNOWN_REQUEST_URL = "UNKOWN_URL_ERR-1";
+
+    /**
+     * se usa cuando no hay un token de acceso autorizado o haya expirado
+     */
+    public static UNAUTHORIZED = 'UNAUTHORIZED_ERR';
+
+    /**
+     * se usa cuando una informacion no se encuentra
+     */
+    public static NO_DATA_FOUND = 'NO_DATA_ERR';
 }

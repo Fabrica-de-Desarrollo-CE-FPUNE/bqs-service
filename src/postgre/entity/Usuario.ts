@@ -1,23 +1,33 @@
-import { Entity, Column, OneToMany } from "typeorm"
-import { Inscripcion } from "./Inscripcion"
-import { Base } from "./Base"
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { hashearString } from "../../utils/dataUtil";
+import { Perfil } from "./Perfil";
+import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
+
 
 @Entity()
-export class Usuario extends Base {
+export class Usuario {
 
-    @Column("varchar", { length: 12, unique:true })
-    cedulaIdentidad: string
+    @PrimaryGeneratedColumn()
+    id:number;
 
-    @Column("varchar", { length: 15, nullable:true })
-    celular: string
+    @Column('varchar', {nullable:false, length:12, unique:true})
+    cedula:string;
 
-    @Column("varchar", { length: 15, nullable:true })
-    telefonoParticular: string
+    @Column('varchar', {
+        nullable:false, length:150
+    })
+    password:string;
 
-    @Column("varchar", { length: 30, nullable:true })
-    email: string
+    @OneToOne(()=>Perfil, (perfil)=>perfil.usuario)
+    perfil:Perfil;
 
-    @OneToMany(()=>Inscripcion, (inscripcion)=>inscripcion.usuario)
-    inscripciones:Inscripcion[]
+    public async init(usuario:Alumno_credencial_login){
+        this.cedula = usuario.cedula;
+        this.password = await hashearString(usuario.contrasenia);
+    }
 
+    constructor(usuario?:Alumno_credencial_login){
+        if(usuario)
+           this.init(usuario);   
+    }
 }

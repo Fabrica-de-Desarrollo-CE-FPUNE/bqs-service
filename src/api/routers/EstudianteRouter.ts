@@ -1,14 +1,24 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { EstudianteController } from "../controllers/EstudianteController";
+import { authenticateToken } from "../middlewares/AuthMiddleware";
 import { errorHandler } from "../middlewares/ErrorMiddleware";
+
+enum URLEnum {
+    base = '/estudiante',
+    perfil = '/estudiante/perfil',
+    materias = '/estudiante/materias',
+    materia = '/estudiante/materia'
+}
 
 
 const estudianteRouter:Router = Router();
 
-const urlRoute:string = '/estudiante';
-
 const controller = new EstudianteController();
 
-estudianteRouter.post(urlRoute, controller.getInfoEstudiante, errorHandler);
+estudianteRouter.use(authenticateToken);
+estudianteRouter.get(URLEnum.perfil, controller.getPerfilEstudiante);
+estudianteRouter.get(URLEnum.materias, controller.getMateriasEstudiante);
+estudianteRouter.get(URLEnum.materia, controller.getMateriaDetalleEstudiante);
+estudianteRouter.use(errorHandler);
 
 export default estudianteRouter;

@@ -4,10 +4,7 @@ import jwt from 'jsonwebtoken';
 import { authenticateToken } from '../../src/api/middlewares/AuthMiddleware';
 import { firmarToken } from '../../src/api/utils/TokenUtil';
 import { StatusCodes } from 'http-status-codes';
-
-// Clave secreta para pruebas
-const TEST_SECRET_KEY = "la super contraseña que debería ser anonima y ubicada como variable de entorno"+
-" pero que siento que es muy inseguro igual y prefiero hacer que sea dinamico";
+import { ClaveTokenUtil } from '../../src/api/utils/ClaveTokenUtil';
 
 // Crear una aplicación Express para las pruebas
 const app = express();
@@ -15,7 +12,7 @@ app.use(express.json());
 
 
 app.get('/protected', authenticateToken, (req, res) => {
-    res.status(200).json({ mensaje: 'Acceso concedido', usuario: req.body.usuario });
+    res.status(200).json({ mensaje: 'Acceso concedido', usuario: req.body });
 });
 
 // Rutas para firmar tokens y probar la autenticación
@@ -27,7 +24,8 @@ app.post('/token', (req, res) => {
 
 describe('Autenticación con JWT', () => {
     beforeAll(() => {
-        process.env.SECRET_KEY = TEST_SECRET_KEY;
+        const claveTokenUtil = ClaveTokenUtil.getInstance();
+        claveTokenUtil.generarClave();
     });
 
     test('debería permitir el acceso con un token válido', async () => {
@@ -64,7 +62,7 @@ describe('Autenticación con JWT', () => {
             .send({ data });
         
         const token = response.body.token;
-        const decoded = jwt.verify(token, TEST_SECRET_KEY);
+        const decoded = jwt.verify(token, ClaveTokenUtil.getInstance().getClave());
         
         expect(decoded).toMatchObject(data);
     });

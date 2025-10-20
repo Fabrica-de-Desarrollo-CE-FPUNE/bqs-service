@@ -1,34 +1,31 @@
 import { Response, Request, NextFunction } from "express";
-import { ConsultorDataService } from "../../core/ConsultorService";
 import { EstudianteError } from "../errors/EstudianteError";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { StatusCodes } from "http-status-codes";
 import { ConsultorServiceError } from "../../core/ConsultorServiceError";
 import logger from "../../log/logger";
+import { PerfilController } from "../../postgre/controller/PerfilController";
+import { InscripcionController } from "../../postgre/controller/InscripcionController";
+import { Perfil } from "../../postgre/entity/Perfil";
+import { Inscripcion } from "../../postgre/entity/Inscripcion";
 
 export class EstudianteController {
 
-    public getInfoEstudiante = async (req:Request, res:Response, next:NextFunction) : Promise<void> => {
+    private perfilController = new PerfilController();
+    private inscripcionController = new InscripcionController();
+
+    
+
+    public getPerfilEstudiante = async (req:Request, res:Response, next:NextFunction) : Promise<void> => {
         try {
-            if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-                logger.error('a body has not been sent');
-               throw EstudianteError.NotBodyFormSent();
+            logger.debug("intentando extraer el perfil del estudiante")
+            const usuario = req.body.usuario as Alumno_credencial_login;
+            const perfil = await this.perfilController.get(new Perfil({credencial:usuario}));
+            if(!perfil) {
+                throw EstudianteError.NoDataFound();
             }
-            const {cedula, pass} = req.body;
-            
-            if(!cedula || !pass){
-                logger.error('An invalid form has been sent');
-               throw EstudianteError.InvalidBodyFormRequest();
-            }
-            const credenciales: Alumno_credencial_login = {
-                cedula: cedula, 
-                contrasenia: pass
-            }
-            logger.debug('calling the core service for consultor data');
-            const consultor_servicio: ConsultorDataService = new ConsultorDataService();
-            const estudiante_data = await consultor_servicio.getAll_Consultor_Info(credenciales);
-            logger.debug('returning the core service data to the client request');
-            res.status(StatusCodes.OK).send(estudiante_data);
+            logger.info('información del perfil del estudiante encontrada, enviando...');
+            res.status(StatusCodes.OK).send(perfil);
         } catch (error) {
             if(error instanceof ConsultorServiceError){
                 next(EstudianteError.newError(error.message, error.errorCode));
@@ -37,5 +34,51 @@ export class EstudianteController {
             }
         }
     }
+
+    public getMateriasEstudiante  = async (req:Request, res:Response, next:NextFunction) : Promise<void> => {
+        try {
+            logger.debug("intentando extraer las materias del estudiante")
+            const usuario = req.body.usuario as Alumno_credencial_login;
+            const inscripcionBusqueda = new Inscripcion();
+            inscripcionBusqueda.perfil = new Perfil({credencial:usuario});
+            const materias = await this.inscripcionController.getAll(inscripcionBusqueda);
+            if(!materias.length) {
+                throw EstudianteError.NoDataFound();
+            }
+            logger.info('información de las materias del estudiante encontrada, enviando...');
+            res.status(StatusCodes.OK).send(materias);
+        } catch (error) {
+            if(error instanceof ConsultorServiceError){
+                next(EstudianteError.newError(error.message, error.errorCode));
+            }else {
+                next(error);
+            }
+        }
+    }
+
+    public getMateriaDetalleEstudiante  = async (req:Request, res:Response, next:NextFunction) : Promise<void> => {
+        try {
+            logger.debug("intentando extraer los detalles de la materia del estudiante")
+            const usuario = req.body.usuario as Alumno_credencial_login;
+            const id = req.query.id as unknown as number;
+            logger.debug(`el id de la materia a buscar es ${id}`);
+            const inscripcionBusqueda = new Inscripcion();
+            inscripcionBusqueda.perfil = new Perfil({credencial:usuario});
+            inscripcionBusqueda.materiaCarrera.materia.id = id;
+            const materia = await this.inscripcionController.get(inscripcionBusqueda);
+            if(!materia) {
+                throw EstudianteError.NoDataFound();
+            }
+            logger.info('información de las materias del estudiante encontrada, enviando...');
+            res.status(StatusCodes.OK).send(materia);
+        } catch (error) {
+            if(error instanceof ConsultorServiceError){
+                next(EstudianteError.newError(error.message, error.errorCode));
+            }else {
+                next(error);
+            }
+        }
+    }
+
 
 }

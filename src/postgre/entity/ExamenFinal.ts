@@ -1,18 +1,34 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Inscripcion } from './Inscripcion';
+import { info_resultado_evaluacion_final } from '../../types/ConsultorEstudiante.types';
+import { parseFechaDDMMYYYY } from '../../utils/dataUtil';
+
 @Entity()
 export class ExamenFinal {
 
     @PrimaryGeneratedColumn()
     id:number;
 
-    @Column({type:'date'})
+    @Column('date')
     fecha:Date;
 
-    @Column({nullable:true})
-    resultado:number;
+    @Column('float')
+    final:number;
 
-    @ManyToMany(()=>Inscripcion,(inscripcion)=>inscripcion.examenesFinales)
-    inscripciones:Inscripcion[];
+    @Column('varchar', {length:8})
+    nota:string;
+
+    @ManyToOne(()=>Inscripcion,(inscripcion)=>inscripcion.examenesFinales)
+    @JoinColumn({name:'inscripcion_id'})
+    inscripcion:Inscripcion;
+
+    constructor(data?:info_resultado_evaluacion_final){
+        if(data){
+            const {fecha, nota, final} = data;
+            this.fecha = parseFechaDDMMYYYY(fecha);
+            this.nota = nota;
+            this.final = Number(final.length?final:0);
+        }
+    }
 
 }

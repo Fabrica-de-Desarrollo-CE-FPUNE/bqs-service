@@ -1,20 +1,35 @@
-import { Column, PrimaryGeneratedColumn, Entity, ManyToMany } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from 'typeorm';
 import { Inscripcion } from './Inscripcion';
+import { info_inscripciones_asistencia } from '../../types/ConsultorEstudiante.types';
+import { parseFechaDDMMYYYY } from '../../utils/dataUtil';
+import { Base } from './Base';
 
 @Entity()
-export class Periodo {
+export class Periodo extends Base{
 
-    @PrimaryGeneratedColumn()
-    id:number;
 
     @Column("date",{nullable:false})
-    fechaInscripcion: Date;
+    fecha_inscripcion: Date;
 
     @Column("date",{nullable:false})
-    fechaVigencia: Date;
+    fecha_vigencia: Date;
 
 
-    @ManyToMany(()=>Inscripcion, (inscripcion)=>inscripcion.periodos)
+    @OneToMany(()=>Inscripcion, (inscripcion)=>inscripcion.periodo)
     inscripciones:Inscripcion[];
+
+
+    constructor(data?:info_inscripciones_asistencia) {
+
+        if(data){
+            const {fecha_inscripto, validez} = data;
+            super(`${fecha_inscripto}-${validez}`);
+            this.fecha_inscripcion = parseFechaDDMMYYYY(data.fecha_inscripto);
+            this.fecha_vigencia = parseFechaDDMMYYYY(data.validez);
+            return;
+        }
+        super();
+
+    }
 
 }
