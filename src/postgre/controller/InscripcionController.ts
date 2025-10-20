@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { Inscripcion } from "../entity/Inscripcion";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
@@ -6,55 +6,53 @@ import { EntityControllerInterface } from './EntityControllerInterface';
 
 export class InscripcionController implements EntityControllerInterface<Inscripcion> {
     
-    private inscripcionRepositorio: Repository<Inscripcion>;
+    private manager: EntityManager;
 
-    constructor(tx = AppDataSource) {
-        this.inscripcionRepositorio = tx.getRepository(Inscripcion);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
     
-    gestionar = async (data: Inscripcion) => {
-        return await this.get(data).then(async value => {
-            if(!value){
-                return this.setOrUpdate(data);
-            }
-            return value;
-        })
+    public gestionar = async (data: Inscripcion): Promise<Inscripcion> => {
+        const where = {
+            perfil: data.perfil,
+            periodo: data.periodo,
+            materiaCarrera: data.materiaCarrera
+        };
+        const inscripcionExistente = await this.get(where);
+
+        if (inscripcionExistente) {
+            return inscripcionExistente;
+        }
+
+        return this.setOrUpdate(data);
     }
     
-    get = async (data: Inscripcion) => {
-        const where = data as unknown as FindOptionsWhere<Inscripcion>;
-        logger.debug(`Buscando inscripción`);
-        return await this.inscripcionRepositorio.findOne({
-            where
-        }).then(value=>{
-            if(!value){
-                logger.warn(`No se encontró la inscripción.`);
-            }
-            return value;
-        });
+    public get = async (where: FindOptionsWhere<Inscripcion>): Promise<Inscripcion | null> => {
+        logger.debug(`Buscando inscripción.`);
+        const inscripcion = await this.manager.findOne(Inscripcion, { where });
+
+        if (!inscripcion) {
+            logger.warn(`No se encontró la inscripción.`);
+        }
+
+        return inscripcion;
     }
 
-    getAll = async (data?: Inscripcion | undefined) => {
-        const {perfil} = data as unknown as FindOptionsWhere<Inscripcion>;
-        logger.debug(`Buscando inscripción`);
-        return await this.inscripcionRepositorio.find({
-            where:{
-                perfil
-            }
-        }).then(value=>{
-            if(!value){
-                logger.warn(`No se encontró la inscripción.`);
-            }
-            return value;
-        });
+    public getAll = async (where?: FindOptionsWhere<Inscripcion>): Promise<Inscripcion[]> => {
+        logger.debug(`Buscando inscripciones.`);
+        const inscripciones = await this.manager.find(Inscripcion, { where });
+
+        if (!inscripciones.length) {
+            logger.warn(`No se encontraron inscripciones con los datos requeridos.`);
+        }
+
+        return inscripciones;
     };
 
-    setOrUpdate = async (data: Inscripcion) => {
-        return await this.inscripcionRepositorio.save(data).then(value => {
-            logger.info(`Guardando inscripción con id ${value.id}`);
-            return value;
-        });
+    public setOrUpdate = async (data: Inscripcion): Promise<Inscripcion> => {
+        const inscripcionGuardada = await this.manager.save(Inscripcion, data);
+        logger.info(`Guardando inscripción con id ${inscripcionGuardada.id}`);
+
+        return inscripcionGuardada;
     };
-
-
 }

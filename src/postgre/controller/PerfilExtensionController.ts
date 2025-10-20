@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { PerfilExtension } from "../entity/PerfilExtension";
 import { EntityControllerInterface } from "./EntityControllerInterface";
 import logger from "../../log/logger";
@@ -6,62 +6,60 @@ import { AppDataSource } from "../data-source";
 
 export class PerfilExtensionController implements EntityControllerInterface<PerfilExtension> {
 
-    private extensionRepositorio: Repository<PerfilExtension>;
+    private manager: EntityManager;
 
-    constructor(tx = AppDataSource) {
-        this.extensionRepositorio = tx.getRepository(PerfilExtension);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
 
+    public gestionar = async (data: PerfilExtension): Promise<PerfilExtension> => {
+        const where = {
+            perfil: data.perfil,
+            extension: data.extension
+        };
+        const perfilExtensionExistente = await this.get(where);
 
-    gestionar = async (data: PerfilExtension) => {
-        return await this.get(data).then(async value => {
-            if (!value) {
-                return await this.setOrUpdate(data).then(value => {
-                    return value;
-                });
-            }
-            return value;
-        });
-    }
-
-    get = async (data: PerfilExtension) => {
-        const { perfil, extension } = data as unknown as FindOptionsWhere<PerfilExtension>;
-        logger.debug(`Buscando PerfilExtension.`);
-        return await this.extensionRepositorio.findOne({
-            where: { perfil, extension }
-        }).then(value => {
-            if (!value) {
-                logger.warn(`No se encontró la PerfilExtension con actividad ${data.extension}.`);
-            }
-            return value;
-        });
-    }
-
-    getAll = async (data?: PerfilExtension) => {
-        const where = data as unknown as FindOptionsWhere<PerfilExtension>;
-        logger.debug(`Buscando PerfilExtension.`);
-        return await this.extensionRepositorio.find({
-            where
-        }).then(value => {
-            if (!value.length) {
-                logger.warn(`No se encontró ninguna PerfilExtension con los datos requeridos.`);
-            } else {
-                logger.info(`Se encontraron ${value.length} Extensions.`);
-            }
-            return value;
-        });
-
-    }
-
-    setOrUpdate = async (data: PerfilExtension) => {
-        if (data) {
-            logger.debug(`Intentando actualizar la PerfilExtension con ${data.id}`);
-        } else {
-            logger.debug(`Intentando agregar la PerfilExtension ${data}`);
+        if (perfilExtensionExistente) {
+            return perfilExtensionExistente;
         }
-        return await this.extensionRepositorio.save(data).then(value => {
-            logger.info(`Guardando PerfilExtension con id ${value}`);
-            return value;
-        });
+
+        return this.setOrUpdate(data);
+    }
+
+    public get = async (where: FindOptionsWhere<PerfilExtension>): Promise<PerfilExtension | null> => {
+        logger.debug(`Buscando PerfilExtension.`);
+        const perfilExtension = await this.manager.findOne(PerfilExtension, { where });
+
+        if (!perfilExtension) {
+            logger.warn(`No se encontró la PerfilExtension.`);
+        }
+        
+        return perfilExtension;
+    }
+
+    public getAll = async (where?: FindOptionsWhere<PerfilExtension>): Promise<PerfilExtension[]> => {
+        logger.debug(`Buscando PerfilExtensions.`);
+        const perfilExtensions = await this.manager.find(PerfilExtension, { where });
+
+        if (!perfilExtensions.length) {
+            logger.warn(`No se encontró ninguna PerfilExtension con los datos requeridos.`);
+        } else {
+            logger.info(`Se encontraron ${perfilExtensions.length} PerfilExtensions.`);
+        }
+
+        return perfilExtensions;
+    }
+
+    public setOrUpdate = async (data: PerfilExtension): Promise<PerfilExtension> => {
+        if (data.id) {
+            logger.debug(`Intentando actualizar la PerfilExtension con id ${data.id}`);
+        } else {
+            logger.debug(`Intentando agregar la PerfilExtension.`);
+        }
+
+        const perfilExtensionGuardada = await this.manager.save(PerfilExtension, data);
+        logger.info(`Guardando PerfilExtension con id ${perfilExtensionGuardada.id}`);
+
+        return perfilExtensionGuardada;
     }
 }

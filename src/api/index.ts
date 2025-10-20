@@ -14,7 +14,8 @@ const PORT = Number(process.env.PORT!);
 const HOST = process.env.HOST!;
 app.use(cors()) //Falta configurar a donde ir, de esta manera permita que cualquiera lo consuma
 app.use(express.json());
-app.use('/api', authorizationRouter, estudianteRouter);
+app.use('/api', authorizationRouter);
+app.use('/api', estudianteRouter);
 app.use(UnknownRouter);
 
 logger.debug(`the express server app is attempting to listen on port ${PORT}`);
