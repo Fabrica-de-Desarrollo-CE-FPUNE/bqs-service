@@ -1,65 +1,61 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { Periodo } from "../entity/Periodo";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
 
 export class PeriodoController {
 
-    private periodoRepositorio: Repository<Periodo>;
+    private manager: EntityManager;
 
-    constructor(tx = AppDataSource) {
-        this.periodoRepositorio = tx.getRepository(Periodo);
-    }
-    gestionar = async (data: Periodo) => {
-        return await this.get(data).then(async value => {
-            if(!value){
-                return await this.setOrUpdate(data);
-            }
-            return value;
-        })
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
 
-    get = async (data: Periodo) => {
+    public gestionar = async (data: Periodo): Promise<Periodo> => {
+        const where = { nombre: data.nombre };
+        const periodoExistente = await this.get(where);
 
-        const {nombre} = data as unknown as FindOptionsWhere<Periodo>;
-        
-        return this.periodoRepositorio.findOne({
-            where: {
-                nombre
-            }
-        }).then(value => {
-            if(!value){
-                logger.warn(`No se encontró el periodo ${nombre}.`);
-            } else {
-                logger.info(`Se encontró el periodo con id ${value.id}`)
-            }
-            return value;
-        })
+        if (periodoExistente) {
+            return periodoExistente;
+        }
+
+        return this.setOrUpdate(data);
     }
-    getAll = async (data?: Periodo ) => {
-        const where = data as unknown as FindOptionsWhere<Periodo>;
-        return this.periodoRepositorio.find({
-            where
-        }).then(value => {
-            if(!value.length){
-                logger.warn(`No se encontró los Periodoes con los datos requeridos.`);
-            } else {
-                logger.info(`Se encontraron ${value.length} Periodoes.`);
-            }
-            return value;
-        })
+
+    public get = async (where: FindOptionsWhere<Periodo>): Promise<Periodo | null> => {
+        const periodo = await this.manager.findOne(Periodo, { where });
+
+        if (!periodo) {
+            logger.warn(`No se encontró el periodo.`);
+        } else {
+            logger.info(`Se encontró el periodo con id ${periodo.id}`);
+        }
+
+        return periodo;
+    }
+
+    public getAll = async (where?: FindOptionsWhere<Periodo>): Promise<Periodo[]> => {
+        const periodos = await this.manager.find(Periodo, { where });
+
+        if (!periodos.length) {
+            logger.warn(`No se encontraron los periodos con los datos requeridos.`);
+        } else {
+            logger.info(`Se encontraron ${periodos.length} periodos.`);
+        }
+
+        return periodos;
     };
-    setOrUpdate = async (data: Periodo) => {
-        if(data.id){
+
+    public setOrUpdate = async (data: Periodo): Promise<Periodo> => {
+        if (data.id) {
             logger.debug(`Intentando actualizar periodo con ID ${data.id}`);
         } else {
             logger.debug(`Intentando agregar periodo`);
         }
 
-        return this.periodoRepositorio.save(data).then(value => {
-            logger.info(`Guardando carrera con id ${value.id}`);
-            return value;
-        });
+        const periodoGuardado = await this.manager.save(Periodo, data);
+        logger.info(`Guardando periodo con id ${periodoGuardado.id}`);
+        
+        return periodoGuardado;
     }
 }
-
