@@ -16,9 +16,9 @@ const estudianteRouter:Router = Router();
 const controller = new EstudianteController();
 
 estudianteRouter.use(authenticateToken);
-estudianteRouter.post(URLEnum.perfil, controller.getPerfilEstudiante);
-estudianteRouter.post(URLEnum.materias, controller.getMateriasEstudiante);
-estudianteRouter.post(URLEnum.materia, controller.getMateriaDetalleEstudiante);
+estudianteRouter.get(URLEnum.perfil, controller.getPerfilEstudiante);
+estudianteRouter.get(URLEnum.materias, controller.getMateriasEstudiante);
+estudianteRouter.get(URLEnum.materia, controller.getMateriaDetalleEstudiante);
 estudianteRouter.use(errorHandler);
 
 export default estudianteRouter;
