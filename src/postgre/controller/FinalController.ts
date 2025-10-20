@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { ExamenFinal } from "../entity/ExamenFinal";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
@@ -6,37 +6,44 @@ import { EntityControllerInterface } from "./EntityControllerInterface";
 
 export class FinalController implements EntityControllerInterface<ExamenFinal> {
 
-    private finalesRepositorio: Repository<ExamenFinal>;
+    private manager: EntityManager;
 
-    constructor() {
-        this.finalesRepositorio = AppDataSource.getRepository(ExamenFinal);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
-
-
-    getAll: (data?: ExamenFinal | undefined) => Promise<ExamenFinal[]>;
     
-    gestionar = async (data: ExamenFinal) => {
-        return await this.get(data).then(async value => {
-            if(!value){
-                return await this.setOrUpdate(data);
-            }
-            return value;
-        })
-    }
-    get = async (data: ExamenFinal) => {
-        const where = data as unknown as FindOptionsWhere<ExamenFinal>;
-        return this.finalesRepositorio.findOne({
-            where
-        }).then(value=>{
-            if(!value){
-                logger.warn(`No se encontró el examen.`);
-            }
-            return value;
-        });
+    public gestionar = async (data: ExamenFinal): Promise<ExamenFinal> => {
+        const where = { inscripcion: data.inscripcion, fecha: data.fecha };
+        const examenExistente = await this.get(where);
 
-    }
-    setOrUpdate = async (data: ExamenFinal) => {
-        return await this.finalesRepositorio.save(data);
+        if (examenExistente) {
+            return examenExistente;
+        }
+
+        return this.setOrUpdate(data);
     }
 
+    public get = async (where: FindOptionsWhere<ExamenFinal>): Promise<ExamenFinal | null> => {
+        const examen = await this.manager.findOne(ExamenFinal, { where });
+
+        if (!examen) {
+            logger.warn(`No se encontró el examen.`);
+        }
+
+        return examen;
+    }
+
+    public setOrUpdate = async (data: ExamenFinal): Promise<ExamenFinal> => {
+        return this.manager.save(ExamenFinal, data);
+    }
+
+    public getAll = async (where?: FindOptionsWhere<ExamenFinal>): Promise<ExamenFinal[]> => {
+        const examenes = await this.manager.find(ExamenFinal, { where });
+
+        if (!examenes.length) {
+            logger.warn(`No se encontraron exámenes con los datos requeridos.`);
+        }
+
+        return examenes;
+    }
 }

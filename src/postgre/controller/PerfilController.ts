@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { Perfil } from "../entity/Perfil";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
@@ -6,55 +6,55 @@ import { EntityControllerInterface } from "./EntityControllerInterface";
 
 export class PerfilController implements EntityControllerInterface<Perfil> {
     
-    private perfilRepositorio: Repository<Perfil>;
+    private manager: EntityManager;
 
-    constructor() {
-        this.perfilRepositorio = AppDataSource.getRepository(Perfil);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
     
-    gestionar = async (data: Perfil) => {
-            return await this.get(data).then(async value => {
-                if(!value){
-                    return await this.setOrUpdate(data);
-                }
-                return value;
-            })
+    public gestionar = async (data: Perfil): Promise<Perfil> => {
+        const where:FindOptionsWhere<Perfil> = { cedula_de_identidad: data.cedula_de_identidad };
+        const perfilExistente = await this.get(where);
+
+        if (perfilExistente) {
+            return perfilExistente;
         }
 
-    get = async (data: Perfil) => {
-        const where = data as unknown as FindOptionsWhere<Perfil>;
-        return this.perfilRepositorio.findOne({
-            where
-        }).then(value => {
-            if(!value){
-                logger.warn(`No se encontró el perfil ${where.nombre}.`);
-            }
-            return value;
-        })
+        return this.setOrUpdate(data);
     }
-    getAll = async (data?: Perfil ) => {
-        const where = data as unknown as FindOptionsWhere<Perfil>;
-        return this.perfilRepositorio.find({
-            where
-        }).then(value => {
-            if(!value.length){
-                logger.warn(`No se encontró los perfiles con los datos requeridos.`);
-            } else {
-                logger.info(`Se encontraron ${value.length} perfiles.`);
-            }
-            return value;
-        })
+
+    public get = async (where: FindOptionsWhere<Perfil>): Promise<Perfil | null> => {
+        const perfil = await this.manager.findOne(Perfil, { where });
+
+        if (!perfil) {
+            logger.warn(`No se encontró el perfil.`);
+        }
+        
+        return perfil;
+    }
+
+    public getAll = async (where?: FindOptionsWhere<Perfil>): Promise<Perfil[]> => {
+        const perfiles = await this.manager.find(Perfil, { where });
+
+        if (!perfiles.length) {
+            logger.warn(`No se encontraron los perfiles con los datos requeridos.`);
+        } else {
+            logger.info(`Se encontraron ${perfiles.length} perfiles.`);
+        }
+
+        return perfiles;
     };
-    setOrUpdate = async (data: Perfil) => {
-        if(data.id){
+
+    public setOrUpdate = async (data: Perfil): Promise<Perfil> => {
+        if (data.id) {
             logger.debug(`Intentando actualizar perfil ${data.nombre} con ID ${data.id}`);
         } else {
             logger.debug(`Intentando agregar perfil ${data.nombre}`);
         }
 
-        return this.perfilRepositorio.save(data).then(value => {
-            logger.info(`Guardando perfil con id ${value.id}`);
-            return value;
-        });
+        const perfilGuardado = await this.manager.save(Perfil, data);
+        logger.info(`Guardando perfil con id ${perfilGuardado.id}`);
+
+        return perfilGuardado;
     }
 }

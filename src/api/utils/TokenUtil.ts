@@ -1,10 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { ClaveTokenUtil } from './ClaveTokenUtil';
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const firmarToken = (data:any)=>{
-    const claveTokenUtil = ClaveTokenUtil.getInstance();
-    if(claveTokenUtil.getClave()===""){
-        claveTokenUtil.generarClave()
-    }
-    return  jwt.sign(data, claveTokenUtil.getClave());
+    return  jwt.sign(data, JWT_SECRET);
 }

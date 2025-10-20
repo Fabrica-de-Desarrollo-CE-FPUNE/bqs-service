@@ -2,7 +2,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import estudianteRouter from './routers/EstudianteRouter';
 
@@ -11,14 +10,16 @@ import logger from '../log/logger';
 import UnknownRouter from './routers/UnknownRoutes';
 import authorizationRouter from './routers/AuthorizationRouter';
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT!);
+const HOST = process.env.HOST!;
 app.use(cors()) //Falta configurar a donde ir, de esta manera permita que cualquiera lo consuma
-app.use(bodyParser.json());
-app.use('/api', authorizationRouter, estudianteRouter);
+app.use(express.json());
+app.use('/api', authorizationRouter);
+app.use('/api', estudianteRouter);
 app.use(UnknownRouter);
 
 logger.debug(`the express server app is attempting to listen on port ${PORT}`);
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   try{
     logger.info(`The api server is running on port ${PORT}`);
     PuppeteerManager.getInstance().initialize();

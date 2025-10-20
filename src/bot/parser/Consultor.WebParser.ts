@@ -16,8 +16,8 @@ import {
   info_libros_prestamo,
 } from "../../types/ConsultorEstudiante.types";
 
-import cheerio, { CheerioAPI, Element } from "cheerio";
-import {IConsultorWebParser, TableContent, TableContentObjects} from './WebParser.Interfaces'
+import cheerio, { CheerioAPI } from "cheerio";
+import { IConsultorWebParser, TableContent, TableContentObjects } from './WebParser.Interfaces'
 import logger from "../../log/logger";
 
 export class ConsultorWebParser implements IConsultorWebParser {
@@ -275,7 +275,7 @@ export class ConsultorWebParser implements IConsultorWebParser {
         logger.error(`fatal error, no case ${key} detected`);
     }
   }
-  private extractConsultorTables(table: Element): TableContent {
+  private extractConsultorTables(table: any): TableContent {
     const headers: string[] = [];
     const rows: string[][] = [];
     this.selector(table)

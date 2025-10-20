@@ -1,64 +1,61 @@
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { EntityManager, FindOptionsWhere } from 'typeorm';
 import { Extension } from '../entity/Extension';
 import { EntityControllerInterface } from './EntityControllerInterface';
 import logger from '../../log/logger';
 import { AppDataSource } from '../data-source';
+
 export class ExtensionController implements EntityControllerInterface<Extension> {
 
-    private extensionRepositorio: Repository<Extension>;
+    private manager: EntityManager;
 
-    constructor() {
-        this.extensionRepositorio = AppDataSource.getRepository(Extension);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
 
-    gestionar = async (data: Extension): Promise<Extension> => {
-        const existente = await this.get(data);
-        return existente ?? await this.setOrUpdate(data);
-    }
-
-    get = async (data: Extension) => {
-        const where: FindOptionsWhere<Extension> = {
+    public gestionar = async (data: Extension): Promise<Extension> => {
+        const where = {
             actividad: data.actividad,
             tipo_actividad: data.tipo_actividad
         };
-        logger.debug(`Buscando extension ${where.actividad}/${where.tipo_actividad}.`);
-        return await this.extensionRepositorio.findOne({
-            where
-        }).then(value => {
-            if (!value) {
-                logger.warn(`No se encontró la extension con actividad ${data.actividad}.`);
-            }
-            return value;
-        });
+        const existente = await this.get(where);
+        
+        return existente ?? this.setOrUpdate(data);
     }
 
-    getAll = async (data?: Extension) => {
-        const where = data as unknown as FindOptionsWhere<Extension>;
-        logger.debug(`Buscando Extensions.`);
-        return await this.extensionRepositorio.find({
-            where
-        }).then(value => {
-            if (!value.length) {
-                logger.warn(`No se encontró ninguna Extension con los datos requeridos.`);
-            } else {
-                logger.info(`Se encontraron ${value.length} Extensions.`);
-            }
-            return value;
-        });
+    public get = async (where: FindOptionsWhere<Extension>): Promise<Extension | null> => {
+        logger.debug(`Buscando extension.`);
+        const extension = await this.manager.findOne(Extension, { where });
 
+        if (!extension) {
+            logger.warn(`No se encontró la extension.`);
+        }
+        
+        return extension;
     }
 
-    setOrUpdate = async (data: Extension) => {
+    public getAll = async (where?: FindOptionsWhere<Extension>): Promise<Extension[]> => {
+        logger.debug(`Buscando extensions.`);
+        const extensions = await this.manager.find(Extension, { where });
+
+        if (!extensions.length) {
+            logger.warn(`No se encontró ninguna extension con los datos requeridos.`);
+        } else {
+            logger.info(`Se encontraron ${extensions.length} extensions.`);
+        }
+
+        return extensions;
+    }
+
+    public setOrUpdate = async (data: Extension): Promise<Extension> => {
         if (data.id) {
-            logger.debug(`Intentando actualizar la extension con ${data.id}`);
+            logger.debug(`Intentando actualizar la extension con id ${data.id}`);
         } else {
             logger.debug(`Intentando agregar la extension ${data.actividad}`);
         }
-        return await this.extensionRepositorio.save(data).then(value => {
-            logger.info(`Guardando extension con id ${value.id}`);
-            return value;
-        });
+
+        const extensionGuardada = await this.manager.save(Extension, data);
+        logger.info(`Guardando extension con id ${extensionGuardada.id}`);
+
+        return extensionGuardada;
     }
-
-
 }

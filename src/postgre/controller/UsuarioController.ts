@@ -1,48 +1,57 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { Usuario } from "../entity/Usuario";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
 import { EntityControllerInterface } from './EntityControllerInterface';
 
 export class UsuarioController implements EntityControllerInterface<Usuario> {
-    private usuarioRepositorio: Repository<Usuario>;
 
-    constructor() {
-        this.usuarioRepositorio = AppDataSource.getRepository(Usuario);
+    private manager: EntityManager;
+
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
 
-    gestionar = async (data: Usuario) => {
-        return this.get(data).then(async value => {
-            if(!value) {
-                return this.setOrUpdate(data);
-            }
-            return value;
-        })
+    public gestionar = async (data: Usuario): Promise<Usuario> => {
+       
+        const usuarioExistente = await this.get(data);
+
+        if (usuarioExistente) {
+            return usuarioExistente;
+        }
+
+        return this.setOrUpdate(data);
     }
 
-    get = async  (data: Usuario) => {
-        const where = data as unknown as FindOptionsWhere<Usuario>;
-        logger.debug(`buscando usuario con cedula ${where.cedula}`)
-        return await this.usuarioRepositorio.findOne({
-            where
-        }).then((value)=>{
-            if(!value){
-                logger.warn('no se encontró al usuario')
-                return;
-            }
-            logger.info(`usuario encontrado id ${value.id}`);
-            return value;
-        })
-    }
-    getAll: (data?: Usuario | undefined) => Promise<Usuario[]>;
+    public get = async (data:Usuario): Promise<Usuario | null> => {
+        const where: FindOptionsWhere<Usuario> = { cedula: data.cedula };
+        logger.debug(`Buscando usuario.`);
+        const usuario = await this.manager.findOne(Usuario, { where });
 
-    setOrUpdate = async (data: Usuario) => {
-        logger.debug(`intentando agregar usuario con cedula ${data.cedula}`);
-        logger.info(`la contra hasheada es ${data.password}`)
-        return await this.usuarioRepositorio.save(data).then(value => {
-            logger.info(`Guardando usuario con id ${value.id}`);
-            return value;
-        });
+        if (!usuario) {
+            logger.warn('No se encontró al usuario.');
+        } else {
+            logger.info(`Usuario encontrado con id ${usuario.id}.`);
+        }
+
+        return usuario;
     }
 
+    public getAll = async (): Promise<Usuario[]> => {
+        const usuarios = await this.manager.find(Usuario);
+
+        if (!usuarios.length) {
+            logger.warn(`No se encontraron usuarios con los datos requeridos.`);
+        }
+
+        return usuarios;
+    }
+
+    public setOrUpdate = async (data: Usuario): Promise<Usuario> => {
+        logger.debug(`Intentando agregar usuario con cedula ${data.cedula}.`);
+        const usuarioGuardado = await this.manager.save(Usuario, data);
+        logger.info(`Guardando usuario con id ${usuarioGuardado.id}.`);
+
+        return usuarioGuardado;
+    }
 }

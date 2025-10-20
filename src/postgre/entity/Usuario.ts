@@ -1,14 +1,14 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { hashearString } from "../../utils/dataUtil";
 import { Perfil } from "./Perfil";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
+import { encrypt } from "../../utils/crypto";
 
 
 @Entity()
 export class Usuario {
 
-    @PrimaryGeneratedColumn()
-    id:number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string
 
     @Column('varchar', {nullable:false, length:12, unique:true})
     cedula:string;
@@ -23,7 +23,7 @@ export class Usuario {
 
     public async init(usuario:Alumno_credencial_login){
         this.cedula = usuario.cedula;
-        this.password = await hashearString(usuario.contrasenia);
+        this.password = encrypt(usuario.contrasenia);
     }
 
     constructor(usuario?:Alumno_credencial_login){

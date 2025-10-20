@@ -1,64 +1,63 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { Carrera } from "../entity/Carrera";
 import { AppDataSource } from "../data-source";
 import { EntityControllerInterface } from "./EntityControllerInterface";
 import logger from "../../log/logger";
 
-export class CarreraController implements EntityControllerInterface<Carrera>{
 
-    private carreraRepositorio: Repository<Carrera>;
+export class CarreraController implements EntityControllerInterface<Carrera> {
+    
+    private manager: EntityManager;
 
-    constructor() {
-        this.carreraRepositorio = AppDataSource.getRepository(Carrera);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
 
-    gestionar =  async (carrera: Carrera) => {
-        return await this.get(carrera).then(async value => {
-            if(!value){
-                return this.setOrUpdate(carrera);
-            }
-            return value
-        });
+  
+    public gestionar = async (carrera: Carrera): Promise<Carrera> => {
+        const carreraExistente = await this.get({ nombre: carrera.nombre });
+        
+        if (carreraExistente) {
+            return carreraExistente;
+        }
+        
+        return this.setOrUpdate(carrera);
     }
     
-    get = async (data: Carrera) => {
-        const {nombre} = data as unknown as FindOptionsWhere<Carrera>;
-        return await this.carreraRepositorio.findOne({
-            where: {nombre}
-        }).then(value=>{
-            if(!value){
-                logger.warn(`No se encontró la carrera ${nombre}`);
-            } else {
-                logger.info(`Carrera encontrada con id ${value.id}`);
-            }
-            return value;
-        });
+    public get = async (where: FindOptionsWhere<Carrera>): Promise<Carrera | null> => {
+        const carrera = await this.manager.findOne(Carrera, { where });
+        
+        if (!carrera) {
+            logger.warn(`No se encontró la carrera con los criterios proporcionados.`);
+        } else {
+            logger.info(`Carrera encontrada con id ${carrera.id}`);
+        }
+        
+        return carrera;
     };
 
-    setOrUpdate = async (data: Carrera) => {
-        if(data.id){
+    public setOrUpdate = async (data: Carrera): Promise<Carrera> => {
+        if (data.id) {
             logger.debug(`Intentando actualizar carrera ${data.nombre} con ID ${data.id}`);
         } else {
             logger.debug(`Intentando agregar carrera ${data.nombre}`);
         }
-        return await this.carreraRepositorio.save(data).then(value => {
-            logger.info(`Guardando carrera con id ${value.id}`);
-            return value;
-        })
+        
+        const carreraGuardada = await this.manager.save(Carrera, data);
+        logger.info(`Guardando carrera con id ${carreraGuardada.id}`);
+        
+        return carreraGuardada;
     };
 
-    getAll = async (data?: Carrera) => {
-        const where = data as unknown as FindOptionsWhere<Carrera>;
-        return await this.carreraRepositorio.find({
-            where
-        }).then(value=>{
-            if(!value.length){
-                logger.warn(`No se encontró la carreras con los datos requeridos.`);
-            } else {
-                logger.info(`Se encontraron ${value.length} carreras.`);
-            }
-            return value;
-        });
+    public getAll = async (where?: FindOptionsWhere<Carrera>): Promise<Carrera[]> => {
+        const carreras = await this.manager.find(Carrera, { where });
+        
+        if (!carreras.length) {
+            logger.warn(`No se encontraron carreras con los datos requeridos.`);
+        } else {
+            logger.info(`Se encontraron ${carreras.length} carreras.`);
+        }
+        
+        return carreras;
     }
-
 }

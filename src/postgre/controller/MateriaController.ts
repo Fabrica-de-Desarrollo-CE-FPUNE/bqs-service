@@ -1,62 +1,60 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere } from "typeorm";
 import { Materia } from "../entity/Materia";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
 import { EntityControllerInterface } from "./EntityControllerInterface";
 
-export class MateriaController implements EntityControllerInterface<Materia>{
+export class MateriaController implements EntityControllerInterface<Materia> {
     
-    private materiaRepositorio: Repository<Materia>;
+    private manager: EntityManager;
 
-    constructor() {
-        this.materiaRepositorio = AppDataSource.getRepository(Materia);
+    constructor(tx: EntityManager = AppDataSource.manager) {
+        this.manager = tx;
     }
-    gestionar = async (data: Materia) => {
-        return await this.get(data).then(async value => {
-            if(!value){
-                return await this.setOrUpdate(data);
-            }
-            return value;
-        })
+    
+    public gestionar = async (data: Materia): Promise<Materia> => {
+        const where = { nombre: data.nombre };
+        const materiaExistente = await this.get(where);
+
+        if (materiaExistente) {
+            return materiaExistente;
+        }
+
+        return this.setOrUpdate(data);
     };
-    get = async (data: Materia) => {
-        const {nombre} = data as unknown as FindOptionsWhere<Materia>;
-        return this.materiaRepositorio.findOne({
-            where: {
-                nombre
-            }
-        }).then(value => {
-            if(!value){
-                logger.warn(`No se encontró la materia ${nombre}.`);
-            }
-            return value;
-        })
+
+    public get = async (where: FindOptionsWhere<Materia>): Promise<Materia | null> => {
+        const materia = await this.manager.findOne(Materia, { where });
+
+        if (!materia) {
+            logger.warn(`No se encontró la materia.`);
+        }
+        
+        return materia;
     }
-    getAll = async (data?: Materia ) => {
-        const where = data as unknown as FindOptionsWhere<Materia>;
-        return this.materiaRepositorio.find({
-            where
-        }).then(value => {
-            if(!value.length){
-                logger.warn(`No se encontró las materias con los datos requeridos.`);
-            } else {
-                logger.info(`Se encontraron ${value.length} materias.`);
-            }
-            return value;
-        })
+
+    public getAll = async (where?: FindOptionsWhere<Materia>): Promise<Materia[]> => {
+        const materias = await this.manager.find(Materia, { where });
+
+        if (!materias.length) {
+            logger.warn(`No se encontraron las materias con los datos requeridos.`);
+        } else {
+            logger.info(`Se encontraron ${materias.length} materias.`);
+        }
+        
+        return materias;
     };
-    setOrUpdate = async (data: Materia) => {
-        if(data.id){
+
+    public setOrUpdate = async (data: Materia): Promise<Materia> => {
+        if (data.id) {
             logger.debug(`Intentando actualizar materia ${data.nombre} con ID ${data.id}`);
         } else {
             logger.debug(`Intentando agregar materia ${data.nombre}`);
         }
 
-        return this.materiaRepositorio.save(data).then(value => {
-            logger.info(`Guardando materia con id ${value.id}`);
-            return value;
-        });
-    }
+        const materiaGuardada = await this.manager.save(Materia, data);
+        logger.info(`Guardando materia con id ${materiaGuardada.id}`);
 
-   
+        return materiaGuardada;
+    }
 }

@@ -1,4 +1,4 @@
-
+import { EntityManager } from 'typeorm';
 import logger from '../../log/logger';
 import { info_calificaciones, info_extension } from '../../types/ConsultorEstudiante.types';
 import { vista_info_consultor } from '../../types/ConsultorEstudianteVistas.types';
@@ -18,7 +18,6 @@ import { Usuario } from '../entity/Usuario';
 import { CarreraController } from './CarreraController';
 import { EscalaController } from './EscalaController';
 import { ExtensionController } from './ExtensionController';
-import { FacultadController } from './FacultadController';
 import { FinalController } from './FinalController';
 import { InscripcionController } from './InscripcionController';
 import { MateriaCarreraController } from './MateriaCarreraController';
@@ -30,130 +29,114 @@ import { PeriodoController } from './PeriodoController';
 
 export class AlumnoController {
 
-    private controllers: {
-        carreraController: CarreraController,
-        perfilController: PerfilController,
-        facultadController: FacultadController,
-        materiaController: MateriaController,
-        inscripcionController: InscripcionController,
-        periodoController: PeriodoController,
-        escalaController: EscalaController,
-        parcialController: ParcialController,
-        finalController: FinalController,
-        materiaCarreraController: MateriaCarreraController,
-        extensionController: ExtensionController,
-        perfilExtensionController: PerfilExtensionController
+    private carreraController: CarreraController;
+    private perfilController: PerfilController;
+    private periodoController: PeriodoController;
+    private materiaController: MateriaController;
+    private materiaCarreraController: MateriaCarreraController;
+    private escalaController: EscalaController;
+    private inscripcionController: InscripcionController;
+    private parcialController: ParcialController;
+    private finalController: FinalController;
+    private extensionController: ExtensionController;
+    private perfilExtensionController: PerfilExtensionController;
+
+    constructor(private tx: EntityManager) {
+        this.carreraController = new CarreraController(this.tx);
+        this.perfilController = new PerfilController(this.tx);
+        this.periodoController = new PeriodoController(this.tx);
+        this.materiaController = new MateriaController(this.tx);
+        this.materiaCarreraController = new MateriaCarreraController(this.tx);
+        this.escalaController = new EscalaController(this.tx);
+        this.inscripcionController = new InscripcionController(this.tx);
+        this.parcialController = new ParcialController(this.tx);
+        this.finalController = new FinalController(this.tx);
+        this.extensionController = new ExtensionController(this.tx);
+        this.perfilExtensionController = new PerfilExtensionController(this.tx);
     }
 
-    constructor() {
-        this.controllers = {
-            carreraController: new CarreraController(),
-            perfilController: new PerfilController(),
-            facultadController: new FacultadController(),
-            materiaController: new MateriaController(),
-            inscripcionController: new InscripcionController(),
-            periodoController: new PeriodoController(),
-            escalaController: new EscalaController(),
-            parcialController: new ParcialController(),
-            finalController: new FinalController(),
-            materiaCarreraController: new MateriaCarreraController(),
-            extensionController: new ExtensionController(),
-            perfilExtensionController: new PerfilExtensionController()
-        };
-    }
+    public async guardarAlumnoData(usuario: Usuario, info: vista_info_consultor): Promise<void> {
+        const carreraTemp = new Carrera(info.info_rendimiento.carrera);
+        const carrera = await this.carreraController.gestionar(carreraTemp);
 
-    public async guardarAlumnoData(usuario: Usuario, info: vista_info_consultor) {
-        try {
-           // const facultad = (await this.controllers.facultadController.getAll())[0];
-            const carreraTemp = new Carrera(info.info_rendimiento.carrera);
-           // carreraTemp.facultad = facultad;
-            const carrera = await this.controllers.carreraController.gestionar(carreraTemp);
+        await this.guardarMateriasCursadas(carrera, info.info_calificaciones);
+        
+        let alumno = new Perfil({ vista_info_consultor: info });
+        alumno.usuario = usuario;
+        alumno.carrera = carrera;
+        alumno = await this.perfilController.gestionar(alumno);
+        
+        await this.guardarExtension(alumno, info.info_extensiones);
 
-            this.guardarMateriasCursadas(carrera, info.info_calificaciones);
-            let alumno = new Perfil({ vista_info_consultor: info });
-            alumno = await this.controllers.perfilController.gestionar(alumno);
-            this.guardarExtension(alumno, info.info_extensiones);
+        let periodo: Periodo | undefined;
 
-            let periodo: undefined | Periodo;
+        for (const inscripcion of info.info_inscripciones) {
+            const dataParciales = info.info_parciales.find(value => value.materia.includes(inscripcion.materia))!;
 
-            for (const inscripcion of info.info_inscripciones) {
-                const dataParciales = info.info_parciales.find(value => value.materia.includes(inscripcion.materia))!;
-
-                if (!periodo || formatearFecha(periodo.fecha_inscripcion) !== inscripcion.fecha_inscripto) {
-                    periodo = await this.controllers.periodoController.gestionar(new Periodo(inscripcion));
-                }
-
-                const materia = await this.controllers.materiaController.gestionar(new Materia(inscripcion.materia));
-
-                const materiaCarrera = await this.controllers.materiaCarreraController.gestionar(
-                    new MateriaCarrera({ carrera, materia, semestre: getMateria(inscripcion.materia).semestre ?? 0 })
-                );
-
-                const escala = await this.controllers.escalaController.gestionar(new Escala(dataParciales.evaluacion));
-
-                const inscripcionTemp = new Inscripcion(inscripcion);
-                inscripcionTemp.perfil = alumno;
-                inscripcionTemp.periodo = periodo;
-                inscripcionTemp.escala = escala;
-                inscripcionTemp.materiaCarrera = materiaCarrera;
-                logger.debug('antes de registrar la inscripcion')
-                const inscripcionData = await this.controllers.inscripcionController.gestionar(inscripcionTemp);
-                logger.debug('despues de registrar la inscripcion')
-                const parcial = new ResultadoParcial(dataParciales);
-                parcial.inscripcion = inscripcionData;
-                await this.controllers.parcialController.gestionar(parcial);
-
-                for (const final of info.info_finales) {
-                    const finalTemp = new ExamenFinal(final);
-                    finalTemp.inscripcion = inscripcionData;
-                    await this.controllers.finalController.gestionar(finalTemp);
-                }
-
+            if (!periodo || formatearFecha(periodo.fecha_inscripcion) !== inscripcion.fecha_inscripto) {
+                periodo = await this.periodoController.gestionar(new Periodo(inscripcion));
             }
-        } catch (error) {
-            console.error(error)
-        }
 
+            const materia = await this.materiaController.gestionar(new Materia(inscripcion.materia));
+            const materiaCarrera = await this.materiaCarreraController.gestionar(
+                new MateriaCarrera({ carrera, materia, semestre: getMateria(inscripcion.materia).semestre ?? 0 })
+            );
+            const escala = await this.escalaController.gestionar(new Escala(dataParciales.evaluacion));
+
+            const inscripcionTemp = new Inscripcion(inscripcion);
+            inscripcionTemp.perfil = alumno;
+            inscripcionTemp.periodo = periodo;
+            inscripcionTemp.escala = escala;
+            inscripcionTemp.materiaCarrera = materiaCarrera;
+            
+            const inscripcionData = await this.inscripcionController.gestionar(inscripcionTemp);
+            
+            const parcial = new ResultadoParcial(dataParciales);
+            parcial.inscripcion = inscripcionData;
+            await this.parcialController.gestionar(parcial);
+
+            for (const final of info.info_finales) {
+                const finalTemp = new ExamenFinal(final);
+                finalTemp.inscripcion = inscripcionData;
+                await this.finalController.gestionar(finalTemp);
+            }
+        }
     }
 
-    private async guardarExtension(perfil:Perfil, extensiones:info_extension[]) {
+    private async guardarExtension(perfil: Perfil, extensiones: info_extension[]): Promise<void> {
         const extensionesCorregidas = [...extensiones];
         extensionesCorregidas.pop();
 
         for (const extension of extensionesCorregidas) {
             try {
-                const extensionNuevo = await this.controllers.extensionController.gestionar(new Extension(extension));
-                if(extensionNuevo){
-                    const {horas, cantidad} = extension;
+                const extensionNuevo = await this.extensionController.gestionar(new Extension(extension));
+                if (extensionNuevo) {
+                    const { horas, cantidad } = extension;
                     const perfilExtension = new PerfilExtension();
                     perfilExtension.extension = extensionNuevo;
-                    perfilExtension.cantidad = cantidad?Number(cantidad):0;
-                    perfilExtension.horas = horas?Number(horas):0;
+                    perfilExtension.cantidad = cantidad ? Number(cantidad) : 0;
+                    perfilExtension.horas = horas ? Number(horas) : 0;
                     perfilExtension.perfil = perfil;
-                    await this.controllers.perfilExtensionController.gestionar(perfilExtension);
+                    await this.perfilExtensionController.gestionar(perfilExtension);
                 }
             } catch (error) {
                 logger.warn('Ocurrió un error y no se pudo registrar una extension', error);
             }
         }
-        
     }
 
-    private async guardarMateriasCursadas(carrera: Carrera, info_calificaciones: info_calificaciones[]) {
-        const res: MateriaCarrera[] = [];
+    private async guardarMateriasCursadas(carrera: Carrera, info_calificaciones: info_calificaciones[]): Promise<void> {
         for (const data of info_calificaciones) {
             try {
-                const materia = await this.controllers.materiaController.gestionar(new Materia(data.materia));
+                const materia = await this.materiaController.gestionar(new Materia(data.materia));
                 if (materia) {
-                    res.push(await this.controllers.materiaCarreraController.gestionar(
+                    await this.materiaCarreraController.gestionar(
                         new MateriaCarrera({ carrera, materia, semestre: data.semestre })
-                    ));
+                    );
                 }
             } catch {
                 logger.warn('Ocurrió un error y no se pudo registrar una materia');
             }
         }
-
-        return res
     }
 }
