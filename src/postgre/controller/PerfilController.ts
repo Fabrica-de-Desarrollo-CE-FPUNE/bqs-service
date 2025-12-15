@@ -3,6 +3,7 @@ import { Perfil } from "../entity/Perfil";
 import { AppDataSource } from "../data-source";
 import logger from "../../log/logger";
 import { EntityControllerInterface } from "./EntityControllerInterface";
+import { Usuario } from "../entity/Usuario";
 
 export class PerfilController implements EntityControllerInterface<Perfil> {
     
@@ -31,6 +32,16 @@ export class PerfilController implements EntityControllerInterface<Perfil> {
         }
         
         return perfil;
+    }
+
+    public getByUsuario= async (usuario:Usuario) => {
+        return await this.manager.findOne(Perfil, {
+            where: {
+                usuario: {
+                    id: usuario.id
+                }
+            }
+        })
     }
 
     public getAll = async (where?: FindOptionsWhere<Perfil>): Promise<Perfil[]> => {

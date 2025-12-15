@@ -16,7 +16,7 @@ export class MateriaCarrera {
     @JoinColumn({name:'materia_id'})
     public materia:Materia;
 
-    @ManyToOne(()=>Carrera, (carrera)=> carrera.materiasCarreras, {eager:true})
+    @ManyToOne(()=>Carrera, (carrera)=> carrera.materiasCarreras, {eager:false})
     @JoinColumn({name:'carrera_id'})
     public carrera:Carrera;
 
