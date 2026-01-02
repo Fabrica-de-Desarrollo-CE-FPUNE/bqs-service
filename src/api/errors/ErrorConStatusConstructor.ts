@@ -23,6 +23,7 @@ export class ErrorConStatusConstructor extends Error implements ErrorConStatus {
         this.name = this.constructor.name;
         // Capturar la traza del error
         Error.captureStackTrace(this, this.constructor);
+        return this;
     }
 }
 

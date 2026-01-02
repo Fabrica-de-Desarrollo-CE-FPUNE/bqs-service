@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { Materia } from "./Materia";
 import { Carrera } from "./Carrera";
 import { Inscripcion } from "./Inscripcion";
+import { Calificaciones } from "./Calificaciones";
 
 @Entity()
 export class MateriaCarrera {

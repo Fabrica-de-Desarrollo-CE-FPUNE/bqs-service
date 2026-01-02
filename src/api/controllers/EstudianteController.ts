@@ -5,7 +5,7 @@ import { ConsultorServiceError } from "../../core/ConsultorServiceError";
 import logger from "../../log/logger";
 import { InscripcionController } from "../../postgre/controller/InscripcionController";
 import { getPerfilEstudianteService } from "../services/EstudianteService";
-import { getMateriaByIdService, getMateriasInscriptas } from "../services/MateriasService";
+import { getMateriaByIdService, getMateriasInscriptas, getResultadosFinalesService } from "../services/MateriasService";
 import { Usuario } from "../../postgre/entity/Usuario";
 
 export class EstudianteController {
@@ -15,8 +15,8 @@ export class EstudianteController {
             logger.debug("intentando extraer el perfil del estudiante")
             const usuario = req.body.usuario as Usuario;
             const perfil = await getPerfilEstudianteService(usuario);
-            const contacto = await 
-            res.status(StatusCodes.OK).send(perfil);
+            const contacto = await
+                res.status(StatusCodes.OK).send(perfil);
         } catch (error) {
             if (error instanceof ConsultorServiceError) {
                 next(EstudianteError.newError(error.message, error.errorCode));
@@ -52,6 +52,18 @@ export class EstudianteController {
             } else {
                 next(error);
             }
+        }
+    }
+
+
+    public getResultadoFinalesEstudiante = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const usuario = req.body.usuario as Usuario;
+            const id_materia = req.params.id as unknown as number;
+            const resultados = await getResultadosFinalesService(usuario, id_materia);
+            res.json(resultados);
+        } catch (error) {
+            next(error);
         }
     }
 

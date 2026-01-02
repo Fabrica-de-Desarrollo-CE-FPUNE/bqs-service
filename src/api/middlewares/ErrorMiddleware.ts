@@ -34,6 +34,7 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
   const errorStatus: ErrorConStatus = error as ErrorConStatus;
   logger.warn(`An error for a request has been handled, ${errorStatus.message} | ${errorStatus.name}`)
   logger.warn(`Informing back the client with the error response`);
+  logger.error(errorStatus.stack)
   res.status(errorStatus.status || StatusCodes.BAD_REQUEST).json({
     error: {
       message: errorStatus.message,

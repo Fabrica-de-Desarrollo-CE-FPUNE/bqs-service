@@ -11,27 +11,42 @@ const usuarioController = new UsuarioController();
 // Middleware para autenticación con JWT
 export async function authenticateToken(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.headers.authorization;
-    if (!token) {
+    const authHeader = req.headers.authorization;
+    
+    // 1. Validar existencia del token
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw EstudianteError.Unauthorized();
     }
-    logger.debug(`Token recibido: ${token}`);
-    jwt.verify(token.split(' ')[1], JWT_SECRET, async (err: any, decoded:any) => {
-      if (err) {
-        throw EstudianteError.Unauthorized();
-      }
-      logger.debug('Token decodificado.');
-      const usuario = await usuarioController.getById(decoded!.u as string);
-      if(!usuario) {
-        throw EstudianteError.Unauthorized();
-      }
-      req.body = {
-        usuario,
-        ...req.body
-      };
-      next();
+
+    const token = authHeader.split(' ')[1];
+
+    // 2. Verificar el token (Convertido a promesa para que funcione con await)
+    // Esto permite que si hay un error, caiga directamente al catch(error) de abajo
+    const decoded = await new Promise<any>((resolve, reject) => {
+      jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) reject(EstudianteError.Unauthorized());
+        else resolve(decoded);
+      });
     });
+
+    logger.debug('Token decodificado correctamente.');
+
+    // 3. Buscar el usuario
+    const usuario = await usuarioController.getById(decoded!.u as string);
+    if (!usuario) {
+      throw EstudianteError.Unauthorized();
+    }
+
+    // 4. Adjuntar usuario a la request
+    req.body = {
+      usuario,
+      ...req.body
+    };
+
+    next();
   } catch (error) {
+    // Aquí es donde ahora sí caerán todos los "Unauthorized"
+    logger.error(`Error de autenticación: ${error}`);
     next(error);
   }
 }

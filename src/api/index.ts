@@ -9,6 +9,7 @@ import { PuppeteerManager } from '../bot/scraper/PuppeteerManager';
 import logger from '../log/logger';
 import UnknownRouter from './routers/UnknownRoutes';
 import authorizationRouter from './routers/AuthorizationRouter';
+
 const app = express();
 const PORT = Number(process.env.PORT!);
 const HOST = process.env.HOST!;
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use('/api', authorizationRouter);
 app.use('/api/estudiante', estudianteRouter);
 app.use(UnknownRouter);
+
 
 logger.debug(`the express server app is attempting to listen on port ${PORT}`);
 app.listen(PORT, HOST, () => {

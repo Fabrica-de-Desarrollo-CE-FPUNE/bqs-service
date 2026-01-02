@@ -8,6 +8,7 @@ import { Libro } from "./Libro";
 import { Carrera } from "./Carrera";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { PerfilExtension } from "./PerfilExtension";
+import { Calificaciones } from "./Calificaciones";
 
 @Entity()
 export class Perfil extends Base {
@@ -39,6 +40,10 @@ export class Perfil extends Base {
     @OneToOne(() => Usuario, (usuario) => usuario.perfil)
     @JoinColumn({name:'usuario_id'})
     public usuario: Usuario;
+
+    @OneToMany(()=> Calificaciones, (calificaciones)=>calificaciones.perfil)
+    public calificaciones:Calificaciones[];
+
 
     @OneToMany(() => Libro, (libro) => libro.perfilPrestamo)
     public librosPrestamos: Libro[];

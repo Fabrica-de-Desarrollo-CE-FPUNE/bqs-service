@@ -8,7 +8,8 @@ enum URLEnum {
     perfil = '/perfil',
     materias = '/materia',
     materia = '/materia/:id',
-    escalas = '/escalas'
+    escalas = '/escalas',
+    finales = '/finales/:id'
 }
 
 
@@ -23,6 +24,7 @@ estudianteRouter.get(URLEnum.perfil, estudianteController.getPerfilEstudiante);
 estudianteRouter.get(URLEnum.materias, estudianteController.getEvaluacionParcial);
 estudianteRouter.get(URLEnum.materia, estudianteController.getMateriaDetalleEstudiante);
 estudianteRouter.get(URLEnum.escalas, escalaController.getAll);
+estudianteRouter.get(URLEnum.finales, estudianteController.getResultadoFinalesEstudiante);
 estudianteRouter.use(errorHandler);
 
 export default estudianteRouter;
