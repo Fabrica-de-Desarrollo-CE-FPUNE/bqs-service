@@ -35,15 +35,24 @@ export const getMateriasInscriptas = async (usuario: Usuario) => {
 export const getMateriaByIdService = async (usuario: Usuario, id_materia: number) => {
     logger.debug(`el id de la materia a buscar es ${id_materia}`);
     const perfil = await perfilController.getByUsuario(usuario);
-    const materiaCarrera = await materiaController.get({
+    const materia = await materiaController.get({
         id:id_materia
     });
-    if (!perfil || !materiaCarrera) {
+    if (!perfil || !materia) {
         throw EstudianteError.NoDataFound();
     }
+    console.log(perfil, materia)
+
 
     const inscripcion = await inscripcionController.get({
-        perfil, materiaCarrera
+       perfil: {
+        id: perfil.id
+       },
+       materiaCarrera: {
+        materia: {
+            id: materia.id
+        }
+       }
     });
   
     logger.info('información de las materias del estudiante encontrada, enviando...');

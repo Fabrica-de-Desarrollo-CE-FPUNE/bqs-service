@@ -34,6 +34,12 @@ export class Perfil extends Base {
     @Column("int", { nullable: false, default: 0 })
     public materias_reprobadas: number;
 
+    @Column('timestamptz', {default: () => 'CURRENT_TIMESTAMP'})
+    public fecha_creacion: Date;
+
+    @Column('timestamptz', {default: () => 'CURRENT_TIMESTAMP'})
+    public fecha_actualizacion: Date;
+
     @OneToMany(() => Inscripcion, (inscripcion) => inscripcion.perfil)
     public inscripciones: Inscripcion[];
 

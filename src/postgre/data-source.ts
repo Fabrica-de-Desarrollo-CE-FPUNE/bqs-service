@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORD_DB!,
     database: process.env.DATABASE!,
     synchronize: Boolean(process.env.SYNCHRONIZE_DB!),
-    logging: true,
+    logging: process.env.NODE_ENV !== 'production',
      entities: [
         process.env.NODE_ENV === 'production'
             ? 'dist/postgre/entity/**/*.js'
