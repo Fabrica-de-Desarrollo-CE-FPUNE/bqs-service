@@ -28,4 +28,4 @@ RUN chown -R appuser:appgroup /app
 USER appuser
 
 EXPOSE 3000
-CMD ["node", "dist/index.js"]
+CMD ["npm", "run", "start"]
