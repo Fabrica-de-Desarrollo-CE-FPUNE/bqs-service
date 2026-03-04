@@ -1,62 +1,36 @@
 import { NextFunction, Response, Request } from "express";
-import { UsuarioController } from "../../postgre/controller/UsuarioController";
 import { EstudianteError } from "../errors/EstudianteError";
 import logger from "../../log/logger";
 import { StatusCodes } from "http-status-codes";
-import { ConsultorDataService2 } from "../../core/ConsultorService2";
 import { ConsultorServiceError } from "../../core/ConsultorServiceError";
 import { Alumno_credencial_login } from "../../types/ConsultorEstudianteCredenciales.types";
 import { firmarToken } from "../utils/TokenUtil";
-import { AlumnoController } from "../../postgre/controller/AlumnoController";
-import { Usuario } from "../../postgre/entity/Usuario";
-import { AppDataSource } from "../../postgre/data-source";
-import { decrypt } from "../../utils/crypto";
-
+import { authService } from "../services/AuthService";
 export class AuthController {
 
-
-
     public getLoginToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+            logger.error('a body has not been sent');
+            throw EstudianteError.NotBodyFormSent();
+        }
 
+        const { cedula, pass } = req.body;
+        if (!cedula || !pass) {
+            logger.error('An invalid form has been sent');
+            throw EstudianteError.InvalidBodyFormRequest();
+        }
+
+        const credenciales: Alumno_credencial_login = {
+            cedula: cedula,
+            contrasenia: pass
+        }
         try {
-            await AppDataSource.transaction(async tx => {
-                const usuarioController = new UsuarioController(tx);
-                const alumnoController = new AlumnoController(tx);
-                if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-                    logger.error('a body has not been sent');
-                    throw EstudianteError.NotBodyFormSent();
-                }
+            const usuarioLogeado = await authService(credenciales);
 
-                const { cedula, pass } = req.body;
-                if (!cedula || !pass) {
-                    logger.error('An invalid form has been sent');
-                    throw EstudianteError.InvalidBodyFormRequest();
-                }
-
-                const credenciales: Alumno_credencial_login = {
-                    cedula: cedula,
-                    contrasenia: pass
-                }
-                const usuarioTemp = new Usuario();
-                usuarioTemp.cedula = credenciales.cedula;
-                const usuario = await usuarioController.get(usuarioTemp);
-
-                if (!usuario) {
-                    logger.debug('calling the core service for consultor data');
-                    const consultor_servicio: ConsultorDataService2 = new ConsultorDataService2();
-                    const estudiante_data = await consultor_servicio.getAll_Consultor_Info(credenciales);
-                    await usuarioTemp.init(credenciales);
-                    const usuario = await usuarioController.setOrUpdate(usuarioTemp);
-                    await alumnoController.guardarAlumnoData(usuario, estudiante_data);
-                } else if (!(credenciales.contrasenia === decrypt(usuario.password))) {
-                    throw EstudianteError.Unauthorized()
-                }
-
-                logger.debug('creando token y enviando al usuario')
-                res.status(StatusCodes.OK).send({ token: firmarToken({ u: usuario?.id }) });
-            })
+            res.status(StatusCodes.OK).send({ token: firmarToken({ u: usuarioLogeado.id }) });
 
         } catch (error) {
+            console.error('Error in AuthController.getLoginToken:', error);
             if (error instanceof ConsultorServiceError) {
                 next(EstudianteError.newError(error.message, error.errorCode));
             } else {

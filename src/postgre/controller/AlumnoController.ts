@@ -26,6 +26,8 @@ import { ParcialController } from './ParcialController';
 import { PerfilController } from './PerfilController';
 import { PerfilExtensionController } from './PerfilExtensionController';
 import { PeriodoController } from './PeriodoController';
+import { CalificacionesController } from './CalificacionesController';
+import { Calificaciones } from '../entity/Calificaciones';
 
 export class AlumnoController {
 
@@ -40,6 +42,7 @@ export class AlumnoController {
     private finalController: FinalController;
     private extensionController: ExtensionController;
     private perfilExtensionController: PerfilExtensionController;
+    private calificacionesController: CalificacionesController;
 
     constructor(private tx: EntityManager) {
         this.carreraController = new CarreraController(this.tx);
@@ -47,6 +50,7 @@ export class AlumnoController {
         this.periodoController = new PeriodoController(this.tx);
         this.materiaController = new MateriaController(this.tx);
         this.materiaCarreraController = new MateriaCarreraController(this.tx);
+        this.calificacionesController = new CalificacionesController(this.tx);
         this.escalaController = new EscalaController(this.tx);
         this.inscripcionController = new InscripcionController(this.tx);
         this.parcialController = new ParcialController(this.tx);
@@ -60,12 +64,12 @@ export class AlumnoController {
         const carrera = await this.carreraController.gestionar(carreraTemp);
 
         await this.guardarMateriasCursadas(carrera, info.info_calificaciones);
-        
+
         let alumno = new Perfil({ vista_info_consultor: info });
         alumno.usuario = usuario;
         alumno.carrera = carrera;
         alumno = await this.perfilController.gestionar(alumno);
-        
+
         await this.guardarExtension(alumno, info.info_extensiones);
 
         let periodo: Periodo | undefined;
@@ -88,9 +92,9 @@ export class AlumnoController {
             inscripcionTemp.periodo = periodo;
             inscripcionTemp.escala = escala;
             inscripcionTemp.materiaCarrera = materiaCarrera;
-            
+
             const inscripcionData = await this.inscripcionController.gestionar(inscripcionTemp);
-            
+
             const parcial = new ResultadoParcial(dataParciales);
             parcial.inscripcion = inscripcionData;
             await this.parcialController.gestionar(parcial);
@@ -99,6 +103,31 @@ export class AlumnoController {
                 const finalTemp = new ExamenFinal(final);
                 finalTemp.inscripcion = inscripcionData;
                 await this.finalController.gestionar(finalTemp);
+            }
+        }
+        await this.guardarCalificaciones(alumno, info.info_calificaciones);
+    }
+
+    private async guardarCalificaciones(perfil: Perfil, calificaciones: info_calificaciones[]): Promise<void> {
+        const materias = await this.materiaController.getAll();
+
+        for (const data of calificaciones) {
+            try {
+                const materia = materias.find(value => {
+                    const materia = data.materia.split(' ').slice(1).join(' ').trim();
+                    return value.nombre.toLowerCase() === materia.toLowerCase();
+                });
+                if(materia) {
+                    await this.calificacionesController.gestionar(new Calificaciones({
+                        perfil,
+                        materia,
+                        nota: data.nota,
+                        acta: parseInt(data.acta),
+                        fecha: data.fecha
+                    }));
+                }
+            } catch (error) {
+                logger.warn('Ocurrió un error y no se pudo registrar una calificación', error);
             }
         }
     }

@@ -9,8 +9,8 @@ export const AppDataSource = new DataSource({
     username: process.env.USERNAME_DB!,
     password: process.env.PASSWORD_DB!,
     database: process.env.DATABASE!,
-    synchronize: Boolean(process.env.SYNCHRONIZE!),
-    logging: true,
+    synchronize: Boolean(process.env.SYNCHRONIZE_DB!),
+    logging: process.env.NODE_ENV !== 'production',
      entities: [
         process.env.NODE_ENV === 'production'
             ? 'dist/postgre/entity/**/*.js'

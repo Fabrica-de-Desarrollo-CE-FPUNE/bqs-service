@@ -5,13 +5,13 @@ import logger from "../../log/logger";
 import { EntityControllerInterface } from './EntityControllerInterface';
 
 export class InscripcionController implements EntityControllerInterface<Inscripcion> {
-    
+
     private manager: EntityManager;
 
     constructor(tx: EntityManager = AppDataSource.manager) {
         this.manager = tx;
     }
-    
+
     public gestionar = async (data: Inscripcion): Promise<Inscripcion> => {
         const where = {
             perfil: data.perfil,
@@ -26,10 +26,10 @@ export class InscripcionController implements EntityControllerInterface<Inscripc
 
         return this.setOrUpdate(data);
     }
-    
+
     public get = async (where: FindOptionsWhere<Inscripcion>): Promise<Inscripcion | null> => {
         logger.debug(`Buscando inscripción.`);
-        const inscripcion = await this.manager.findOne(Inscripcion, { where });
+        const inscripcion = await this.manager.findOne(Inscripcion, { where, loadEagerRelations: true });
 
         if (!inscripcion) {
             logger.warn(`No se encontró la inscripción.`);
@@ -40,7 +40,16 @@ export class InscripcionController implements EntityControllerInterface<Inscripc
 
     public getAll = async (where?: FindOptionsWhere<Inscripcion>): Promise<Inscripcion[]> => {
         logger.debug(`Buscando inscripciones.`);
-        const inscripciones = await this.manager.find(Inscripcion, { where });
+        const inscripciones = await this.manager.find(Inscripcion,
+            {
+                where,
+                loadEagerRelations:false,
+                relations:{
+                    materiaCarrera:{
+                        materia:true
+                    }
+                }
+            });
 
         if (!inscripciones.length) {
             logger.warn(`No se encontraron inscripciones con los datos requeridos.`);

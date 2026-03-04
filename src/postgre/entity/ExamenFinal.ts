@@ -12,7 +12,7 @@ export class ExamenFinal {
     @Column('date')
     fecha:Date;
 
-    @Column('float')
+    @Column('float', {nullable:true})
     final:number;
 
     @Column('varchar', {length:8})
@@ -23,11 +23,13 @@ export class ExamenFinal {
     inscripcion:Inscripcion;
 
     constructor(data?:info_resultado_evaluacion_final){
+        
         if(data){
+            console.log(data);
             const {fecha, nota, final} = data;
             this.fecha = parseFechaDDMMYYYY(fecha);
             this.nota = nota;
-            this.final = Number(final.length?final:0);
+            this.final = Number(final?final:null)??null;
         }
     }
 

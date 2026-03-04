@@ -23,6 +23,14 @@ export class UsuarioController implements EntityControllerInterface<Usuario> {
         return this.setOrUpdate(data);
     }
 
+    public getById = async (id_usuario:string) => {
+        return await this.manager.findOne(Usuario, {
+            where: {
+                id: id_usuario
+            }
+        })
+    }
+
     public get = async (data:Usuario): Promise<Usuario | null> => {
         const where: FindOptionsWhere<Usuario> = { cedula: data.cedula };
         logger.debug(`Buscando usuario.`);

@@ -101,6 +101,7 @@ export class ConsultorDataService2 implements IConsultorDataProvider{
            if(error instanceof ScraperError){
              throw this.handleScraperError(error);
            }
+           console.error('Unknown error in ConsultorDataService2.getAll_Consultor_Info:', error);
            throw this.handleUnkownError(error as Error);
         }   
     }
