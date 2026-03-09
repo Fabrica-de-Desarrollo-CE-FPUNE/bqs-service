@@ -9,9 +9,10 @@ import { PuppeteerManager } from '../bot/scraper/PuppeteerManager';
 import logger from '../log/logger';
 import UnknownRouter from './routers/UnknownRoutes';
 import authorizationRouter from './routers/AuthorizationRouter';
+import statusRouter from './routers/StatusRouter';
 
 const app = express();
-const PORT = Number(process.env.PORT!);
+const PORT = Number(process.env.INTERNAL_PORT ?? 3000);
 const HOST = process.env.HOST!;
 app.use(cors(
   {
@@ -21,6 +22,7 @@ app.use(cors(
 ))
 app.use(express.json());
 app.use('/api', authorizationRouter);
+app.use('/api/status', statusRouter);
 app.use('/api/estudiante', estudianteRouter);
 app.use(UnknownRouter);
 

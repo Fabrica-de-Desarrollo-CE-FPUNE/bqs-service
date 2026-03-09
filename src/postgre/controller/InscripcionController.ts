@@ -13,12 +13,8 @@ export class InscripcionController implements EntityControllerInterface<Inscripc
     }
 
     public gestionar = async (data: Inscripcion): Promise<Inscripcion> => {
-        const where = {
-            perfil: data.perfil,
-            periodo: data.periodo,
-            materiaCarrera: data.materiaCarrera
-        };
-        const inscripcionExistente = await this.get(where);
+       
+        const inscripcionExistente = await this.get(data);
 
         if (inscripcionExistente) {
             return inscripcionExistente;
