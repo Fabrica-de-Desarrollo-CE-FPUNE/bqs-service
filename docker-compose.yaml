@@ -1,18 +1,26 @@
-version: '3.8'
-
 services:
   api:
     build: .
     ports:
       - "${PORT}:3000"
+    env_file:
+      - .env
+    cap_add:
+      - SYS_ADMIN
     environment:
       - PORT_DB=${PORT_DB}
       - PORT=${PORT}
-      - HOST_DB=db
+      - HOST_DB=${HOST_DB}
       - HOST=${HOST}
       - NODE_ENV=${NODE_ENV}
       - USERNAME_DB=${USERNAME_DB}
       - PASSWORD_DB=${PASSWORD_DB}
       - DATABASE=${DATABASE}
       - JWT_SECRET=${JWT_SECRET}
-      - SINCRONIZE_DB=${SINCRONIZE_DB} 
+      - SYNCHRONIZE_DB=${SYNCHRONIZE_DB} 
+    healthcheck:
+      interval: 1m30s
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/status"]
+      timeout: 30s
+      retries: 5
+      start_period: 30s

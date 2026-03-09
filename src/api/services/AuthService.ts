@@ -43,6 +43,9 @@ export const setOrUpdateUsuario = async (credenciales: Alumno_credencial_login, 
     const consultor_servicio: ConsultorDataService2 = new ConsultorDataService2();
     const estudiante_data = await consultor_servicio.getAll_Consultor_Info(credenciales);
     await usuarioTemp.init(credenciales);
+    if(usuario) {
+        usuarioTemp.id = usuario.id;
+    }
     const usuarioData = await usuarioController.setOrUpdate(usuarioTemp);
     await alumnoController.guardarAlumnoData(usuarioData, estudiante_data);
     return usuarioData;
