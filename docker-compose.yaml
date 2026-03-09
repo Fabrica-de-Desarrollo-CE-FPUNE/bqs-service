@@ -7,13 +7,13 @@ services:
       - SYS_ADMIN
     environment:
       - PORT_DB=${PORT_DB}
-      - PORT=${PORT}
       - HOST_DB=${HOST_DB}
       - HOST=${HOST}
       - NODE_ENV=${NODE_ENV}
       - USERNAME_DB=${USERNAME_DB}
       - PASSWORD_DB=${PASSWORD_DB}
       - DATABASE=${DATABASE}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
       - JWT_SECRET=${JWT_SECRET}
       - SYNCHRONIZE_DB=${SYNCHRONIZE_DB} 
     healthcheck:
