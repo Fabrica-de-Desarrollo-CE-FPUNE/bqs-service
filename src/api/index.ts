@@ -12,7 +12,7 @@ import authorizationRouter from './routers/AuthorizationRouter';
 import statusRouter from './routers/StatusRouter';
 
 const app = express();
-const PORT = Number(process.env.INTERNAL_PORT ?? 3000);
+const PORT = 3000;
 const HOST = process.env.HOST!;
 app.use(cors(
   {
